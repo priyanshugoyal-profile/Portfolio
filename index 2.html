@@ -1,0 +1,1353 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Priyanshu Goyal - Growth Marketing &amp; AI Automation</title>
+<meta name="description" content="Priyanshu Goyal - zero-to-scale growth marketer &amp; AI automation builder. Autonomous scholarship pipelines, programmatic creative generation with ChatGPT Codex &amp; Canva, ambassador funnels for fintech. Based in Bengaluru.">
+
+<!-- Google Font Space Grotesk -->
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&display=swap" rel="stylesheet">
+
+<style>
+  :root {
+    --bg:#FDFCFB;
+    --ink:#16243D;        /* body text - 15.14:1 on bg */
+    --ink-soft:#4A566B;   /* secondary text - 7.23:1 on bg */
+    --accent:#9A4F2C;     /* clay - 5.81:1 on bg, safe for links */
+    --accent-weak:#E9DDD3;
+    --line:#E4E0DA;
+    --card:#FBF8F5;
+    --card-border:#E8E2D9;
+    --navy-deep:#0D2447;
+    --navy-card:#132B53;
+    --gold:#F5A623;
+    --gold-light:#FEF3C7;
+    --green-light:#DCFCE7;
+    --green-text:#15803D;
+    --display:"Space Grotesk", ui-sans-serif, system-ui, sans-serif;
+    --body:ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+    --mono:ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
+    --maxw:64rem;
+  }
+
+  * { box-sizing:border-box; }
+  html { scroll-behavior:smooth; }
+  @media (prefers-reduced-motion: reduce) { html { scroll-behavior:auto; } }
+
+  body {
+    margin:0;
+    background:var(--bg);
+    color:var(--ink);
+    font-family:var(--body);
+    font-size:1.0625rem;
+    line-height:1.6;
+    -webkit-font-smoothing:antialiased;
+    text-rendering:optimizeLegibility;
+  }
+
+  /* Skip link */
+  .skip {
+    position:absolute; left:-999px; top:0;
+    background:var(--ink); color:#fff; padding:.6rem 1rem; z-index:100;
+    border-radius:0 0 .4rem 0;
+  }
+  .skip:focus { left:0; }
+
+  a { color:var(--accent); text-decoration:underline; text-underline-offset:3px; text-decoration-thickness:1px; }
+  a:hover { text-decoration-thickness:2px; }
+  :focus-visible { outline:3px solid var(--accent); outline-offset:3px; border-radius:2px; }
+
+  .wrap { max-width:var(--maxw); margin:0 auto; padding:0 1.25rem; }
+
+  /* Navigation Bar */
+  .nav-bar {
+    position:sticky; top:0; z-index:90;
+    background:rgba(253, 252, 251, 0.94);
+    backdrop-filter:blur(8px);
+    border-bottom:1px solid var(--line);
+    padding:.75rem 0;
+  }
+  .nav-inner {
+    display:flex; align-items:center; justify-content:space-between; gap:1rem;
+  }
+  .nav-logo {
+    font-family:var(--display); font-weight:700; font-size:1.1rem;
+    color:var(--ink); text-decoration:none; display:flex; align-items:center; gap:.5rem;
+  }
+  .nav-logo span { color:var(--accent); }
+  .nav-links {
+    display:flex; align-items:center; gap:1.25rem; list-style:none; margin:0; padding:0;
+  }
+  .nav-links a {
+    font-family:var(--display); font-size:.9rem; font-weight:500;
+    color:var(--ink-soft); text-decoration:none;
+    transition:color .15s ease;
+  }
+  .nav-links a:hover { color:var(--accent); }
+  .nav-links .badge-new {
+    background:var(--accent-weak); color:var(--accent); font-size:.7rem;
+    padding:.15rem .45rem; border-radius:1rem; font-weight:600; text-transform:uppercase;
+  }
+  .nav-cv-btn {
+    font-size:.85rem !important; padding:.4rem .85rem !important;
+  }
+
+  /* Section rhythm */
+  section { padding:3.5rem 0; }
+  section + section { border-top:1px solid var(--line); }
+  .eyebrow {
+    font-family:var(--display);
+    font-size:.78rem; letter-spacing:.16em; text-transform:uppercase;
+    color:var(--accent); margin:0 0 1.1rem; font-weight:600;
+  }
+  h2 {
+    font-family:var(--display); font-weight:600;
+    font-size:clamp(1.5rem, 5vw, 2.15rem); line-height:1.15;
+    margin:0 0 1.2rem; letter-spacing:-.015em;
+  }
+  .section-intro {
+    color:var(--ink-soft); max-width:62ch; margin:0 0 2.2rem; font-size:1.1rem;
+  }
+
+  /* HERO */
+  .hero { padding:3.5rem 0 3rem; }
+  .hero .eyebrow { margin-bottom:.9rem; }
+  .hero h1 {
+    font-family:var(--display); font-weight:700;
+    font-size:clamp(2.3rem, 10vw, 4.2rem);
+    line-height:1.03; letter-spacing:-.025em;
+    margin:0 0 1.1rem;
+  }
+  .hero h1 .accent { color:var(--accent); }
+  .lede {
+    font-size:clamp(1.05rem, 3.4vw, 1.28rem);
+    color:var(--ink-soft); max-width:36ch; margin:0 0 2rem;
+  }
+  .hero-cta { display:flex; flex-wrap:wrap; gap:.7rem; margin-bottom:2.6rem; }
+  .btn {
+    font-family:var(--display); font-weight:500; font-size:.95rem;
+    text-decoration:none; padding:.7rem 1.25rem; border-radius:.55rem;
+    display:inline-flex; align-items:center; justify-content:center; gap:.4rem;
+    cursor:pointer; transition:all .15s ease;
+  }
+  .btn-primary { background:var(--ink); color:#fff; border:1px solid var(--ink); }
+  .btn-primary:hover { background:#0d1830; border-color:#0d1830; }
+  .btn-ghost { border:1px solid var(--line); color:var(--ink); background:transparent; }
+  .btn-ghost:hover { border-color:var(--accent); color:var(--accent); }
+  .btn-accent { background:var(--accent); color:#fff; border:1px solid var(--accent); }
+  .btn-accent:hover { background:#823f20; border-color:#823f20; }
+  .btn-sm { font-size:.82rem; padding:.45rem .85rem; border-radius:.45rem; }
+
+  /* Deltas */
+  .deltas {
+    display:grid; grid-template-columns:1fr; gap:.9rem;
+    list-style:none; padding:0; margin:0;
+  }
+  .delta {
+    border-left:3px solid var(--accent);
+    padding:.55rem 0 .55rem 1rem;
+  }
+  .delta .pair {
+    font-family:var(--display); font-weight:600;
+    font-size:clamp(1.3rem, 6vw, 1.7rem); line-height:1.1;
+    letter-spacing:-.01em; display:flex; align-items:baseline; gap:.5rem; flex-wrap:wrap;
+  }
+  .delta .from { color:var(--ink-soft); font-weight:400; }
+  .delta .arrow { color:var(--accent); font-weight:400; }
+  .delta .to { color:var(--ink); }
+  .delta .label { display:block; font-size:.92rem; color:var(--ink-soft); margin-top:.15rem; }
+
+  /* ABOUT */
+  .about p { max-width:62ch; margin:0 0 1rem; font-size:1.08rem; }
+  .about p:last-child { margin-bottom:0; }
+
+  /* AI AUTOMATION SECTION */
+  .ai-project-card {
+    background:var(--card);
+    border:1px solid var(--card-border);
+    border-radius:.9rem;
+    padding:1.75rem;
+    margin-bottom:2.5rem;
+    box-shadow:0 2px 8px rgba(22, 36, 61, 0.03);
+  }
+  .ai-project-card:last-child { margin-bottom:0; }
+  .project-header {
+    display:flex; flex-wrap:wrap; justify-content:space-between; align-items:flex-start; gap:1rem;
+    margin-bottom:1.25rem;
+  }
+  .project-title-area { max-width:42rem; }
+  .project-title {
+    font-family:var(--display); font-size:1.45rem; font-weight:700;
+    margin:0 0 .4rem; line-height:1.2; color:var(--ink);
+  }
+  .project-subtitle {
+    font-size:1.02rem; color:var(--ink-soft); margin:0;
+  }
+  .project-tag-list {
+    display:flex; flex-wrap:wrap; gap:.4rem; list-style:none; padding:0; margin:.75rem 0 0;
+  }
+  .project-tag {
+    background:#fff; border:1px solid var(--line);
+    padding:.25rem .6rem; border-radius:.4rem; font-size:.78rem;
+    font-family:var(--display); font-weight:500; color:var(--ink-soft);
+  }
+  .project-tag.highlight {
+    background:var(--accent-weak); border-color:var(--accent-weak); color:var(--accent); font-weight:600;
+  }
+
+  .metrics-ribbon {
+    display:grid; grid-template-columns:repeat(auto-fit, minmax(130px, 1fr));
+    gap:.75rem; margin:1.25rem 0 1.5rem;
+  }
+  .metric-box {
+    background:#fff; border:1px solid var(--line); border-radius:.55rem;
+    padding:.85rem; text-align:left;
+  }
+  .metric-box .num {
+    font-family:var(--display); font-weight:700; font-size:1.35rem;
+    color:var(--accent); line-height:1.1; display:block; margin-bottom:.2rem;
+  }
+  .metric-box .label {
+    font-size:.8rem; color:var(--ink-soft); line-height:1.25; display:block;
+  }
+
+  .project-body p {
+    max-width:64ch; margin:0 0 1rem; font-size:1rem; color:var(--ink);
+  }
+
+  /* Dashboard Widget Replica */
+  .dashboard-widget {
+    background:#fff;
+    border:1px solid #D8E0EB;
+    border-radius:.75rem;
+    padding:1.4rem;
+    margin:1.4rem 0;
+    box-shadow:0 4px 16px rgba(15, 42, 74, 0.05);
+  }
+  .dash-top {
+    display:flex; justify-content:space-between; align-items:center;
+    border-bottom:1px solid #E2E8F0; padding-bottom:.85rem; margin-bottom:1.1rem;
+    flex-wrap:wrap; gap:.6rem;
+  }
+  .dash-title-group h4 {
+    font-family:var(--display); font-size:1.1rem; font-weight:700;
+    color:var(--navy-deep); margin:0 0 .2rem;
+  }
+  .dash-title-group p {
+    font-size:.82rem; color:var(--ink-soft); margin:0;
+  }
+  .dash-status-badge {
+    display:inline-flex; align-items:center; gap:.4rem;
+    background:var(--green-light); color:var(--green-text);
+    padding:.3rem .7rem; border-radius:1rem; font-size:.78rem; font-weight:600;
+  }
+  .dash-status-dot {
+    width:7px; height:7px; border-radius:50%; background:var(--green-text);
+    animation:pulse 2s infinite;
+  }
+  @keyframes pulse {
+    0%, 100% { opacity: 1; }
+    50% { opacity: 0.4; }
+  }
+
+  .dash-form-grid {
+    display:grid; grid-template-columns:1fr; gap:.85rem; margin-bottom:1.1rem;
+  }
+  .dash-field label {
+    display:block; font-size:.74rem; font-family:var(--display); font-weight:700;
+    color:var(--ink-soft); letter-spacing:.05em; text-transform:uppercase; margin-bottom:.3rem;
+  }
+  .dash-input {
+    width:100%; padding:.55rem .75rem; border:1px solid #CBD5E1; border-radius:.45rem;
+    font-family:var(--body); font-size:.9rem; color:var(--ink); background:#F8FAFC;
+  }
+  .dash-input a { color:#0284C7; word-break:break-all; }
+  .dash-btn-row {
+    display:flex; align-items:center; gap:.6rem; flex-wrap:wrap; margin-top:.4rem;
+  }
+
+  .dash-callout {
+    background:#FFFBEB; border:1px solid #FDE68A; border-radius:.45rem;
+    padding:.75rem .9rem; font-size:.82rem; color:#92400E; margin-bottom:1.25rem;
+  }
+
+  .dash-pipeline-stages {
+    margin:1.25rem 0;
+  }
+  .pipeline-label {
+    font-size:.82rem; font-family:var(--display); font-weight:700;
+    color:var(--ink); margin-bottom:.6rem; display:flex; justify-content:space-between;
+  }
+  .stages-pill-grid {
+    display:grid; grid-template-columns:repeat(auto-fit, minmax(135px, 1fr));
+    gap:.45rem;
+  }
+  .stage-pill {
+    background:#F1F5F9; border:1px solid #CBD5E1; border-radius:.4rem;
+    padding:.45rem .6rem; font-size:.78rem; color:var(--ink);
+    display:flex; align-items:center; gap:.4rem; font-weight:500;
+    transition:all .2s ease;
+  }
+  .stage-pill.active {
+    background:#E0F2FE; border-color:#38BDF8; color:#0369A1; font-weight:600;
+  }
+  .stage-pill.done {
+    background:#DCFCE7; border-color:#86EFAC; color:#15803D; font-weight:600;
+  }
+  .stage-icon { font-size:.85rem; }
+
+  .dash-tables {
+    display:grid; grid-template-columns:1fr; gap:1.25rem; margin-top:1.2rem;
+  }
+  .dash-table-wrap {
+    border:1px solid #E2E8F0; border-radius:.5rem; overflow:hidden;
+  }
+  .dash-table-head {
+    background:#F8FAFC; padding:.6rem .85rem; border-bottom:1px solid #E2E8F0;
+    display:flex; justify-content:space-between; align-items:center;
+  }
+  .dash-table-head h5 {
+    margin:0; font-family:var(--display); font-size:.86rem; font-weight:700; color:var(--navy-deep);
+  }
+  .dash-table-head a {
+    font-size:.78rem; color:#0284C7; text-decoration:none;
+  }
+  .dash-table-head a:hover { text-decoration:underline; }
+  .dash-table {
+    width:100%; border-collapse:collapse; font-size:.82rem; text-align:left;
+  }
+  .dash-table th {
+    background:#F1F5F9; color:var(--ink-soft); font-weight:600; padding:.5rem .75rem;
+    border-bottom:1px solid #E2E8F0; font-size:.75rem; text-transform:uppercase; letter-spacing:.03em;
+  }
+  .dash-table td {
+    padding:.55rem .75rem; border-bottom:1px solid #F1F5F9; color:var(--ink); vertical-align:middle;
+  }
+  .dash-table tr:last-child td { border-bottom:none; }
+  .score-badge {
+    display:inline-block; background:#FEF3C7; color:#B45309; font-weight:700;
+    padding:.15rem .45rem; border-radius:.3rem; font-size:.76rem;
+  }
+  .winner-tag {
+    display:inline-block; background:#DCFCE7; color:#15803D; font-weight:700;
+    padding:.15rem .45rem; border-radius:.3rem; font-size:.76rem;
+  }
+
+  /* Code Inspector */
+  .code-inspector {
+    background:#1E293B; border-radius:.65rem; overflow:hidden;
+    margin:1.4rem 0; border:1px solid #334155;
+  }
+  .code-nav {
+    display:flex; justify-content:space-between; align-items:center;
+    background:#0F172A; padding:.5rem .85rem; border-bottom:1px solid #334155;
+    flex-wrap:wrap; gap:.5rem;
+  }
+  .code-tabs {
+    display:flex; gap:.35rem;
+  }
+  .code-tab {
+    background:transparent; border:none; color:#94A3B8; font-family:var(--display);
+    font-size:.8rem; padding:.35rem .7rem; border-radius:.35rem; cursor:pointer;
+    transition:all .15s ease;
+  }
+  .code-tab.active {
+    background:#334155; color:#F8FAFC; font-weight:600;
+  }
+  .copy-btn {
+    background:#334155; color:#E2E8F0; border:none; border-radius:.35rem;
+    font-family:var(--display); font-size:.75rem; padding:.35rem .65rem;
+    cursor:pointer; display:inline-flex; align-items:center; gap:.3rem;
+  }
+  .copy-btn:hover { background:#475569; color:#fff; }
+  .code-content {
+    padding:1rem; margin:0; overflow-x:auto; max-height:24rem;
+    font-family:var(--mono); font-size:.82rem; line-height:1.55; color:#E2E8F0;
+    white-space:pre-wrap;
+  }
+
+  /* Carousel Component */
+  .carousel-section-wrap {
+    display:grid; grid-template-columns:1fr; gap:1.75rem; align-items:start;
+  }
+  .carousel-container {
+    background:#0B2341;
+    border-radius:1rem;
+    padding:1.5rem 1.25rem;
+    color:#fff;
+    box-shadow:0 8px 24px rgba(11, 35, 65, 0.15);
+    position:relative;
+    overflow:hidden;
+  }
+  .carousel-slide-view {
+    position:relative;
+    min-height:430px;
+    display:flex; flex-direction:column; justify-content:space-between;
+  }
+  .carousel-slide {
+    display:none; flex-direction:column; justify-content:space-between;
+    animation:fadeIn .3s ease forwards;
+  }
+  .carousel-slide.active {
+    display:flex; min-height:430px;
+  }
+  @keyframes fadeIn {
+    from { opacity:0.3; transform:translateY(4px); }
+    to { opacity:1; transform:translateY(0); }
+  }
+
+  /* Slide Designs */
+  .slide-header-badge {
+    display:inline-block; background:var(--gold); color:#0B2341;
+    font-family:var(--display); font-weight:700; font-size:.74rem;
+    text-transform:uppercase; letter-spacing:.08em;
+    padding:.35rem .85rem; border-radius:1rem; margin-bottom:.9rem;
+    align-self:flex-start;
+  }
+  .slide-tag-text {
+    color:var(--gold); font-family:var(--display); font-weight:600;
+    font-size:.86rem; margin-bottom:.5rem;
+  }
+  .slide-title {
+    font-family:var(--display); font-size:1.65rem; font-weight:700;
+    line-height:1.18; color:#fff; margin:0 0 .75rem; letter-spacing:-.01em;
+  }
+  .slide-title .highlight-gold { color:var(--gold); }
+  .slide-desc {
+    font-size:.95rem; color:#CBD5E1; line-height:1.5; margin:0 0 1.2rem;
+  }
+  .slide-bullets {
+    list-style:none; padding:0; margin:0 0 1.25rem;
+  }
+  .slide-bullets li {
+    font-size:.9rem; color:#E2E8F0; margin-bottom:.65rem;
+    display:flex; align-items:flex-start; gap:.5rem; line-height:1.4;
+  }
+  .slide-bullets li span.check { color:var(--gold); font-weight:700; }
+
+  .slide-visual-box {
+    background:rgba(255,255,255,0.06); border:1px solid rgba(255,255,255,0.12);
+    border-radius:.65rem; padding:.85rem 1rem; margin:auto 0 1rem;
+    display:flex; align-items:center; gap:.85rem;
+  }
+  .visual-avatar-mock {
+    width:52px; height:52px; border-radius:50%; background:linear-gradient(135deg, #F5A623, #EA580C);
+    display:flex; align-items:center; justify-content:center; font-size:1.5rem; flex-shrink:0;
+  }
+  .visual-text-mock h6 { margin:0 0 .2rem; font-size:.85rem; font-weight:700; color:#fff; }
+  .visual-text-mock p { margin:0; font-size:.76rem; color:#94A3B8; }
+
+  .slide-cta-banner {
+    margin-top:auto; display:flex; justify-content:space-between; align-items:center;
+    border-top:1px solid rgba(255,255,255,0.12); padding-top:.9rem; flex-wrap:wrap; gap:.5rem;
+  }
+  .slide-cta-btn {
+    background:var(--gold); color:#0B2341; font-family:var(--display); font-weight:700;
+    font-size:.82rem; padding:.55rem 1.15rem; border-radius:1.5rem; text-decoration:none;
+    display:inline-flex; align-items:center; gap:.3rem;
+  }
+  .mpower-logo-text {
+    font-family:var(--display); font-weight:800; font-size:.88rem;
+    letter-spacing:.1em; color:#fff; text-transform:uppercase; display:flex; align-items:center; gap:.35rem;
+  }
+  .mpower-logo-text svg { width:16px; height:16px; fill:var(--gold); }
+
+  /* Carousel Controls */
+  .carousel-controls {
+    display:flex; justify-content:space-between; align-items:center;
+    margin-top:1.1rem; padding-top:.85rem; border-top:1px solid rgba(255,255,255,0.15);
+  }
+  .carousel-dots { display:flex; gap:.4rem; }
+  .carousel-dot {
+    width:28px; height:5px; border-radius:3px; background:rgba(255,255,255,0.25);
+    border:none; cursor:pointer; padding:0; transition:all .2s ease;
+  }
+  .carousel-dot.active { background:var(--gold); width:40px; }
+  .carousel-nav-btn {
+    background:rgba(255,255,255,0.12); color:#fff; border:none; border-radius:50%;
+    width:36px; height:36px; cursor:pointer; display:flex; align-items:center; justify-content:center;
+    font-size:1.1rem; transition:background .15s ease;
+  }
+  .carousel-nav-btn:hover { background:rgba(255,255,255,0.24); }
+
+  /* Architecture Steps */
+  .arch-steps {
+    display:grid; grid-template-columns:1fr; gap:.75rem; margin:1.2rem 0;
+  }
+  .arch-step {
+    background:#fff; border:1px solid var(--line); border-radius:.55rem;
+    padding:.9rem 1.1rem; display:flex; gap:.9rem; align-items:flex-start;
+  }
+  .arch-num {
+    background:var(--card); border:1px solid var(--line); color:var(--accent);
+    font-family:var(--display); font-weight:700; font-size:.9rem;
+    width:28px; height:28px; border-radius:50%; display:flex; align-items:center; justify-content:center;
+    flex-shrink:0; margin-top:.15rem;
+  }
+  .arch-content h6 {
+    font-family:var(--display); font-size:.95rem; font-weight:700;
+    margin:0 0 .2rem; color:var(--ink);
+  }
+  .arch-content p {
+    font-size:.85rem; color:var(--ink-soft); margin:0; line-height:1.45;
+  }
+
+  /* EXPERIENCE */
+  .job { padding:1.6rem 0; border-bottom:1px solid var(--line); }
+  .job:last-of-type { border-bottom:0; padding-bottom:0; }
+  .job-head { margin-bottom:.7rem; }
+  .job .role {
+    font-family:var(--display); font-weight:600; font-size:1.2rem;
+    margin:0; line-height:1.25;
+  }
+  .job .meta {
+    color:var(--ink-soft); font-size:.95rem; margin:.2rem 0 0;
+    font-family:var(--display); letter-spacing:.01em;
+  }
+  .job .meta .co { color:var(--ink); font-weight:500; }
+  .job ul { margin:.5rem 0 0; padding-left:1.1rem; }
+  .job li { margin:.45rem 0; max-width:64ch; }
+  .job li b { color:var(--ink); font-weight:600; }
+
+  /* SKILLS */
+  .skillgroup { margin-bottom:1.4rem; }
+  .skillgroup:last-child { margin-bottom:0; }
+  .skillgroup h3 {
+    font-family:var(--display); font-size:.82rem; letter-spacing:.1em;
+    text-transform:uppercase; color:var(--ink-soft); margin:0 0 .6rem; font-weight:600;
+  }
+  .chips { display:flex; flex-wrap:wrap; gap:.5rem; list-style:none; padding:0; margin:0; }
+  .chips li {
+    background:var(--card); border:1px solid var(--line);
+    padding:.35rem .75rem; border-radius:.5rem; font-size:.92rem;
+  }
+
+  /* CONTACT */
+  .contact-line { color:var(--ink-soft); margin:0 0 1.4rem; font-size:1.05rem; }
+  .contact-actions { display:flex; flex-wrap:wrap; gap:.7rem; }
+  .contact-actions .btn { min-height:44px; }
+  .contact-fallback { margin:1.1rem 0 0; color:var(--ink-soft); font-size:.95rem; word-break:break-word; }
+
+  footer { padding:2rem 0 3rem; color:var(--ink-soft); font-size:.85rem; border-top:1px solid var(--line); }
+
+  /* Responsive layout */
+  @media (min-width:48rem) {
+    section { padding:4.75rem 0; }
+    .hero { padding:5.2rem 0 4rem; }
+    .deltas { grid-template-columns:1fr 1fr; gap:1.4rem 2rem; }
+    .hero-grid { display:grid; grid-template-columns:1.1fr .9fr; gap:3rem; align-items:start; }
+    .skills-cols { display:grid; grid-template-columns:1fr 1fr; gap:1.6rem 2.5rem; }
+    .dash-form-grid { grid-template-columns:1fr 1.6fr; }
+    .dash-tables { grid-template-columns:1.2fr 1fr; }
+    .carousel-section-wrap { grid-template-columns:1fr 1.15fr; gap:2.5rem; align-items:center; }
+    .arch-steps { grid-template-columns:1fr 1fr; }
+  }
+</style>
+</head>
+<body>
+
+<a class="skip" href="#main">Skip to content</a>
+
+<!-- Navigation Bar -->
+<nav class="nav-bar" aria-label="Main Navigation">
+  <div class="wrap nav-inner">
+    <a class="nav-logo" href="#main">Priyanshu Goyal <span>&middot; Growth &amp; AI</span></a>
+    <ul class="nav-links">
+      <li><a href="#about">About</a></li>
+      <li><a href="#ai-automation">AI Work <span class="badge-new">New</span></a></li>
+      <li><a href="#experience">Experience</a></li>
+      <li><a href="#skills">Skills</a></li>
+      <li><a href="#contact">Contact</a></li>
+      <li><a class="btn btn-primary btn-sm nav-cv-btn" href="data:application/pdf;base64,JVBERi0xLjQKJZOMi54gUmVwb3J0TGFiIEdlbmVyYXRlZCBQREYgZG9jdW1lbnQgaHR0cDovL3d3dy5yZXBvcnRsYWIuY29tCjEgMCBvYmoKPDwKL0YxIDIgMCBSIC9GMiAzIDAgUiAvRjMgNCAwIFIgL0Y0IDUgMCBSIC9GNSA3IDAgUgo+PgplbmRvYmoKMiAwIG9iago8PAovQmFzZUZvbnQgL0hlbHZldGljYSAvRW5jb2RpbmcgL1dpbkFuc2lFbmNvZGluZyAvTmFtZSAvRjEgL1N1YnR5cGUgL1R5cGUxIC9UeXBlIC9Gb250Cj4+CmVuZG9iagozIDAgb2JqCjw8Ci9CYXNlRm9udCAvSGVsdmV0aWNhLUJvbGQgL0VuY29kaW5nIC9XaW5BbnNpRW5jb2RpbmcgL05hbWUgL0YyIC9TdWJ0eXBlIC9UeXBlMSAvVHlwZSAvRm9udAo+PgplbmRvYmoKNCAwIG9iago8PAovQmFzZUZvbnQgL1phcGZEaW5nYmF0cyAvTmFtZSAvRjMgL1N1YnR5cGUgL1R5cGUxIC9UeXBlIC9Gb250Cj4+CmVuZG9iago1IDAgb2JqCjw8Ci9CYXNlRm9udCAvSGVsdmV0aWNhLUJvbGRPYmxpcXVlIC9FbmNvZGluZyAvV2luQW5zaUVuY29kaW5nIC9OYW1lIC9GNCAvU3VidHlwZSAvVHlwZTEgL1R5cGUgL0ZvbnQKPj4KZW5kb2JqCjYgMCBvYmoKPDwKL0NvbnRlbnRzIDEyIDAgUiAvTWVkaWFCb3ggWyAwIDAgNjEyIDc5MiBdIC9QYXJlbnQgMTEgMCBSIC9SZXNvdXJjZXMgPDwKL0ZvbnQgMSAwIFIgL1Byb2NTZXQgWyAvUERGIC9UZXh0IC9JbWFnZUIgL0ltYWdlQyAvSW1hZ2VJIF0KPj4gL1JvdGF0ZSAwIC9UcmFucyA8PAoKPj4gCiAgL1R5cGUgL1BhZ2UKPj4KZW5kb2JqCjcgMCBvYmoKPDwKL0Jhc2VGb250IC9IZWx2ZXRpY2EtT2JsaXF1ZSAvRW5jb2RpbmcgL1dpbkFuc2lFbmNvZGluZyAvTmFtZSAvRjUgL1N1YnR5cGUgL1R5cGUxIC9UeXBlIC9Gb250Cj4+CmVuZG9iago4IDAgb2JqCjw8Ci9Db250ZW50cyAxMyAwIFIgL01lZGlhQm94IFsgMCAwIDYxMiA3OTIgXSAvUGFyZW50IDExIDAgUiAvUmVzb3VyY2VzIDw8Ci9Gb250IDEgMCBSIC9Qcm9jU2V0IFsgL1BERiAvVGV4dCAvSW1hZ2VCIC9JbWFnZUMgL0ltYWdlSSBdCj4+IC9Sb3RhdGUgMCAvVHJhbnMgPDwKCj4+IAogIC9UeXBlIC9QYWdlCj4+CmVuZG9iago5IDAgb2JqCjw8Ci9QYWdlTW9kZSAvVXNlTm9uZSAvUGFnZXMgMTEgMCBSIC9UeXBlIC9DYXRhbG9nCj4+CmVuZG9iagoxMCAwIG9iago8PAovQXV0aG9yIChcKGFub255bW91c1wpKSAvQ3JlYXRpb25EYXRlIChEOjIwMjYwODE1MTA0OTU2KzAwJzAwJykgL0NyZWF0b3IgKFwodW5zcGVjaWZpZWRcKSkgL0tleXdvcmRzICgpIC9Nb2REYXRlIChEOjIwMjYwODE1MTA0OTU2KzAwJzAwJykgL1Byb2R1Y2VyIChSZXBvcnRMYWIgUERGIExpYnJhcnkgLSB3d3cucmVwb3J0bGFiLmNvbSkgCiAgL1N1YmplY3QgKFwodW5zcGVjaWZpZWRcKSkgL1RpdGxlIChcKGFub255bW91c1wpKSAvVHJhcHBlZCAvRmFsc2UKPj4KZW5kb2JqCjExIDAgb2JqCjw8Ci9Db3VudCAyIC9LaWRzIFsgNiAwIFIgOCAwIFIgXSAvVHlwZSAvUGFnZXMKPj4KZW5kb2JqCjEyIDAgb2JqCjw8Ci9GaWx0ZXIgWyAvQVNDSUk4NURlY29kZSAvRmxhdGVEZWNvZGUgXSAvTGVuZ3RoIDM3NjEKPj4Kc3RyZWFtCkdiISNePWBgPWUmcTlTWVIiczw/WT1UISI2JzBtIlYnVDtXLCIyalwsalFxbiUpRilJLmhEZ0NPSz9yNElmIlJXSzdhQ3NCNi8lRC90M1AvOCwicmpJLC0kJmclYW1zcys6YmptcTsiYks+U1txYydIVEQvPEEmWWZrQypFby4tXlVsKypuSW5NKG0sL0I7bzxeO0RNUkVJKikjPVdRRGNmZmkmMFlIWCplWGM6amg9UCUsRVlMaTBqV19WSGw0PExiPiRbLVxQKTFOUVI1UTFAJV09UnF0XVJKJTlzJ2k9TFoxY0hrI2tBKXNtS3FwOTBgK1hPZjgrWiI4JD9rLElCc3VvSCMzXGo4TUo/WHFuQ2ZwUUtORyZtWFNJPkovIVojbS1IMyE6WUQybW5EbGxHMTBXWEBgKWUta3MoM0FEMFBsNltVSV4nPikiclxpVyRvbkxHbEwnITFELV9BMXVLUD48TFJkSGRBV0JmQltZKWwoWFRjYDFvbURPNVwuTFlwSCIpVj4/cT9GX3RzIT9rVz5TXmY8YCVgWT9SXCI/OjY6YmsiNEU9aihLU3JQXjU6KCUsOFVJXjIoPkVUIz9KNWsjJl84WGoqQHQiNHVmOTZkIVhVOlkuQUknOG0qXU4lYlo0NSk9b09YP15YSkFUVjZRQ1RsNUQla0lVJixcVFRdREVNKFYwYUtjKiQzLl9mQWI/NmtGRCJYSGNITzBSIVRDOSllWjI1OmdUW2hSNV9qMCVcO0IsO3JfJEhKIUA9S2kmRkMlJzBdQ2FzVVpsbEpxdS0jUTluMGdkKSw8QVxnLEEzWWY1QipVP0Aob2kka1QlWmZcYlhqRydYVVE4WT1WWWxJbD5iZUoiX2lhXGpFKCpYLzhZYiJPJ0MnLnBYPCc0KCRuVzNLa01rYGBxXGgwODNnbjBEUlthaSdOSixaOCJSUTVaTjA2IyJTOikuZEAnNEJldEM+ZmhxWzBGWUExSy5PRl9WOl0wYDdYSGFbZVNQckJaKC50dGpobzoiSkwpTDphZUR0MT02a1R1N3I1P1giJ1sqZV9uUEJsWVk7PD80U3NsaFRDb3QnUG5zQXUvVkMxOTdjWT5TazskOzBGWUwrRl9oKCJxJ1QoImNjYWNfXC08N3VuKSU1ZDgxYSleVkZEXWQ8cXFCMWE2NT0tUixDY0VbMkwxXDNHLUwqSTMiQ0xMIVE/Mm8mKFhXQCRMSHUpQD9dSSknUiU3OC8yZV49MTZOLjA1RjdLOjArZz0xKG4/R0k2Olpxc2FvbzQjQE9WcmRaNFhIdCUlbXIuJl0mTiIkRz1WTzciVm1rQTNEMHVMWjo5ZztqZF0hW10oR2BjXzMySVxuVk5SJmFKQ2hIK0Y3ImRvcDQ5NzNXZ2ZoRWpAb2xzYjMqO0M+cT1MTklucF8jR25nNCVRTDY8cFZfaFdVQz0pUilaX0xWNSpgNVxBR1FWWVo6SiwyPVNdO0ldSzUpRFJqNT81OGtYIXA8Jl5CUlttYT46LkIncmg+JGhtOHRsK1RrJiohcEk9RXNtOW9sOi1tRlZqTG9RNC09cUU/KnRWZXMtOjhKN24tYjQ6Xk49LEgjSilxRzhkRzpnaCNUOlt0ZFIyM0VwRWo3Yjovb2kwbGhJOVBZWFszbSQtXkUkS1xbWy1JWiNzPE1QPzxgS1BkV1UmP0Z0TiRaJmVDZz8nQ2I+JkhTZl9LXFtSMGNyU15BVUgtKVxySWZDSyJgRGdWPCZvdTldMmtpdSU7Ol9RMFs7I0FBUmpTPkMkdUtcPTc9ZFRfZSJZT2ovPiwiQHMwKkZQY3AmRFY1SSwuQzRmTVpfOjJaKSU+UE4rVEFfLkw8Wm49M250U2BSZzc/YUk8SE1HLEo5YGxbLTBRXFBUQWtmcTksVT9SVUgjXkgxUnJFSkRKPHFhU1VwN3RsVD8uc0ciaiQ0USljaCwlSVlAKGhIY1x1U0kpU0lmWnUkbT1HSClJQyktJkJpJEFxXEw4WmohVkIsKV5CU1NtQFxxcjQkTT8nJjBBLVsiYUMxIiZmRycsX0cyQEskWWk6NiJDN1BrUSc7Vis0MjxjVVxiSmlILWFKcG9NUF9SKVYmKTR1XDlrRztJaUhIdUtCZV4sUCJWYFlZQiRsJTk8SWxAN0VIKGM8SDwoKkxXImo7TWlUTmEjQS9PQ2lXPzlGQXNLL2U2RVBbaW1nVlk/OFJccGQjRmxGTk5OM0UxLTxeS1UuPFpcbjNAVEFYPUZkOmdCXE5pdFdRajU5MzpQaytaRzZfRlM0ImVGODdacUwqc2BAOXVaYDJTKl1mNDJlUWYjTmk5PlM+ZnVubVJjQFAzPWdWIVBLKWApcScjJ1YiZ2duSThcOU44R0pHLzRVK0I8WF0oT2YnOiNjUDg+W2syTTk5TD1KNVtAZTteLC0nPFtNaEhhY25RaWRwSDpzXHRiLCxsaFchSWRJPEloPUMrJS07aC5FUzUhWUlVbW4oIU0iLSw4O15mSS50Ii1lbkdHNGw/OlhAUyhTOi8nayJAKSxNPmkiLiNuVytgPllVKyk9PmdbQTdnUDpUJWJnZGJAQ2A+LjpPVjhSNmEqWi5hbjNtSjolYF9Ra044XVBFTE1AUTNJP0FQbVVYRzdqNFxRWkhPWmZBdU4yRExRIUxrOFBbWDBZVTJjX0NDMlddLzNsbydUYzsvNGNkMWZzLG8xImYoY0JdK0ZCQixvLm1kIWQxWzpabSg+J0UjVSEtVik7YydxNGFQRT43J2FYcnE3Y00pOU0xV11NXy4/bD9XUTY7dGNDXDw/U1gyTDgyOSJaXk4vW0ZlWyhNLGlXY2lXMykzS1tYMmksVDJQZ189LDRNKTgucElbMyhGXHNoKS8nZ1dROjUhT0ZkSm9HViw0U2lXbydmcD9TQ0spP2ExamptYjZfMCRBc1AocTQ/JEU7LHJKIzVwYkRWZl9kXD9XKmVecmNwR2tONTlwNDA1Pz4hW0dyKDhnXFI+azkvaGBNaG8sLmFHMW8/XzxmYEA4V3BfXnFqNkRaWiJeY3I1a3RlVWpTJUlGSU9vKDVOT1JWTSFtVG06VzQwTW9JQ2FwWC4mcEBFQlVnJE1jO28iP1o3UzB0ajlsUmFwcXNxU1cyWTJCMVVXKSYrWy5wZF0oX2shYUQyc1FlXTNXayQjOyRUPCo0VGE+Q2xQTSFxT3RfPFxrUzBYOj4mPCNOSmZhYmUhSlA2ViF1XkElYzZnQyIwW0dkL2p0WERWVFtcTChpYSlgPGJvQS9pNyg4ITsmSSptQW1TK1JfZi9odSE0THJCJVREUFtDZEMoUy4rRjwoSWBIRydMTmw4Wl5Va0dLT1tIaGVUTFUuXD4sOTJdaG0nUWphWj1uYWlkbU9aN0ghMnA3NzdePUQzTG4sSSlPPFArZ0tDQFlTXkBmTkA1VytENGcqSmQ2P3BpciUoLFg0bSpFK1VpY2gxJ1QvZGtHMjk0N0MndFQzWz5eL3VtLk80ZmVsTzAkV1RsV0YwZjhyWlI0LW5nRVBFJWtKaztpVjFmJyFjTyIvQDQ2PGRXRGdtNyhXUSI6QE0mKEZBZT89IjxFTDozTWE8QFlqczN1LGpeOHQ7JlBtOjM1JUI9X05oZSRVTj1QVW1vUTUhb1NmW19aVlthQC5UQVcpPnFdaSFiSkxTa3BCa0dUTHIpZG9sOzA8aDpwWmcjRWg7VitBR0QxdSRpbDw3IlxpRkdJIUJlVihBRkt1SiRbIjVfKkNhPFBmMlRxS2xnIz9kNXNoPjp0dSQ9KTEpVygrU1dFNGliaFJjYTQkOVc9bFgnb11hMDlFQSNGbUleRChGNmRhOldgdT1DQmJHMyo/b19HWjI1SklNMHElXD0uPjc4LklGa1xccC9sM2RpQVRhdGYvXks7cUo1RTRaSGpubV9HX0EjaV1YI1s8Y3UmdC0hZSc0W2UhaW9VPCU2SE1gWTg9WVlsTDc6Xmh0b2tMOjg2Si5mKTkoPiQ3Ol90Ny1gSS4uLl5iPmZhWD1QNGZNLyw9OzNQPG9Oa1RhbjZWWzlrInUlQiYpRik4cGtCXm4kZCdAbz0mJjNvIkQpJlFmVGJXSGtaSmUyaG8wTnJFZlJgJmwjI0BzbzVGcUc2XSIkPSxcYC0iKlljUSpFWHU7SSs8amM6KVdyaUxvbHBFay41KU0yTCYmXFxyWz4saCFxR2J1RmlGJyspK25LNj03LG11TjVIYSQ2K0RKJVpxR1RmK1hFamhtXDptTEBQQSk+UTJbVXM7ZlcvZm83XjVSKEl1JVsiWmgkJ2opQERUVyRtVEpYb0piKmtpIkRBQzRBNm5hSnRxTUwjLi9oWUFWSFYpOSptQDtJWmxRNT1OPXNnb1NpXlVBTldBTDg6N0w9bzVRWWMoIV0sSzcyX0xyI0g2R3VuYFtOWl8ybEVJLmZKcTRsaEpyXksyJVxlZkJDM2A/UEVvW0VLSVBqM2RPQyFgLmRMITk+cjhERXJnWl5bLFJGPy46cy9YQGhbakRAXyQ/T0hQZGhHPjhiLEcydEg9VHRRXjswXE1qJk88W1AlTiYqNVlsR2BRUWkoWmwnUzpCNi1PSFlYY3FudWZPSU0lRT1OSGA6XSgqU1wsOVBCMiItXlhlWidcQWQkLSZ0a29YWzc8Uy0zWzI9ViZbXj9sYT5wWHNiWjgiTjdtaGRWMTYtPEtMYWU2SDtyW1I+TWI0a2sqNlsxbSgpVmgtZysuZlMuRW1FKENNUk5UO21TRF0rTjNhVS9gPyNzI0FVcWs6Kk8mRkplSXEyN3BCYCtlNEMqSmEiMlRNalplb141O04wNGNyOEZoKVZtbDQ+OSwsJzw4PHIvUFIrL0ZySUxrWExdLmlsTFBrbz9ELG9wZ2hzLVMnJFA5cForSTJdJFFmZVVPXWgkTCsjIi1wYmBwIms4VVhGYzFdS2g4IzdWWTRfNjUiRDZcb1xObTNHNyZFckM7MmJDV2FKcExSalUyXVM6akBMN0hoQUpfbXNiOX4+ZW5kc3RyZWFtCmVuZG9iagoxMyAwIG9iago8PAovRmlsdGVyIFsgL0FTQ0lJODVEZWNvZGUgL0ZsYXRlRGVjb2RlIF0gL0xlbmd0aCA2NzYKPj4Kc3RyZWFtCkdhdTErPyNRMmQnU2MpUCglOSsiLHVbPE5vM25yOlVlUm4zVUtMTyhoO2xRYCVhXWYxLjhjbz5xVWw/TVpfamslVzw5c0trNG5eMyVpLGpJVEBEXjYnZWk3IUhxJEM+T3NSJ3FxRkVlW1MyYl4mbTRzKG8qZ2dMJGxIdVFWaDgjISwzQkY+OVdzY3QtVTYrbUZtWFBdaWlwNWYsYiFYQ3UqRyZrYSNbIW00TS8tRGNFQ0dxKS5yJF1KNlkxUiNXQmBUS0dDN0NxOXFEUTQuQTtCVV9JWzxvXXJXJUhTOmtRMm9aIWU5OlBRdSVIQVFqNU5ESEc3UVA4dT83cmo3Q14kNSg1b3Q6b0ZlPylMND1IYmFMNGlIVm8jQkMpNHE/NCQ4RU4rTkUhKFU3IlhvVSttJjRXQFImYj8oTW5rTi5mI19lLEhEaThlaDklNk1QNkFcQjo7Uk1uZC1CaV0yNUplZGZULDBebk5HWlZMRmdaUmAxV0MjZkwscTcvYylrZGlRMElHVyQ3NDFnY01QcXJtUEU+NG1VTlBSWilWQmgiMFBGRWpFbUdYSzxNVDQqaTVgQGM8VGYncElVNWBlITE+QyNZI1plIWRyV24zSW9MWXB1RigmKFRGW1w3M2NbUVkjZFlgVTN1SFdLTXUlOWBBOEUmPG9aYExnUG5UYTlpblA7MltTPFE/b04jPj5YbVNha2E6ckBAUTwhWVZVOGBoQiE4IlM8MG8mSk0vam1zPmAwcGQ0N0NBYnFmcFwvM3BnaEFzKjFLcC1IZCtIXSJzRy07NVFnJ1JuTEVBLT1VTFtdbCVtQkVoU15LWiMmXDReTFU5VDBBOiFAW1hqOzdOVWI8XzlKNVUoJ2w/Z0sjSiMwZjQtVjdCX1lGWFA/VFM4fj5lbmRzdHJlYW0KZW5kb2JqCnhyZWYKMCAxNAowMDAwMDAwMDAwIDY1NTM1IGYgCjAwMDAwMDAwNzMgMDAwMDAgbiAKMDAwMDAwMDE0NCAwMDAwMCBuIAowMDAwMDAwMjUxIDAwMDAwIG4gCjAwMDAwMDAzNjMgMDAwMDAgbiAKMDAwMDAwMDQ0NiAwMDAwMCBuIAowMDAwMDAwNTY1IDAwMDAwIG4gCjAwMDAwMDA3NjAgMDAwMDAgbiAKMDAwMDAwMDg3NSAwMDAwMCBuIAowMDAwMDAxMDcwIDAwMDAwIG4gCjAwMDAwMDExMzkgMDAwMDAgbiAKMDAwMDAwMTQyMyAwMDAwMCBuIAowMDAwMDAxNDg5IDAwMDAwIG4gCjAwMDAwMDUzNDIgMDAwMDAgbiAKdHJhaWxlcgo8PAovSUQgCls8NzU4ZGI0M2U2NmEyZTFkOWJhOWYyZDhhZjRjN2JiNjU+PDc1OGRiNDNlNjZhMmUxZDliYTlmMmQ4YWY0YzdiYjY1Pl0KJSBSZXBvcnRMYWIgZ2VuZXJhdGVkIFBERiBkb2N1bWVudCAtLSBkaWdlc3QgKGh0dHA6Ly93d3cucmVwb3J0bGFiLmNvbSkKCi9JbmZvIDEwIDAgUgovUm9vdCA5IDAgUgovU2l6ZSAxNAo+PgpzdGFydHhyZWYKNjEwOQolJUVPRgo=" download="Priyanshu_Goyal_CV.pdf">CV &darr;</a></li>
+    </ul>
+  </div>
+</nav>
+
+<main id="main">
+
+  <!-- ===== HERO ===== -->
+  <header class="hero">
+    <div class="wrap">
+      <div class="hero-grid">
+        <div>
+          <p class="eyebrow">Growth Marketing &amp; AI Automation &middot; 4.5+ years</p>
+          <h1>Zero&nbsp;to&nbsp;scale, <span class="accent">measured&nbsp;in&nbsp;revenue.</span></h1>
+          <p class="lede">I build ambassador programs, paid funnels, and AI automation systems for fintech - then prove it in the numbers.</p>
+          <div class="hero-cta">
+            <a class="btn btn-primary" href="#ai-automation">Explore AI Automation</a>
+            <a class="btn btn-ghost" href="#experience">See the work</a>
+            <a class="btn btn-ghost" href="#contact">Get in touch</a>
+          </div>
+        </div>
+
+        <ul class="deltas" aria-label="Headline results">
+          <li class="delta">
+            <span class="pair"><span class="from">$5M</span><span class="arrow" aria-hidden="true">&rarr;</span><span class="to">$40M</span></span>
+            <span class="label">Loan book scaled in 2 years (8x)</span>
+          </li>
+          <li class="delta">
+            <span class="pair"><span class="from">20%</span><span class="arrow" aria-hidden="true">&rarr;</span><span class="to">50%</span></span>
+            <span class="label">Ambassador channel revenue share</span>
+          </li>
+          <li class="delta">
+            <span class="pair"><span class="from">weeks</span><span class="arrow" aria-hidden="true">&rarr;</span><span class="to">days</span></span>
+            <span class="label">Scholarship cycle via Claude AI automation (~95% less manual effort)</span>
+          </li>
+          <li class="delta">
+            <span class="pair"><span class="from">5-7 days</span><span class="arrow" aria-hidden="true">&rarr;</span><span class="to">~1 day</span></span>
+            <span class="label">Social ad creative turnaround via ChatGPT Codex + Canva API</span>
+          </li>
+        </ul>
+      </div>
+    </div>
+  </header>
+
+  <!-- ===== ABOUT ===== -->
+  <section id="about" class="about" aria-labelledby="about-h">
+    <div class="wrap">
+      <p class="eyebrow">About</p>
+      <h2 id="about-h">I work where there's no playbook.</h2>
+      <p>Over 4.5 years I've taken loan products into 20 countries, built a 400+ brand-ambassador network from zero across Africa and Southeast Asia, and scaled a disbursed loan book 8x. My focus now is layering AI automation on top of growth: cutting manual workflows, shipping analytics that drive real-time decisions, and building self-serve tools that lift operational load without adding headcount.</p>
+      <p>I sit at the intersection of international growth marketing, data analytics, and AI-driven automation - and I judge the work by what it moves, not how busy it looks.</p>
+    </div>
+  </section>
+
+  <!-- ===== FEATURED AI AUTOMATION WORK ===== -->
+  <section id="ai-automation" aria-labelledby="ai-h">
+    <div class="wrap">
+      <p class="eyebrow">Featured AI Automation Projects</p>
+      <h2 id="ai-h">Production AI Systems Built for Commercial Scale</h2>
+      <p class="section-intro">
+        Connecting Large Language Models (Claude, ChatGPT Codex) directly to operational tools (Google Workspace, Canva API, Slack, Tableau) to eliminate bottlenecks, compress cycle times, and unlock quantifiable commercial velocity.
+      </p>
+
+      <!-- Case Study 1: Scholarship Journey Automation -->
+      <article class="ai-project-card" id="project-scholarship">
+        <div class="project-header">
+          <div class="project-title-area">
+            <h3 class="project-title">1. End-to-End Scholarship Journey Automation</h3>
+            <p class="project-subtitle">Autonomous 9-Stage Evaluation, Scoring &amp; Disbursement Pipeline</p>
+            <ul class="project-tag-list">
+              <li class="project-tag highlight">Claude Cowork Custom Skill</li>
+              <li class="project-tag">Google Sheets API</li>
+              <li class="project-tag">Operational Dashboard</li>
+              <li class="project-tag">Human-in-the-Loop</li>
+              <li class="project-tag">Gmail Integration</li>
+            </ul>
+          </div>
+          <div class="project-actions">
+            <a class="btn btn-sm btn-primary" href="data:application/pdf;base64,JVBERi0xLjQKJZOMi54gUmVwb3J0TGFiIEdlbmVyYXRlZCBQREYgZG9jdW1lbnQgaHR0cDovL3d3dy5yZXBvcnRsYWIuY29tCjEgMCBvYmoKPDwKL0YxIDIgMCBSIC9GMiAzIDAgUiAvRjMgNCAwIFIgL0Y0IDUgMCBSCj4+CmVuZG9iagoyIDAgb2JqCjw8Ci9CYXNlRm9udCAvSGVsdmV0aWNhIC9FbmNvZGluZyAvV2luQW5zaUVuY29kaW5nIC9OYW1lIC9GMSAvU3VidHlwZSAvVHlwZTEgL1R5cGUgL0ZvbnQKPj4KZW5kb2JqCjMgMCBvYmoKPDwKL0Jhc2VGb250IC9IZWx2ZXRpY2EtQm9sZCAvRW5jb2RpbmcgL1dpbkFuc2lFbmNvZGluZyAvTmFtZSAvRjIgL1N1YnR5cGUgL1R5cGUxIC9UeXBlIC9Gb250Cj4+CmVuZG9iago0IDAgb2JqCjw8Ci9CYXNlRm9udCAvSGVsdmV0aWNhLU9ibGlxdWUgL0VuY29kaW5nIC9XaW5BbnNpRW5jb2RpbmcgL05hbWUgL0YzIC9TdWJ0eXBlIC9UeXBlMSAvVHlwZSAvRm9udAo+PgplbmRvYmoKNSAwIG9iago8PAovQmFzZUZvbnQgL1N5bWJvbCAvTmFtZSAvRjQgL1N1YnR5cGUgL1R5cGUxIC9UeXBlIC9Gb250Cj4+CmVuZG9iago2IDAgb2JqCjw8Ci9Db250ZW50cyAxMSAwIFIgL01lZGlhQm94IFsgMCAwIDYxMiA3OTIgXSAvUGFyZW50IDEwIDAgUiAvUmVzb3VyY2VzIDw8Ci9Gb250IDEgMCBSIC9Qcm9jU2V0IFsgL1BERiAvVGV4dCAvSW1hZ2VCIC9JbWFnZUMgL0ltYWdlSSBdCj4+IC9Sb3RhdGUgMCAvVHJhbnMgPDwKCj4+IAogIC9UeXBlIC9QYWdlCj4+CmVuZG9iago3IDAgb2JqCjw8Ci9Db250ZW50cyAxMiAwIFIgL01lZGlhQm94IFsgMCAwIDYxMiA3OTIgXSAvUGFyZW50IDEwIDAgUiAvUmVzb3VyY2VzIDw8Ci9Gb250IDEgMCBSIC9Qcm9jU2V0IFsgL1BERiAvVGV4dCAvSW1hZ2VCIC9JbWFnZUMgL0ltYWdlSSBdCj4+IC9Sb3RhdGUgMCAvVHJhbnMgPDwKCj4+IAogIC9UeXBlIC9QYWdlCj4+CmVuZG9iago4IDAgb2JqCjw8Ci9QYWdlTW9kZSAvVXNlTm9uZSAvUGFnZXMgMTAgMCBSIC9UeXBlIC9DYXRhbG9nCj4+CmVuZG9iago5IDAgb2JqCjw8Ci9BdXRob3IgKFwoYW5vbnltb3VzXCkpIC9DcmVhdGlvbkRhdGUgKEQ6MjAyNjA5MTAwOTUyNDErMDAnMDAnKSAvQ3JlYXRvciAoXCh1bnNwZWNpZmllZFwpKSAvS2V5d29yZHMgKCkgL01vZERhdGUgKEQ6MjAyNjA5MTAwOTUyNDErMDAnMDAnKSAvUHJvZHVjZXIgKFJlcG9ydExhYiBQREYgTGlicmFyeSAtIHd3dy5yZXBvcnRsYWIuY29tKSAKICAvU3ViamVjdCAoXCh1bnNwZWNpZmllZFwpKSAvVGl0bGUgKFwoYW5vbnltb3VzXCkpIC9UcmFwcGVkIC9GYWxzZQo+PgplbmRvYmoKMTAgMCBvYmoKPDwKL0NvdW50IDIgL0tpZHMgWyA2IDAgUiA3IDAgUiBdIC9UeXBlIC9QYWdlcwo+PgplbmRvYmoKMTEgMCBvYmoKPDwKL0ZpbHRlciBbIC9BU0NJSTg1RGVjb2RlIC9GbGF0ZURlY29kZSBdIC9MZW5ndGggMzAzMAo+PgpzdHJlYW0KR2F1YFY+QkFPVyc3S1ZZZlM9Qis6KyluRT86NlBlTVg4dGZJI0ZnSlBIIkZFO206cUQrcXQkYVg4X3M2IUZEaTg3R0ZpPipARTA5SyVQXT1NcW5JaCJEbXVaaycmUV9wYypsTi1OXzU7ZDYvJmVubUhQTC1fbDxkI0dnX04zPW4ubkcvY0gsOiRNYmBsTzRiJ15YMmY7ISImPDBRTDBJJGorMFkxPz03dW5FWyR1QD5uQFovXVhZXVBJVz5PZy5ETGQ+a1ZMM1dWQVRmKy44T0ZzVmVjalBOWUIzSi8+bVxTKD85VG1xQGM/NUMsZlNqQis6JCUrZyYzZEhRLGZAJ2dRY0FbSzVZXyVlMFkqNFB1JzUjOyJkKG0zamVWTEZPJkhATSFoWSpoSGkrOVMiWFskX0MwRGhhPG9uNi1yK2tUMFErImE9Lm9UQVBzOTRqIyJgUW5KRzB0OEUhbkUpKF4iYmkwPGgpOG1zXVU8KFgtLURJKW5kcVY6UjkmLzkybFU7MCg9P3EkY0tQTC5xLkVJQzYoT0M7ZFc3LFlbOCo5ZURuI18icUBicGBBIkBiWi1YMyNjK0hfNk5zZWIjXFBEM25NZCllYmdCX291UT1bXyNFJDtIMSw/aTJSbkxiaFNtVWZmbGYpZF1bQG9HIVFMKFkqJzpyKmJBaUBYXC9QWGNiJFxgZ10jTlpkVSIrbD9FN1dqKU5QO2w3NUJQZ28zOi1Ub2RGSW9faFpoLERHQipzbEVRRXJGKSEySS5yMkJyZFE3NDtoPT4/REBMWmddbmJXUydDbHB0YzFyXjkzJkYzWiouJXFDc05rJkksNyJcXkFiXFVdbmwodSxNVyFbYnE3bCFldVpqJFhtOGkpZVtoTEw1US5HVkwkRiM/UjZaMzUpbWE0WzRNVmZ1Xz5BYzNLXEM9cy9Nb0MjJThcRmpYbWVpaDBDR0JSSlIwUyd0aGg9Xmc3KyRsPl50XVhbKDw7XSo2I1BHcUgkcTRaN1RvMGNhcVA3RltJY1Q2KkxvN10jWFRlbCt1KytLaGU6OFonQWwhOjxdYHUhLm5qLU8wRGo0aVZXPVQ2dG05ZyZHWydGX2EqckhjdFcqQklmNEFdIThCUDYucDpSQ2FlOWYjY15fYFcxKjhlUjVDNjhLRmxEO249Jz0nX3NpR2o7RDQvM0RFWEdpPT5wQGljKzhkXlZfYkY6YDw3SVpXK2RgL1FnaGdYRzltc1RUXF5tZXRWU1MyK3J0TE1KNXI+VC0/akFYQi05JjhsQ3M7a18vck8rT0pXKnBDOHAzMUM2ai8uNFZCYDE9KTNnYEQoTU9HYnRVPl85Y1tpXkNrPzxUZ0JPOnMjSiU8aVRRcURxNExkdF9qVl9eL25pV0FsVUpPS2s0TygrRSxyQCo8KSxIZFVGQ1x1QCYrbixHO0NRbC9sO3FdKi9odVxgSlYkLTcsW2NYKl9WNFEnW1wqNCYlRCJiPTc7UW1yZWV0YUhUYFVAYD0pOkdJJVh1PlNaczNda0JfbC0mS0xWbzlvQU5UUiU9Ri0mKSgtXzUzKE5iJiQuSk8zWi5abjw7Sl1JRkxvb0RLWVVNbExoPEx1a3JaUkgxO2RQSkIhOFFtcEYyXTpeQTJvWDhwWGRQNWxsNDFGRGhzPiU9ckhpOS1KazZaVy04KzdPXiRiWkU3O1dUJjU0PSxxZ1xacE45KHJqbWlORyZzSkdyJCZYNz5ZNHNQS2FDUFlUKmdcQHJeZyVaJHFNUEtvNmZqXiIiamFPRiNQXydZSzdsI0RdckxdRCNgI21MaF50SjFYJXVRRi9fWGspQ2pQIUhIc0ZVNVYsRTFSPUFgNTcsK1ZKI1YsRUM7KyZnPnA/SmhoXSlBPHJSajY1OiRCNDk2WlohZks/PWZiLitKVVo2KDo2Iy4sImJUTGYmJSVmJWRFNlxRTlpdS1o3SDZoJl5GTCk/Smw8OS1BaGQ9akFAaz08MiErdWBmNUxCbl4pSTU7aWMtUkZCVl9rLUNGa3IrIjApUUJhUWNPSSFbZzc2Y0U3WkowXGMtLiVbO3JASEYsR0osQWYqbGw/N0BdLDJcISQpRF9lOzhRMidjRWQhZGg0Y2VBaD9SbWJkRWw0R2ZGWTNDNlo0KUYsY1A3cGlBR1FeTUgvTCJlWW9UJXNANXJGUy04RGFfUW1fXWdBdWEtODgjcCxYZGU9QktTSDRHYypZalJnMURJb1AlRlw/S1JeajIpWSZGLWBjQic2JzFvM0VYUFlrLTJqWylsNFhyPyE5aTEjRV0wRjhUOFMqTi1KPXR1TDhHSV5PWyVcQikpTiZON3VnJ2tQclZYI2tSX2owdCIxXWJuL1lfQXBLR1ImL2VPYEAhaVssRmEsN1k1KWdJQj4qNElLO2NCYkpqYGhpLUorZWtBbFhYRiI+ODkvPFJedTJwWllNUVg4PF1sWz5MUUpWN3FwQUFpRS9lXXQyLS9PYCEhT0hgblBPNlZtZjBrYUUqZWdEKWNdYEUjJzsyOjFqKFYjO1hQXnA3M2VkRDs7RlVxYy9nSipbI20nKSluWmhMXExYKVclLShXOVViZV9oQm48VmoyZ1ZibnVsVzBIc0AhLEQ6OWkwWzdCaC86ak9wR0wnRGZmUikhYlxbdT1RdTA8aldGMCdrLyNxQHRqRT5fWExDNjZaLHImWS0oZ2BPO1ttRFkmTG9FNmVwTDpRUU1pOkNKS2FYP0g0RzJOSHAxUV9zL3IiPm5oZ1dSVTg6O3VnJmk6YWtWP3BqQCZaPXU2PlltZiRvN0lGOiNYL2k6L0c3bGI0J2dSY3AkTXVhT2BvbDJvWlpValFRKCoxXTdvcj5xdSZuVlZkLiltVlMxO1M1LmMwKHBWIzVYYmJxclU1Myk1Pkw9X21kbGEnWDNoZUtgam5EPSssKFpZOSMyY1VbITNDJDVHS1c4b15qJkFgMWlBV2NPX19ePytcOEFcbG0tS2xtXi82cXUxW14hRW5HRyJoQThuW0gqYW0tPk08cXBDL0VrJmltPikuQS5CXSgmYVg1QFJbJ0tYMmdXYVEsbztBP0lhMEt1QlR0WiVlKD5pIS4nIkdkOCk1InJhXHU7IzwtPE5nRVYwdS9iZ0g1N0JTYUNVJ0c8OCZzU2JmNmRZdXFLQjF0Z0xOIik8VE5IXChXRVJWZDQuLUJfVV1QLDM8V19eYlVlcXRYRScqRyVmaGMvKzNccUMuQ1lKKlUpRV9nRllnISNUOEAsKmtqXk05OF1OaUcnST9DY2xRR0hsbF1PaCFWVzRyVF85Wi9TJ2JhMWsjLEhpUy9GR2poblItWzIvNSJwJHJeTzxDNz5QV0VTXCU7O1ZpKzdfR19TZ145NkxSM1NPZ0lGVjYsQlFfMWQ8RjtBJjs+Nk1bSUI/WmwyPzlPNEpRZ2UucGVjL2I8R21SOV1jLzA9LWlfLmphUDY/Ojg5VUAiQEotVmVQdC4rSWtaXSwibi5YOD5hYkFTTS9CNCdXJmlPQksyaVMyakJbLlxyV1NIYEstTGRVYjxxVk5UTDs9WXFoW1Q5JTsyWU80bTpqUG9QRlh1ZCdpVltCX1IyT0g3IWdbaUdeZFM3LURpcjwoTCtwUS1OSHU1JV8jR21JcF9TaUhhOz9OcDhPLUkvUXJJX0Q7MyNhTFpSaXU3J3BoJ3FXPTVdYmVMJkJKI0ttblc6RnJWcyEuNWFnVTo8NVhrRUI5TmRsclhJXmYwRyNMdW5gL1JGIkdEczYjKEwndVMmcWdAIi5McjYnYVN1MU9KcyQnP1JoT2EoTy5mMzokPlslXVxZRUVkY1RDKFdjbFciKFtuVmlBbWVZQEthQjVqWyJJMElmWm5VSHRnSUhbLlpMajxvJyg3dG49JyhrUmxwSFBJXmt1NzE8QHMzc00jVyU8UnInTEYwLSJpRUY/QkxTPj5ocyRdYWQnITlPdDJRPz8kbENnZjtpSDtgbUxtYCY2Z1NBWT5mPjAmTzMrIk1iOmYkL04laSMhLj9GPFJtLGslS2onK11yclc3LWlEQn4+ZW5kc3RyZWFtCmVuZG9iagoxMiAwIG9iago8PAovRmlsdGVyIFsgL0FTQ0lJODVEZWNvZGUgL0ZsYXRlRGVjb2RlIF0gL0xlbmd0aCAyNjkKPj4Kc3RyZWFtCkdhcWMwYkErcEsmQTdsamsxQm00Pi4vIShmMFlwYTZYUEc6PEZtMk9hSEBidUpjJ3ByZSE/O05ARy4zQmcjXjlncHFoPVttTnE5QjMtWUpXSzMsLittJyljLi5IQj0uV14nTGs4WHQqI1shQjIyXyE4a04jJj1QdWw0KFRiOTFKajJdNChoXj5iJTplWjxtWW9MbUVuMUNkYUgtIileL0ArbldVM2ZRaHRSS1woYydjRj1eRnJSOWZdcCclY0RdTiZBXWJRUj0oLDk7Mj9mVERyJStzIT8lZD5vYXFYZlQ0cXJWQ19KckE0J1VQRjlLMTgqaCNeIiowK2dzJ3NMJ2NPJVpWIUBXSW5OV34+ZW5kc3RyZWFtCmVuZG9iagp4cmVmCjAgMTMKMDAwMDAwMDAwMCA2NTUzNSBmIAowMDAwMDAwMDczIDAwMDAwIG4gCjAwMDAwMDAxMzQgMDAwMDAgbiAKMDAwMDAwMDI0MSAwMDAwMCBuIAowMDAwMDAwMzUzIDAwMDAwIG4gCjAwMDAwMDA0NjggMDAwMDAgbiAKMDAwMDAwMDU0NSAwMDAwMCBuIAowMDAwMDAwNzQwIDAwMDAwIG4gCjAwMDAwMDA5MzUgMDAwMDAgbiAKMDAwMDAwMTAwNCAwMDAwMCBuIAowMDAwMDAxMjg3IDAwMDAwIG4gCjAwMDAwMDEzNTMgMDAwMDAgbiAKMDAwMDAwNDQ3NSAwMDAwMCBuIAp0cmFpbGVyCjw8Ci9JRCAKWzw5MzcyM2FmM2Y2MGZkNzgwYjAzMDYzNWNlODBhZDkzZT48OTM3MjNhZjNmNjBmZDc4MGIwMzA2MzVjZTgwYWQ5M2U+XQolIFJlcG9ydExhYiBnZW5lcmF0ZWQgUERGIGRvY3VtZW50IC0tIGRpZ2VzdCAoaHR0cDovL3d3dy5yZXBvcnRsYWIuY29tKQoKL0luZm8gOSAwIFIKL1Jvb3QgOCAwIFIKL1NpemUgMTMKPj4Kc3RhcnR4cmVmCjQ4MzUKJSVFT0YK" download="scholarship-automation-dashboard.pdf">&darr; Dashboard PDF</a>
+            <a class="btn btn-sm btn-ghost" href="data:application/zip;base64,UEsDBBQAAAAIAJROKl3Du3fhKAkAAAsTAAAfAAAAc2Nob2xhcnNoaXAtYXV0b21hdGlvbi9TS0lMTC5tZI1YXY/bNhZ996+4mLSJDViOJ5M0iRdYwDtfnW6TDOJJ+7igKUoiRiJVkhrH+7C/fc8lJVtOCrRAMLEl8vJ+nHvuobMsmxjRqBV5WdlaOF/pNhNdsI0I2ppJrrx0uuXPK1qn58pTqBQpk2fBZviP1JOou7hhDkPWaVPiQ2VdqLUP8ZvAsqKrC13XjTKBdtY9FrXdUWFdNPfh/tPv15/ptrZbUdOlDvq/ytDm6NaC7kypfPCkvBd78t220d7jUE+Fsw3dWlvWijaVUsHPyXV40YeiciqdaBrhXqpal3qrax32VIrkXKsc3Gg8re+y1u6Uw/qmq4POEHxQTgtY2zotj9GVyigXc+GEecT6B9vS+ZIkAtU5Xhzjhy++a1t881R1jTCZNhlCzmqLPU49abWj6YvLWmiHbapWEisvXsywD9n1tNMGh5GxQRdaxjyTaoSuYTk4IR895VZ2Ma9P8HZYNPZS7ITLSSrX21A+1URa63Jt4ppc+23nvGJDi4moUR7FNba1X1GZsps7/cSxcY7/I0o+EmcPH0v2apIBVZNn49rRL7ZzRu0HCHEE07+s+GwyWZtYQmMb28Hj79PX6hYVNYq2na5DRBMS2eWKLi1jDNgS4QADT+/IFhFv7wmmOhzsg2o9afP3UDjCOsm9rNWcZBcYRmRbzjVeYGdAuMLZjlHP2NwphSoFS7nY+5h4YKyTvK13g52trchpu6f/vX/z4wIpfEafUM+Ij+e0drICGCVMq8nkWshq3LTJGViVCgXiDkXCBKMH8WoDEJvBNx+QHhTr+zYSxgP8cGo1OXtQdU0dEIse3aN63xhh71MWdmhpwDH2TVrZWo/EASa6aYUMc9pVCsl1VFsJVO0JRSpjhuv94mwyuecegLv1ft63A+dl7JhTf3Q6dmVK1gG17ICQznpPvnVK5L7v/tgfyEJ8Nh9XLXUynh16hq2r2KexI449MvQPti3oodI45JGj9QEL0U8ARyqm+IYZA3dyrQuVqgI3bFdWJLDTdbGCOb3PYKZUBwSvkIgBzONarybnTH1BPCrK/kmvFnSbqIxu2UU8uljQv0QAHjaJnfjZ68XASJuBh/jxmwX1PLMZeIYf/7Sg3xPJfOoCUgZbePp2QVd9jjx/f4fNIwLhR+/xqOL00dWIPCJ0H2KTHULacLCe3zxLn+l81Yc1yegzl4lE29awzSWxu57VOaE1g+mE3kfo4J5v6AkczUtPV63v7xawfv2VaTKMD2idxSzC4LvpUNCPmIFzumbMzEEcnQluz43zyWFYgEcfhCtVoC8GjjiAG0C9UqVTiu6d5ckyhx0QP3J/K1qa/jBLWLqOLfagvgaavlkus7fLJTd67mfs1m+ijqMCkWpVMxc3ba0CMOcTrAwiwxpGWVtZo14mVHPAIvjFOJmvVgdYPKfr0YxjkOCs+2HEHSci+iXDdFfKsN/MnKPZuJoQjT1Uxtl+dDOfmn4tUv1lsVlwR18KI3KNN9pg5ocudk20cm1gXMIIh44okd7YmZiQNao+fY3MvBtlhvfc1KIcO7u+oxaPtHDaN6AB94hC8LHSglmUkYoK5Ab94jm1H63J/gBT6GLPwcFtp7lXAXzBvfUEkzsd0JJdrpkBhLfmH/QnWwAUqbAa3J0yfXGS94tV33ufk0AYWnAKh68T6Vg3YwymL7A4PoTx4UGz/KWfW6IUnEGQxess18i47xn3Wwqj6YMNol7R6yUoF/TsZ1w1ZovIu3RvA1MR9k7BAy2/R5tiRATaAmQFAkdUkZQZe01nGDAHciZZgaEVi66YGcOdL7jktgtYz5km5qO1FLlq4NBzgAB4crQGOEwEy/HknzFIdjxUuE0xuKBtKE9N1KYmQs7ZfCJRkCPXvW9yPgk0d4M6DcAGzL8qGWFG9zVwdzzq0hrgGuToMFAb0fJYEVGKShjECVAUgwCC55gwwcXTOAs6JP1DzKGflcdpEV6YwHnf/aOjeEBjV+wgDCQjkW7oNis1pLFk4aLlPOZUcYxtBRe2wgFaLgL1htsONvZHbpoPSECa2y741IofwcMoOs9vQIyBiTwzD5fWsUPZ+XIWF16CRXgAq4hFRdOd0mXF0S2xZvljWvUqQ/5DDEylNLKs65hA9nHBv6HW4pyDF6g+oDSG/evV9+Pl9jAsEdcmyt2jGm6hIlnayIN3MYxUgoFVqRWAAQqH1p6OEnZc0M/6X9cP6w9z2nTbbCMqbDK0Ljg7eAZ/q5fxL8ASaO21mPWZZtYE5KPfXK2ozlnY2Ai5s0MsZxTEdlCK45GSSEOiUI+xEzDakq4reIz07cwx+b3BXg/uhtTrRZNiN760+UEoxLl2JXy1tazOGfJdtHa23gkdelJAx77w/byGnbMT/nmDxhqL4l9ZFB/W0vTs23F/xmS0BuzzOMXz4QIiKyUfI42wXOOLyEhc5pE1ANVpMjcb2KgPpMdCjtowsFMG+hP5fUw2Dyg8v3dICkbk+XK+XC5nce3PaBQXE/qBGYsd/+EivU6Xn9grrCgOer8VncfpmCU6UcpFf2JSsggA3Vdo1yDEXtzjQcAUS7eXkyz+tPpW/+C4KyeKEPvMc/ViKWECoAxdzbS+729hUXzcxtEMwUE9mgZ/YoqlbjXLKA5jky51wkE1oAGhmDHXUOpuQIbF4DcZBz7QSgKqLYqozodbCjgOwyvjm0+UHmAFGJO9Ji06Vo8DrSSpLmIjnYT+dnUQefTb6PLIKOkva0m0g4ihkhGUZLNdGy8rg3SO8uGg0seXUEKvNz2HfSrwlOdRdxBSKSiC7EHX00seBWg7/DsKjrh1019anrQXNL3JzrH2l/iX3+xZ34C5E7fdWhiP4yeLTuesnpDVuysGUbown7jYNx5gwnMiC5i6Jzl6txoL31Oiuz1csSvQbMY1qNNQ2jLccfj3V2+a3l/dzBKXIBUsn0/8ubvyPTGWOjDjY5qKMGibdQgAKKycmEwtijoh0P4Hg6QW+zZIlvsL0Ul071d/quGhGZ0CIUd5ypNNnfxAgAYEB2L79IBuDDbzyEDcMePkKqSfKMZE4lTRqzVp83h3dvx1z79jGM9IwGrcLWsVOfsB+rtkQjn57YMbjBVbhw4MCrqBwVd0MWEjB8cZGQHuMKZJ6JzhpyXn9f9QSwECFAMUAAAACACUTipdw7t34SgJAAALEwAAHwAAAAAAAAAAAAAAgAEAAAAAc2Nob2xhcnNoaXAtYXV0b21hdGlvbi9TS0lMTC5tZFBLBQYAAAAAAQABAE0AAABlCQAAAAA=" download="scholarship-automation.skill">&darr; Claude Skill (.skill)</a>
+          </div>
+        </div>
+
+        <div class="metrics-ribbon">
+          <div class="metric-box">
+            <span class="num">~95%</span>
+            <span class="label">Manual effort eliminated across cycle</span>
+          </div>
+          <div class="metric-box">
+            <span class="num">8 of 9</span>
+            <span class="label">Workflow steps fully automated</span>
+          </div>
+          <div class="metric-box">
+            <span class="num">Weeks &rarr; Days</span>
+            <span class="label">Turnaround time from close to awards</span>
+          </div>
+          <div class="metric-box">
+            <span class="num">Thousands</span>
+            <span class="label">Essays scored per cycle across 100+ countries</span>
+          </div>
+        </div>
+
+        <div class="project-body">
+          <p>
+            <b>The Challenge:</b> The MPOWER Global Citizen Scholarship receives thousands of international student essay submissions each cycle on how their education will empower positive local or global impact. Manually reading, grading, shortlisting, and coordinating verification and payouts across fragmented spreadsheets and email threads created a month-long operational backlog.
+          </p>
+          <p>
+            <b>The AI Solution:</b> Designed and deployed an autonomous, human-in-the-loop pipeline powered by a custom Claude Skill (<code>scholarship-automation</code>) and a live operational dashboard. The pipeline ingests applicant rows directly from Google Sheets, performs automated grammar and eligibility pre-screening, conducts multi-dimensional rubric scoring (40 points across Impact, Academic Alignment, Feasibility, and Resilience), ranks the Top 10 candidate shortlist, pauses for director selection (<i>Claire selects 3</i>), triggers personalized outreach, collects verification documents, generates award certificates, and coordinates wire disbursements.
+          </p>
+        </div>
+
+        <!-- Embedded Interactive Dashboard Widget Replica -->
+        <div class="dashboard-widget" aria-label="Interactive Scholarship Dashboard">
+          <div class="dash-top">
+            <div class="dash-title-group">
+              <h4>MPOWER Global Citizen Scholarship &mdash; Dashboard</h4>
+              <p>Start a run, watch it process, and review the shortlist &mdash; all read live from your Google Sheets.</p>
+            </div>
+            <div class="dash-status-badge">
+              <span class="dash-status-dot"></span>
+              <span id="pipeline-status-text">Live Connector: Ready</span>
+            </div>
+          </div>
+
+          <div class="dash-form-grid">
+            <div class="dash-field">
+              <label>Scholarship Name</label>
+              <div class="dash-input"><b>MPOWER Global Citizen Scholarship</b></div>
+            </div>
+            <div class="dash-field">
+              <label>Submissions Google Sheet Link</label>
+              <div class="dash-input">
+                <a href="https://docs.google.com/spreadsheets/d/1YxHNghDds4NtqDM9DvK7yYVvJasjATg45V97SQQQ-As/edit" target="_blank" rel="noopener noreferrer">
+                  https://docs.google.com/spreadsheets/d/1YxHNghDds4NtqDM9DvK7... &nearr;
+                </a>
+              </div>
+            </div>
+          </div>
+
+          <div class="dash-field" style="margin-bottom:1rem;">
+            <label>Scholarship / Essay Topic</label>
+            <div class="dash-input" style="color:var(--ink-soft);">
+              Tell us how your international education will empower your positive impact, whether locally or globally.
+            </div>
+          </div>
+
+          <div class="dash-btn-row">
+            <button class="btn btn-sm btn-primary" id="run-pipeline-btn" onclick="simulatePipelineRun()">&#9654; Run Pipeline Demo</button>
+            <button class="btn btn-sm btn-ghost" onclick="alert('Inputs saved to Google Sheets control sheet.')">Save details</button>
+            <span id="run-feedback" style="font-size:.82rem; color:var(--accent); font-weight:500;"></span>
+          </div>
+
+          <div class="dash-callout" style="margin-top:1rem;">
+            <b>One-click run:</b> this writes your inputs to the control sheet and triggers the <code>scholarship-run</code> task, which scores the essays against the 40-point rubric and fills the shortlist below.
+          </div>
+
+          <!-- Pipeline Stages -->
+          <div class="dash-pipeline-stages">
+            <div class="pipeline-label">
+              <span>Pipeline Stages</span>
+              <span id="stage-progress-label" style="font-weight:600; color:var(--accent);">8 of 9 steps automated</span>
+            </div>
+            <div class="stages-pill-grid">
+              <div class="stage-pill done" id="stage-1"><span class="stage-icon">&#10003;</span> 1. Intake</div>
+              <div class="stage-pill done" id="stage-2"><span class="stage-icon">&#10003;</span> 2. Grammar gate</div>
+              <div class="stage-pill done" id="stage-3"><span class="stage-icon">&#10003;</span> 3. Batch scoring</div>
+              <div class="stage-pill done" id="stage-4"><span class="stage-icon">&#10003;</span> 4. Top 10 shortlist</div>
+              <div class="stage-pill done" id="stage-5"><span class="stage-icon">&#10003;</span> 5. Claire selects 3</div>
+              <div class="stage-pill done" id="stage-6"><span class="stage-icon">&#10003;</span> 6. Winner outreach</div>
+              <div class="stage-pill done" id="stage-7"><span class="stage-icon">&#10003;</span> 7. Documents</div>
+              <div class="stage-pill done" id="stage-8"><span class="stage-icon">&#10003;</span> 8. Certificates</div>
+              <div class="stage-pill done" id="stage-9"><span class="stage-icon">&#10003;</span> 9. Cheque pay</div>
+            </div>
+          </div>
+
+          <!-- Shortlist and Winners tables -->
+          <div class="dash-tables">
+            <div class="dash-table-wrap">
+              <div class="dash-table-head">
+                <h5>Top 10 Shortlist (AI Scored)</h5>
+                <a href="https://docs.google.com/spreadsheets/d/1YxHNghDds4NtqDM9DvK7yYVvJasjATg45V97SQQQ-As/edit" target="_blank" rel="noopener noreferrer">Open shortlist sheet &nearr;</a>
+              </div>
+              <table class="dash-table">
+                <thead>
+                  <tr>
+                    <th>Candidate</th>
+                    <th>School &amp; Degree</th>
+                    <th>Score</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><b>Amara O.</b> (Nigeria)</td>
+                    <td>Carnegie Mellon &middot; MS ECE</td>
+                    <td><span class="score-badge">38.5 / 40</span></td>
+                  </tr>
+                  <tr>
+                    <td><b>Carlos M.</b> (Colombia)</td>
+                    <td>Johns Hopkins &middot; MPH</td>
+                    <td><span class="score-badge">37.5 / 40</span></td>
+                  </tr>
+                  <tr>
+                    <td><b>Devi P.</b> (India)</td>
+                    <td>Univ. of Toronto &middot; MEng AI</td>
+                    <td><span class="score-badge">37.0 / 40</span></td>
+                  </tr>
+                  <tr>
+                    <td><b>Fatima K.</b> (Pakistan)</td>
+                    <td>Columbia &middot; MPA Dev</td>
+                    <td><span class="score-badge">36.5 / 40</span></td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+
+            <div class="dash-table-wrap">
+              <div class="dash-table-head">
+                <h5>Final Winners (Claire Selected)</h5>
+                <a href="https://docs.google.com/spreadsheets/d/1YxHNghDds4NtqDM9DvK7yYVvJasjATg45V97SQQQ-As/edit" target="_blank" rel="noopener noreferrer">Open winners sheet &nearr;</a>
+              </div>
+              <table class="dash-table">
+                <thead>
+                  <tr>
+                    <th>Recipient</th>
+                    <th>Award Tier</th>
+                    <th>Status</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><b>Amara O.</b></td>
+                    <td><span class="winner-tag">Grand Prize ($10K)</span></td>
+                    <td>Disbursed &bull; Wire Confirmed</td>
+                  </tr>
+                  <tr>
+                    <td><b>Carlos M.</b></td>
+                    <td><span class="score-badge">Honorable ($3K)</span></td>
+                    <td>Disbursed &bull; Wire Confirmed</td>
+                  </tr>
+                  <tr>
+                    <td><b>Devi P.</b></td>
+                    <td><span class="score-badge">Honorable ($3K)</span></td>
+                    <td>Disbursed &bull; Wire Confirmed</td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+
+        <!-- Claude Skill Code Inspector -->
+        <div class="code-inspector">
+          <div class="code-nav">
+            <div class="code-tabs">
+              <button class="code-tab active" onclick="switchSkillTab('skill')">SKILL.md</button>
+              <button class="code-tab" onclick="switchSkillTab('rubric')">Evaluation Rubric (40 pts)</button>
+              <button class="code-tab" onclick="switchSkillTab('arch')">Architecture Flow</button>
+            </div>
+            <button class="copy-btn" id="copy-skill-btn" onclick="copySkillText()">
+              <span id="copy-icon">&#128203;</span> <span id="copy-label">Copy SKILL.md</span>
+            </button>
+          </div>
+          <pre class="code-content" id="skill-code-view"><code>---
+name: scholarship-automation
+description: Automates the end-to-end evaluation, scoring, shortlisting, and fulfillment workflow for the MPOWER Global Citizen Scholarship. Ingests essay submissions from Google Sheets, runs automated grammar/eligibility gating, performs AI-powered multi-criteria rubric scoring, generates ranked Top 10 candidate shortlists, supports human-in-the-loop review ('Claire selects 3'), sends winner notification emails, tracks document verification, generates award certificates, and coordinates disbursement.
+allowed-tools: google drive sheets_agent docs_agent gmail
+---
+
+# Scholarship Journey Automation (MPOWER Global Citizen Scholarship)
+
+An autonomous, human-in-the-loop pipeline built for Claude Cowork that automates 8 of the 9 manual steps in the MPOWER Global Citizen Scholarship evaluation cycle, cutting operational turnaround from weeks to days and reducing manual workload by ~95%.
+
+## Overview & Architecture
+
+Each scholarship cycle receives thousands of international student essay submissions answering:
+"Tell us how your international education will empower your positive impact, whether locally or globally."
+
+Previously, reviewing submissions required manual coordination across spreadsheets, email threads, evaluation rubrics, document requests, and certificate generation. This skill standardizes and automates the entire lifecycle through a structured 9-stage pipeline:
+
+Pipeline Architecture:
+[1. Intake] -> [2. Grammar Gate] -> [3. Batch Scoring] -> [4. Top 10 Shortlist]
+                                                               ↓
+[9. Cheque Disbursement] <- [8. Certificates] <- [7. Documents] <- [6. Winner Outreach] <- [5. Claire Selects 3]
+
+## The 9 Pipeline Stages
+
+### Stage 1: Intake
+- Reads applicant rows from the live Google Sheets submission form via the Google Sheets API.
+- Extracts applicant profile: Full Name, Email, Country of Origin, Target University, Degree Program, Funding Gap ($), and Essay Text (500-700 words).
+- Validates field completeness and normalizes phone/email formats.
+
+### Stage 2: Grammar & Eligibility Gate
+- Performs automated pre-screening for eligibility:
+  - Validates enrollment at an eligible U.S. or Canadian institution.
+  - Enforces word count thresholds (400-800 words).
+  - Flags automated AI plagiarism markers or coherence failures.
+- Non-qualifying entries are archived with audit reason; qualifying entries proceed to Stage 3.
+
+### Stage 3: Batch Rubric Scoring (AI Evaluator)
+- Evaluates qualifying essays using Claude against a 4-dimensional evaluation rubric (Total: 40 points):
+  1. Impact Potential (10 pts): Direct benefit to local community or global challenges; quantifiable outcomes.
+  2. Academic & Career Alignment (10 pts): How well the chosen degree program enables the stated mission.
+  3. Feasibility & Execution Plan (10 pts): Concrete roadmap, realistic milestones, and demonstrated commitment.
+  4. Resilience & Adversity (10 pts): Overcoming financial, socio-economic, or geographic barriers.
+- For every applicant, Claude outputs:
+  - Numerical scores per category (1-10)
+  - Composite Score (weighted 0-100%)
+  - 2-sentence executive summary
+  - Key standout quote
+
+### Stage 4: Top 10 Shortlist Generation
+- Sorts candidate pool by composite score and diversity parameters (geographic diversity across LATAM, Sub-Saharan Africa, South/Southeast Asia).
+- Formats top 10 finalists into the "Shortlist" tab of the Google Sheet with clickable links to full essays and synthesized rationale.
+- Updates the live Dashboard status to "Awaiting Claire's Selection".
+
+### Stage 5: Human-in-the-Loop Selection ("Claire Selects 3")
+- A dedicated review checkpoint where scholarship director (Claire) evaluates the Top 10 dossiers and selects the final Grand Prize ($10,000) and Honorable Mention ($3,000) winners.
+- The pipeline pauses until the 3 selections are confirmed in the control sheet.
+
+### Stage 6: Winner Outreach
+- Drafts personalized congratulatory emails via Gmail API to the 3 selected recipients.
+- Sends warm, encouraging updates to non-winning finalists offering MPOWER credit-building resources and future application waivers.
+
+### Stage 7: Document Verification
+- Automatically issues secure upload requests for required verification items:
+  - Official university offer letter / proof of enrollment
+  - Student visa (F-1 / J-1 / Study Permit)
+  - Government-issued photo ID
+- Tracks verification status in real-time.
+
+### Stage 8: Certificate Generation
+- Generates high-resolution branded award certificates (PDF) with unique verification IDs and digital signatures.
+- Attaches certificates directly to winner email confirmation threads.
+
+### Stage 9: Cheque Disbursement
+- Prepares finance disbursement package (recipient banking wire details, scholarship reference code, currency transfer schedule).
+- Triggers notification to treasury team for fund disbursement directly to university financial aid offices.</code></pre>
+        </div>
+      </article>
+
+      <!-- Case Study 2: Social Media Creative Engine -->
+      <article class="ai-project-card" id="project-creative">
+        <div class="project-header">
+          <div class="project-title-area">
+            <h3 class="project-title">2. Programmatic Social Creative Production Engine</h3>
+            <p class="project-subtitle">Scaling High-Converting Ad Creatives with ChatGPT Codex &amp; Canva API</p>
+            <ul class="project-tag-list">
+              <li class="project-tag highlight">ChatGPT Codex</li>
+              <li class="project-tag">Canva Connector API</li>
+              <li class="project-tag">Slack Approval Webhook</li>
+              <li class="project-tag">Brand Governance</li>
+              <li class="project-tag">4:5 Portrait Format</li>
+            </ul>
+          </div>
+        </div>
+
+        <div class="metrics-ribbon">
+          <div class="metric-box">
+            <span class="num">5-7d &rarr; ~1d</span>
+            <span class="label">Creative turnaround time (80%+ faster)</span>
+          </div>
+          <div class="metric-box">
+            <span class="num">5x</span>
+            <span class="label">Increase in monthly ad variants tested</span>
+          </div>
+          <div class="metric-box">
+            <span class="num">100%</span>
+            <span class="label">Brand kit adherence across localized campaigns</span>
+          </div>
+          <div class="metric-box">
+            <span class="num">25,000+</span>
+            <span class="label">Funded students targeted abroad</span>
+          </div>
+        </div>
+
+        <div class="project-body">
+          <p>
+            <b>The Challenge:</b> Scaling international student lending required rapidly testing objection-handling hooks (no cosigner, fixed rates, visa letters, career support) across India, Africa, and Southeast Asia. Traditional creative workflows took 5–7 days per multi-slide carousel through external design queues, bottlenecking paid social performance.
+          </p>
+          <p>
+            <b>The AI Solution:</b> Built an automated creative pipeline integrating ChatGPT Codex, the Canva Connector API, and Slack. Codex transforms raw value-proposition briefs into structured JSON schemas with slide-by-slide narrative arcs (Hook &rarr; Core Offer &rarr; Ecosystem Support &rarr; Final CTA). The Canva Connector programmatically populates pre-approved brand templates (applying MPOWER colors, fonts, and assets), and posts a 1-click preview in Slack for marketing review and instant 1080&times;1350px export.
+          </p>
+        </div>
+
+        <!-- Carousel and Architecture Section -->
+        <div class="carousel-section-wrap">
+          <!-- Interactive Carousel Player -->
+          <div>
+            <div class="carousel-container" aria-label="MPOWER Ad Creative Carousel">
+              <div class="carousel-slide-view">
+                <!-- Slide 1: Hook -->
+                <div class="carousel-slide active" id="c-slide-1">
+                  <div>
+                    <span class="slide-header-badge">Study Abroad</span>
+                    <h4 class="slide-title">No Cosigner?<br>You Still Have Options.</h4>
+                    <p class="slide-desc">MPOWER offers no-cosigner, no-collateral loans for eligible U.S. and Canadian schools.</p>
+                  </div>
+                  
+                  <div class="slide-visual-box">
+                    <div class="visual-avatar-mock">&#127891;</div>
+                    <div class="visual-text-mock">
+                      <h6>Global Student Mobility</h6>
+                      <p>Funding built specifically for international students</p>
+                    </div>
+                  </div>
+
+                  <div class="slide-cta-banner">
+                    <span class="slide-cta-btn">Swipe to see what matters &rarr;</span>
+                    <span class="mpower-logo-text">
+                      <svg viewBox="0 0 24 24"><path d="M12 2L2 22h6l4-8 4 8h6L12 2z"/></svg> MPOWER
+                    </span>
+                  </div>
+                </div>
+
+                <!-- Slide 2: Offer -->
+                <div class="carousel-slide" id="c-slide-2">
+                  <div>
+                    <div class="slide-tag-text">Start here</div>
+                    <h4 class="slide-title">Funding that fits your life <span class="highlight-gold">&#10003;</span></h4>
+                    <ul class="slide-bullets">
+                      <li><span class="check">&#10003;</span> <b>No cosigner or collateral:</b> funding for eligible U.S. &amp; Canadian schools.</li>
+                      <li><span class="check">&#10003;</span> <b>Borrow for your degree:</b> request US$2,001&ndash;US$100,000.</li>
+                      <li><span class="check">&#10003;</span> <b>Fixed rates:</b> your rate stays the same over time.</li>
+                      <li><span class="check">&#10003;</span> <b>No prepayment fees</b> when you pay early.</li>
+                    </ul>
+                  </div>
+
+                  <div class="slide-cta-banner">
+                    <span style="font-size:.78rem; color:#94A3B8;">Slide 2 of 4 &middot; Core Terms</span>
+                    <span class="mpower-logo-text">
+                      <svg viewBox="0 0 24 24"><path d="M12 2L2 22h6l4-8 4 8h6L12 2z"/></svg> MPOWER
+                    </span>
+                  </div>
+                </div>
+
+                <!-- Slide 3: Support -->
+                <div class="carousel-slide" id="c-slide-3">
+                  <div>
+                    <div class="slide-tag-text">Beyond the loan</div>
+                    <h4 class="slide-title">Support that helps you succeed</h4>
+                    <ul class="slide-bullets">
+                      <li><span class="check">&#10003;</span> <b>Visa support:</b> free visa support letter &amp; prep course.</li>
+                      <li><span class="check">&#10003;</span> <b>Career tools:</b> resume builder, search tool &amp; F-1 job directory.</li>
+                      <li><span class="check">&#10003;</span> <b>Credit building:</b> on-time payments help build U.S. credit.</li>
+                      <li><span class="check">&#10003;</span> <b>Global payments:</b> pay from anywhere, anytime.</li>
+                    </ul>
+                  </div>
+
+                  <div class="slide-cta-banner">
+                    <span style="font-size:.78rem; color:#94A3B8;">Slide 3 of 4 &middot; Value Adds</span>
+                    <span class="mpower-logo-text">
+                      <svg viewBox="0 0 24 24"><path d="M12 2L2 22h6l4-8 4 8h6L12 2z"/></svg> MPOWER
+                    </span>
+                  </div>
+                </div>
+
+                <!-- Slide 4: CTA -->
+                <div class="carousel-slide" id="c-slide-4">
+                  <div style="margin:auto 0; text-align:center;">
+                    <div style="background:rgba(255,255,255,0.08); border:1px solid rgba(255,255,255,0.15); border-radius:.75rem; padding:2rem 1.25rem;">
+                      <h4 class="slide-title" style="font-size:1.9rem; margin-bottom:.5rem;">Your dream<br>starts <span class="highlight-gold">here.</span></h4>
+                      <p style="font-size:.95rem; color:#CBD5E1; margin:0 0 1.5rem;">Join 25,000+ MPOWER-funded students abroad.</p>
+                      <span class="slide-cta-btn" style="font-size:.95rem; padding:.7rem 1.8rem;">Check Your Eligibility &nearr;</span>
+                    </div>
+                  </div>
+
+                  <div class="slide-cta-banner">
+                    <span style="font-size:.78rem; color:#94A3B8;">Slide 4 of 4 &middot; Conversion</span>
+                    <span class="mpower-logo-text">
+                      <svg viewBox="0 0 24 24"><path d="M12 2L2 22h6l4-8 4 8h6L12 2z"/></svg> MPOWER
+                    </span>
+                  </div>
+                </div>
+              </div>
+
+              <!-- Controls -->
+              <div class="carousel-controls">
+                <div class="carousel-dots">
+                  <button class="carousel-dot active" onclick="goToSlide(1)" title="Slide 1"></button>
+                  <button class="carousel-dot" onclick="goToSlide(2)" title="Slide 2"></button>
+                  <button class="carousel-dot" onclick="goToSlide(3)" title="Slide 3"></button>
+                  <button class="carousel-dot" onclick="goToSlide(4)" title="Slide 4"></button>
+                </div>
+                <div style="display:flex; align-items:center; gap:.5rem;">
+                  <span id="slide-num-indicator" style="font-size:.8rem; color:#94A3B8; font-family:var(--display);">1 / 4</span>
+                  <button class="carousel-nav-btn" onclick="prevSlide()" aria-label="Previous Slide">&lsaquo;</button>
+                  <button class="carousel-nav-btn" onclick="nextSlide()" aria-label="Next Slide">&rsaquo;</button>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Architecture Breakdown -->
+          <div>
+            <h4 style="font-family:var(--display); font-size:1.15rem; font-weight:700; margin:0 0 .5rem; color:var(--ink);">
+              Production Pipeline Architecture
+            </h4>
+            <p style="font-size:.92rem; color:var(--ink-soft); margin:0 0 1rem; line-height:1.5;">
+              How ChatGPT Codex and the Canva Connector interact to generate on-brand creatives in under 2 minutes:
+            </p>
+
+            <div class="arch-steps">
+              <div class="arch-step">
+                <div class="arch-num">1</div>
+                <div class="arch-content">
+                  <h6>Brief &amp; Angle Formulation</h6>
+                  <p>Target student persona (e.g. Nigerian STEM graduate), regional pain points (co-signer requirement), and value propositions selected.</p>
+                </div>
+              </div>
+
+              <div class="arch-step">
+                <div class="arch-num">2</div>
+                <div class="arch-content">
+                  <h6>Codex Copy &amp; Schema Engine</h6>
+                  <p>ChatGPT Codex generates JSON payloads with slide-by-slide character counts, hook variations, and CTA formulations.</p>
+                </div>
+              </div>
+
+              <div class="arch-step">
+                <div class="arch-num">3</div>
+                <div class="arch-content">
+                  <h6>Canva Connector Assembly</h6>
+                  <p>Canva API injects JSON keys into pre-approved brand templates, applying MPOWER Navy (#0B2341), Gold (#F5A623), and fonts.</p>
+                </div>
+              </div>
+
+              <div class="arch-step">
+                <div class="arch-num">4</div>
+                <div class="arch-content">
+                  <h6>Slack Webhook &amp; 1-Click Export</h6>
+                  <p>Slack bot posts instant multi-slide preview for team approval, triggering automated export to 1080&times;1350px (4:5) social formats.</p>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </article>
+    </div>
+  </section>
+
+  <!-- ===== EXPERIENCE ===== -->
+  <section id="experience" aria-labelledby="exp-h">
+    <div class="wrap">
+      <p class="eyebrow">Experience</p>
+      <h2 id="exp-h">Where the numbers came from</h2>
+
+      <article class="job">
+        <div class="job-head">
+          <h3 class="role">Senior Digital Marketing Analyst, Ambassador &amp; Affiliate Growth</h3>
+          <p class="meta"><span class="co">MPOWER Financing</span> &middot; Education-loan fintech &middot; Jun 2025 - Present</p>
+        </div>
+        <ul>
+          <li>Built an <b>AI automation pipeline</b> that screened thousands of scholarship essays per cycle and automated 8 of 9 manual steps - scoring, shortlisting, outreach, certificate delivery - <b>cutting manual effort ~95%</b> and turnaround from weeks to days.</li>
+          <li>Cut design turnaround from <b>5-7 days to ~1 day</b> by building an AI-assisted creative production workflow integrating ChatGPT Codex, Canva, and Slack to auto-generate brand-aligned social media creatives.</li>
+          <li>Shipped an automated daily analytics digest (Tableau KPIs + trend/anomaly detection emailed to leadership), <b>removing ~5 hours of manual reporting a week</b>.</li>
+          <li>Launched a self-serve gamified referral dashboard that <b>2x'd referral volume and cut support queries 40%</b>; trained 50 employees and cut referral query SLA from 15 days to 4.</li>
+        </ul>
+      </article>
+
+      <article class="job">
+        <div class="job-head">
+          <h3 class="role">Digital Marketing Analyst, Ambassador &amp; Affiliate Growth</h3>
+          <p class="meta"><span class="co">MPOWER Financing</span> &middot; Jul 2023 - May 2025</p>
+        </div>
+        <ul>
+          <li>Built a <b>$407M loan-application pipeline</b> by architecting a 400+ ambassador program from scratch - recruiting, incentive design, and cross-functional campaign execution.</li>
+          <li>Grew ambassador channel revenue share from <b>20% to 50%</b> with monthly gamification and tiered incentives; lifted loan approval rates from <b>40% to 56%</b> via a dedicated affiliate priority queue.</li>
+          <li>Scaled disbursed loan revenue <b>8x ($5M &rarr; $40M)</b> across 2 years; built 10 live Tableau/GA dashboards and 100+ Salesforce reports as the team's single source of truth.</li>
+        </ul>
+      </article>
+
+      <article class="job">
+        <div class="job-head">
+          <h3 class="role">Assistant Program Manager, Performance Marketing</h3>
+          <p class="meta"><span class="co">Phablecare</span> &middot; Chronic-disease management platform &middot; Dec 2021 - Feb 2023</p>
+        </div>
+        <ul>
+          <li>Improved ROAS from <b>1.64x to 4x</b> on &#8377;1Cr+/month ad budgets through creative testing, audience segmentation, and weekly performance reviews.</li>
+          <li>Prevented <b>&#8377;4Cr in campaign losses</b> by auditing 14+ affiliate accounts and catching spend anomalies before exposure materialized.</li>
+          <li>Lifted upselling 8% and cross-selling 10% via cohort analysis and segment-tailored retargeting.</li>
+        </ul>
+      </article>
+
+      <article class="job">
+        <div class="job-head">
+          <h3 class="role">Young Leader, Business Development &amp; Digital Campaigns</h3>
+          <p class="meta"><span class="co">Collegedunia</span> &middot; EdTech / admissions &middot; Apr 2021 - Nov 2021</p>
+        </div>
+        <ul>
+          <li>Closed <b>6 enterprise clients in 3 months</b> through surveys, data analysis, and consultative sales - exceeding first-quarter quota.</li>
+          <li>Recovered <b>&#8377;5.4L in revenue</b> by finding admission-data discrepancies via Excel analysis and renegotiating campaign terms.</li>
+        </ul>
+      </article>
+    </div>
+  </section>
+
+  <!-- ===== SKILLS ===== -->
+  <section id="skills" aria-labelledby="skills-h">
+    <div class="wrap">
+      <p class="eyebrow">Skills &amp; Tools</p>
+      <h2 id="skills-h">What I work with</h2>
+      <div class="skills-cols">
+        <div class="skillgroup">
+          <h3>Strategy</h3>
+          <ul class="chips">
+            <li>Full-funnel growth</li><li>Ambassador &amp; affiliate programs</li>
+            <li>AI workflow automation</li><li>Lifecycle marketing</li>
+            <li>Cohort &amp; segmentation analysis</li>
+          </ul>
+        </div>
+        <div class="skillgroup">
+          <h3>AI &amp; Automation</h3>
+          <ul class="chips">
+            <li>Claude Cowork</li><li>ChatGPT Codex</li><li>Canva API Automation</li>
+            <li>Prompt engineering</li><li>Automated reporting pipelines</li><li>AI-assisted content</li>
+          </ul>
+        </div>
+        <div class="skillgroup">
+          <h3>Analytics &amp; BI</h3>
+          <ul class="chips">
+            <li>Tableau</li><li>Google Analytics</li><li>Salesforce (SFDC)</li>
+            <li>Advanced Excel</li><li>MIS dashboard design</li>
+          </ul>
+        </div>
+        <div class="skillgroup">
+          <h3>Platforms &amp; Channels</h3>
+          <ul class="chips">
+            <li>MoEngage</li><li>Singular</li><li>Jira</li><li>Canva</li><li>Slack</li>
+            <li>Email / SMS / WhatsApp</li><li>SEO</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== CONTACT ===== -->
+  <section id="contact" aria-labelledby="contact-h">
+    <div class="wrap">
+      <p class="eyebrow">Contact</p>
+      <h2 id="contact-h">Let's talk growth &amp; automation.</h2>
+      <p class="contact-line">Based in Bengaluru, India. Quickest ways to reach me:</p>
+      <div class="contact-actions">
+        <a class="btn btn-primary" href="mailto:priyanshu.mba19217@iimkashipur.ac.in">Email me</a>
+        <a class="btn btn-ghost" href="tel:+918010862026">Call +91 80108 62026</a>
+        <a class="btn btn-ghost" href="https://www.linkedin.com/in/priyanshu-goyal-343a3b123/" target="_blank" rel="noopener noreferrer">LinkedIn</a>
+        <a class="btn btn-accent" href="data:application/pdf;base64,JVBERi0xLjQKJZOMi54gUmVwb3J0TGFiIEdlbmVyYXRlZCBQREYgZG9jdW1lbnQgaHR0cDovL3d3dy5yZXBvcnRsYWIuY29tCjEgMCBvYmoKPDwKL0YxIDIgMCBSIC9GMiAzIDAgUiAvRjMgNCAwIFIgL0Y0IDUgMCBSIC9GNSA3IDAgUgo+PgplbmRvYmoKMiAwIG9iago8PAovQmFzZUZvbnQgL0hlbHZldGljYSAvRW5jb2RpbmcgL1dpbkFuc2lFbmNvZGluZyAvTmFtZSAvRjEgL1N1YnR5cGUgL1R5cGUxIC9UeXBlIC9Gb250Cj4+CmVuZG9iagozIDAgb2JqCjw8Ci9CYXNlRm9udCAvSGVsdmV0aWNhLUJvbGQgL0VuY29kaW5nIC9XaW5BbnNpRW5jb2RpbmcgL05hbWUgL0YyIC9TdWJ0eXBlIC9UeXBlMSAvVHlwZSAvRm9udAo+PgplbmRvYmoKNCAwIG9iago8PAovQmFzZUZvbnQgL1phcGZEaW5nYmF0cyAvTmFtZSAvRjMgL1N1YnR5cGUgL1R5cGUxIC9UeXBlIC9Gb250Cj4+CmVuZG9iago1IDAgb2JqCjw8Ci9CYXNlRm9udCAvSGVsdmV0aWNhLUJvbGRPYmxpcXVlIC9FbmNvZGluZyAvV2luQW5zaUVuY29kaW5nIC9OYW1lIC9GNCAvU3VidHlwZSAvVHlwZTEgL1R5cGUgL0ZvbnQKPj4KZW5kb2JqCjYgMCBvYmoKPDwKL0NvbnRlbnRzIDEyIDAgUiAvTWVkaWFCb3ggWyAwIDAgNjEyIDc5MiBdIC9QYXJlbnQgMTEgMCBSIC9SZXNvdXJjZXMgPDwKL0ZvbnQgMSAwIFIgL1Byb2NTZXQgWyAvUERGIC9UZXh0IC9JbWFnZUIgL0ltYWdlQyAvSW1hZ2VJIF0KPj4gL1JvdGF0ZSAwIC9UcmFucyA8PAoKPj4gCiAgL1R5cGUgL1BhZ2UKPj4KZW5kb2JqCjcgMCBvYmoKPDwKL0Jhc2VGb250IC9IZWx2ZXRpY2EtT2JsaXF1ZSAvRW5jb2RpbmcgL1dpbkFuc2lFbmNvZGluZyAvTmFtZSAvRjUgL1N1YnR5cGUgL1R5cGUxIC9UeXBlIC9Gb250Cj4+CmVuZG9iago4IDAgb2JqCjw8Ci9Db250ZW50cyAxMyAwIFIgL01lZGlhQm94IFsgMCAwIDYxMiA3OTIgXSAvUGFyZW50IDExIDAgUiAvUmVzb3VyY2VzIDw8Ci9Gb250IDEgMCBSIC9Qcm9jU2V0IFsgL1BERiAvVGV4dCAvSW1hZ2VCIC9JbWFnZUMgL0ltYWdlSSBdCj4+IC9Sb3RhdGUgMCAvVHJhbnMgPDwKCj4+IAogIC9UeXBlIC9QYWdlCj4+CmVuZG9iago5IDAgb2JqCjw8Ci9QYWdlTW9kZSAvVXNlTm9uZSAvUGFnZXMgMTEgMCBSIC9UeXBlIC9DYXRhbG9nCj4+CmVuZG9iagoxMCAwIG9iago8PAovQXV0aG9yIChcKGFub255bW91c1wpKSAvQ3JlYXRpb25EYXRlIChEOjIwMjYwODE1MTA0OTU2KzAwJzAwJykgL0NyZWF0b3IgKFwodW5zcGVjaWZpZWRcKSkgL0tleXdvcmRzICgpIC9Nb2REYXRlIChEOjIwMjYwODE1MTA0OTU2KzAwJzAwJykgL1Byb2R1Y2VyIChSZXBvcnRMYWIgUERGIExpYnJhcnkgLSB3d3cucmVwb3J0bGFiLmNvbSkgCiAgL1N1YmplY3QgKFwodW5zcGVjaWZpZWRcKSkgL1RpdGxlIChcKGFub255bW91c1wpKSAvVHJhcHBlZCAvRmFsc2UKPj4KZW5kb2JqCjExIDAgb2JqCjw8Ci9Db3VudCAyIC9LaWRzIFsgNiAwIFIgOCAwIFIgXSAvVHlwZSAvUGFnZXMKPj4KZW5kb2JqCjEyIDAgb2JqCjw8Ci9GaWx0ZXIgWyAvQVNDSUk4NURlY29kZSAvRmxhdGVEZWNvZGUgXSAvTGVuZ3RoIDM3NjEKPj4Kc3RyZWFtCkdiISNePWBgPWUmcTlTWVIiczw/WT1UISI2JzBtIlYnVDtXLCIyalwsalFxbiUpRilJLmhEZ0NPSz9yNElmIlJXSzdhQ3NCNi8lRC90M1AvOCwicmpJLC0kJmclYW1zcys6YmptcTsiYks+U1txYydIVEQvPEEmWWZrQypFby4tXlVsKypuSW5NKG0sL0I7bzxeO0RNUkVJKikjPVdRRGNmZmkmMFlIWCplWGM6amg9UCUsRVlMaTBqV19WSGw0PExiPiRbLVxQKTFOUVI1UTFAJV09UnF0XVJKJTlzJ2k9TFoxY0hrI2tBKXNtS3FwOTBgK1hPZjgrWiI4JD9rLElCc3VvSCMzXGo4TUo/WHFuQ2ZwUUtORyZtWFNJPkovIVojbS1IMyE6WUQybW5EbGxHMTBXWEBgKWUta3MoM0FEMFBsNltVSV4nPikiclxpVyRvbkxHbEwnITFELV9BMXVLUD48TFJkSGRBV0JmQltZKWwoWFRjYDFvbURPNVwuTFlwSCIpVj4/cT9GX3RzIT9rVz5TXmY8YCVgWT9SXCI/OjY6YmsiNEU9aihLU3JQXjU6KCUsOFVJXjIoPkVUIz9KNWsjJl84WGoqQHQiNHVmOTZkIVhVOlkuQUknOG0qXU4lYlo0NSk9b09YP15YSkFUVjZRQ1RsNUQla0lVJixcVFRdREVNKFYwYUtjKiQzLl9mQWI/NmtGRCJYSGNITzBSIVRDOSllWjI1OmdUW2hSNV9qMCVcO0IsO3JfJEhKIUA9S2kmRkMlJzBdQ2FzVVpsbEpxdS0jUTluMGdkKSw8QVxnLEEzWWY1QipVP0Aob2kka1QlWmZcYlhqRydYVVE4WT1WWWxJbD5iZUoiX2lhXGpFKCpYLzhZYiJPJ0MnLnBYPCc0KCRuVzNLa01rYGBxXGgwODNnbjBEUlthaSdOSixaOCJSUTVaTjA2IyJTOikuZEAnNEJldEM+ZmhxWzBGWUExSy5PRl9WOl0wYDdYSGFbZVNQckJaKC50dGpobzoiSkwpTDphZUR0MT02a1R1N3I1P1giJ1sqZV9uUEJsWVk7PD80U3NsaFRDb3QnUG5zQXUvVkMxOTdjWT5TazskOzBGWUwrRl9oKCJxJ1QoImNjYWNfXC08N3VuKSU1ZDgxYSleVkZEXWQ8cXFCMWE2NT0tUixDY0VbMkwxXDNHLUwqSTMiQ0xMIVE/Mm8mKFhXQCRMSHUpQD9dSSknUiU3OC8yZV49MTZOLjA1RjdLOjArZz0xKG4/R0k2Olpxc2FvbzQjQE9WcmRaNFhIdCUlbXIuJl0mTiIkRz1WTzciVm1rQTNEMHVMWjo5ZztqZF0hW10oR2BjXzMySVxuVk5SJmFKQ2hIK0Y3ImRvcDQ5NzNXZ2ZoRWpAb2xzYjMqO0M+cT1MTklucF8jR25nNCVRTDY8cFZfaFdVQz0pUilaX0xWNSpgNVxBR1FWWVo6SiwyPVNdO0ldSzUpRFJqNT81OGtYIXA8Jl5CUlttYT46LkIncmg+JGhtOHRsK1RrJiohcEk9RXNtOW9sOi1tRlZqTG9RNC09cUU/KnRWZXMtOjhKN24tYjQ6Xk49LEgjSilxRzhkRzpnaCNUOlt0ZFIyM0VwRWo3Yjovb2kwbGhJOVBZWFszbSQtXkUkS1xbWy1JWiNzPE1QPzxgS1BkV1UmP0Z0TiRaJmVDZz8nQ2I+JkhTZl9LXFtSMGNyU15BVUgtKVxySWZDSyJgRGdWPCZvdTldMmtpdSU7Ol9RMFs7I0FBUmpTPkMkdUtcPTc9ZFRfZSJZT2ovPiwiQHMwKkZQY3AmRFY1SSwuQzRmTVpfOjJaKSU+UE4rVEFfLkw8Wm49M250U2BSZzc/YUk8SE1HLEo5YGxbLTBRXFBUQWtmcTksVT9SVUgjXkgxUnJFSkRKPHFhU1VwN3RsVD8uc0ciaiQ0USljaCwlSVlAKGhIY1x1U0kpU0lmWnUkbT1HSClJQyktJkJpJEFxXEw4WmohVkIsKV5CU1NtQFxxcjQkTT8nJjBBLVsiYUMxIiZmRycsX0cyQEskWWk6NiJDN1BrUSc7Vis0MjxjVVxiSmlILWFKcG9NUF9SKVYmKTR1XDlrRztJaUhIdUtCZV4sUCJWYFlZQiRsJTk8SWxAN0VIKGM8SDwoKkxXImo7TWlUTmEjQS9PQ2lXPzlGQXNLL2U2RVBbaW1nVlk/OFJccGQjRmxGTk5OM0UxLTxeS1UuPFpcbjNAVEFYPUZkOmdCXE5pdFdRajU5MzpQaytaRzZfRlM0ImVGODdacUwqc2BAOXVaYDJTKl1mNDJlUWYjTmk5PlM+ZnVubVJjQFAzPWdWIVBLKWApcScjJ1YiZ2duSThcOU44R0pHLzRVK0I8WF0oT2YnOiNjUDg+W2syTTk5TD1KNVtAZTteLC0nPFtNaEhhY25RaWRwSDpzXHRiLCxsaFchSWRJPEloPUMrJS07aC5FUzUhWUlVbW4oIU0iLSw4O15mSS50Ii1lbkdHNGw/OlhAUyhTOi8nayJAKSxNPmkiLiNuVytgPllVKyk9PmdbQTdnUDpUJWJnZGJAQ2A+LjpPVjhSNmEqWi5hbjNtSjolYF9Ra044XVBFTE1AUTNJP0FQbVVYRzdqNFxRWkhPWmZBdU4yRExRIUxrOFBbWDBZVTJjX0NDMlddLzNsbydUYzsvNGNkMWZzLG8xImYoY0JdK0ZCQixvLm1kIWQxWzpabSg+J0UjVSEtVik7YydxNGFQRT43J2FYcnE3Y00pOU0xV11NXy4/bD9XUTY7dGNDXDw/U1gyTDgyOSJaXk4vW0ZlWyhNLGlXY2lXMykzS1tYMmksVDJQZ189LDRNKTgucElbMyhGXHNoKS8nZ1dROjUhT0ZkSm9HViw0U2lXbydmcD9TQ0spP2ExamptYjZfMCRBc1AocTQ/JEU7LHJKIzVwYkRWZl9kXD9XKmVecmNwR2tONTlwNDA1Pz4hW0dyKDhnXFI+azkvaGBNaG8sLmFHMW8/XzxmYEA4V3BfXnFqNkRaWiJeY3I1a3RlVWpTJUlGSU9vKDVOT1JWTSFtVG06VzQwTW9JQ2FwWC4mcEBFQlVnJE1jO28iP1o3UzB0ajlsUmFwcXNxU1cyWTJCMVVXKSYrWy5wZF0oX2shYUQyc1FlXTNXayQjOyRUPCo0VGE+Q2xQTSFxT3RfPFxrUzBYOj4mPCNOSmZhYmUhSlA2ViF1XkElYzZnQyIwW0dkL2p0WERWVFtcTChpYSlgPGJvQS9pNyg4ITsmSSptQW1TK1JfZi9odSE0THJCJVREUFtDZEMoUy4rRjwoSWBIRydMTmw4Wl5Va0dLT1tIaGVUTFUuXD4sOTJdaG0nUWphWj1uYWlkbU9aN0ghMnA3NzdePUQzTG4sSSlPPFArZ0tDQFlTXkBmTkA1VytENGcqSmQ2P3BpciUoLFg0bSpFK1VpY2gxJ1QvZGtHMjk0N0MndFQzWz5eL3VtLk80ZmVsTzAkV1RsV0YwZjhyWlI0LW5nRVBFJWtKaztpVjFmJyFjTyIvQDQ2PGRXRGdtNyhXUSI6QE0mKEZBZT89IjxFTDozTWE8QFlqczN1LGpeOHQ7JlBtOjM1JUI9X05oZSRVTj1QVW1vUTUhb1NmW19aVlthQC5UQVcpPnFdaSFiSkxTa3BCa0dUTHIpZG9sOzA8aDpwWmcjRWg7VitBR0QxdSRpbDw3IlxpRkdJIUJlVihBRkt1SiRbIjVfKkNhPFBmMlRxS2xnIz9kNXNoPjp0dSQ9KTEpVygrU1dFNGliaFJjYTQkOVc9bFgnb11hMDlFQSNGbUleRChGNmRhOldgdT1DQmJHMyo/b19HWjI1SklNMHElXD0uPjc4LklGa1xccC9sM2RpQVRhdGYvXks7cUo1RTRaSGpubV9HX0EjaV1YI1s8Y3UmdC0hZSc0W2UhaW9VPCU2SE1gWTg9WVlsTDc6Xmh0b2tMOjg2Si5mKTkoPiQ3Ol90Ny1gSS4uLl5iPmZhWD1QNGZNLyw9OzNQPG9Oa1RhbjZWWzlrInUlQiYpRik4cGtCXm4kZCdAbz0mJjNvIkQpJlFmVGJXSGtaSmUyaG8wTnJFZlJgJmwjI0BzbzVGcUc2XSIkPSxcYC0iKlljUSpFWHU7SSs8amM6KVdyaUxvbHBFay41KU0yTCYmXFxyWz4saCFxR2J1RmlGJyspK25LNj03LG11TjVIYSQ2K0RKJVpxR1RmK1hFamhtXDptTEBQQSk+UTJbVXM7ZlcvZm83XjVSKEl1JVsiWmgkJ2opQERUVyRtVEpYb0piKmtpIkRBQzRBNm5hSnRxTUwjLi9oWUFWSFYpOSptQDtJWmxRNT1OPXNnb1NpXlVBTldBTDg6N0w9bzVRWWMoIV0sSzcyX0xyI0g2R3VuYFtOWl8ybEVJLmZKcTRsaEpyXksyJVxlZkJDM2A/UEVvW0VLSVBqM2RPQyFgLmRMITk+cjhERXJnWl5bLFJGPy46cy9YQGhbakRAXyQ/T0hQZGhHPjhiLEcydEg9VHRRXjswXE1qJk88W1AlTiYqNVlsR2BRUWkoWmwnUzpCNi1PSFlYY3FudWZPSU0lRT1OSGA6XSgqU1wsOVBCMiItXlhlWidcQWQkLSZ0a29YWzc8Uy0zWzI9ViZbXj9sYT5wWHNiWjgiTjdtaGRWMTYtPEtMYWU2SDtyW1I+TWI0a2sqNlsxbSgpVmgtZysuZlMuRW1FKENNUk5UO21TRF0rTjNhVS9gPyNzI0FVcWs6Kk8mRkplSXEyN3BCYCtlNEMqSmEiMlRNalplb141O04wNGNyOEZoKVZtbDQ+OSwsJzw4PHIvUFIrL0ZySUxrWExdLmlsTFBrbz9ELG9wZ2hzLVMnJFA5cForSTJdJFFmZVVPXWgkTCsjIi1wYmBwIms4VVhGYzFdS2g4IzdWWTRfNjUiRDZcb1xObTNHNyZFckM7MmJDV2FKcExSalUyXVM6akBMN0hoQUpfbXNiOX4+ZW5kc3RyZWFtCmVuZG9iagoxMyAwIG9iago8PAovRmlsdGVyIFsgL0FTQ0lJODVEZWNvZGUgL0ZsYXRlRGVjb2RlIF0gL0xlbmd0aCA2NzYKPj4Kc3RyZWFtCkdhdTErPyNRMmQnU2MpUCglOSsiLHVbPE5vM25yOlVlUm4zVUtMTyhoO2xRYCVhXWYxLjhjbz5xVWw/TVpfamslVzw5c0trNG5eMyVpLGpJVEBEXjYnZWk3IUhxJEM+T3NSJ3FxRkVlW1MyYl4mbTRzKG8qZ2dMJGxIdVFWaDgjISwzQkY+OVdzY3QtVTYrbUZtWFBdaWlwNWYsYiFYQ3UqRyZrYSNbIW00TS8tRGNFQ0dxKS5yJF1KNlkxUiNXQmBUS0dDN0NxOXFEUTQuQTtCVV9JWzxvXXJXJUhTOmtRMm9aIWU5OlBRdSVIQVFqNU5ESEc3UVA4dT83cmo3Q14kNSg1b3Q6b0ZlPylMND1IYmFMNGlIVm8jQkMpNHE/NCQ4RU4rTkUhKFU3IlhvVSttJjRXQFImYj8oTW5rTi5mI19lLEhEaThlaDklNk1QNkFcQjo7Uk1uZC1CaV0yNUplZGZULDBebk5HWlZMRmdaUmAxV0MjZkwscTcvYylrZGlRMElHVyQ3NDFnY01QcXJtUEU+NG1VTlBSWilWQmgiMFBGRWpFbUdYSzxNVDQqaTVgQGM8VGYncElVNWBlITE+QyNZI1plIWRyV24zSW9MWXB1RigmKFRGW1w3M2NbUVkjZFlgVTN1SFdLTXUlOWBBOEUmPG9aYExnUG5UYTlpblA7MltTPFE/b04jPj5YbVNha2E6ckBAUTwhWVZVOGBoQiE4IlM8MG8mSk0vam1zPmAwcGQ0N0NBYnFmcFwvM3BnaEFzKjFLcC1IZCtIXSJzRy07NVFnJ1JuTEVBLT1VTFtdbCVtQkVoU15LWiMmXDReTFU5VDBBOiFAW1hqOzdOVWI8XzlKNVUoJ2w/Z0sjSiMwZjQtVjdCX1lGWFA/VFM4fj5lbmRzdHJlYW0KZW5kb2JqCnhyZWYKMCAxNAowMDAwMDAwMDAwIDY1NTM1IGYgCjAwMDAwMDAwNzMgMDAwMDAgbiAKMDAwMDAwMDE0NCAwMDAwMCBuIAowMDAwMDAwMjUxIDAwMDAwIG4gCjAwMDAwMDAzNjMgMDAwMDAgbiAKMDAwMDAwMDQ0NiAwMDAwMCBuIAowMDAwMDAwNTY1IDAwMDAwIG4gCjAwMDAwMDA3NjAgMDAwMDAgbiAKMDAwMDAwMDg3NSAwMDAwMCBuIAowMDAwMDAxMDcwIDAwMDAwIG4gCjAwMDAwMDExMzkgMDAwMDAgbiAKMDAwMDAwMTQyMyAwMDAwMCBuIAowMDAwMDAxNDg5IDAwMDAwIG4gCjAwMDAwMDUzNDIgMDAwMDAgbiAKdHJhaWxlcgo8PAovSUQgCls8NzU4ZGI0M2U2NmEyZTFkOWJhOWYyZDhhZjRjN2JiNjU+PDc1OGRiNDNlNjZhMmUxZDliYTlmMmQ4YWY0YzdiYjY1Pl0KJSBSZXBvcnRMYWIgZ2VuZXJhdGVkIFBERiBkb2N1bWVudCAtLSBkaWdlc3QgKGh0dHA6Ly93d3cucmVwb3J0bGFiLmNvbSkKCi9JbmZvIDEwIDAgUgovUm9vdCA5IDAgUgovU2l6ZSAxNAo+PgpzdGFydHhyZWYKNjEwOQolJUVPRgo=" download="Priyanshu_Goyal_CV.pdf">Download my CV</a>
+      </div>
+      <p class="contact-fallback">Or copy it directly: <a href="mailto:priyanshu.mba19217@iimkashipur.ac.in">priyanshu.mba19217@iimkashipur.ac.in</a></p>
+    </div>
+  </section>
+
+</main>
+
+<footer>
+  <div class="wrap">
+    &copy; <span id="yr">2026</span> Priyanshu Goyal &middot; Growth Marketing &amp; AI Automation Portfolio.
+  </div>
+</footer>
+
+<script>
+  // Set current year
+  document.getElementById('yr').textContent = new Date().getFullYear();
+
+  // Carousel interactive logic
+  let currentSlide = 1;
+  const totalSlides = 4;
+
+  function updateCarouselView() {
+    for (let i = 1; i <= totalSlides; i++) {
+      const slide = document.getElementById('c-slide-' + i);
+      if (slide) {
+        slide.classList.toggle('active', i === currentSlide);
+      }
+    }
+    const dots = document.querySelectorAll('.carousel-dot');
+    dots.forEach((dot, idx) => {
+      dot.classList.toggle('active', (idx + 1) === currentSlide);
+    });
+    const ind = document.getElementById('slide-num-indicator');
+    if (ind) {
+      ind.textContent = currentSlide + ' / ' + totalSlides;
+    }
+  }
+
+  function nextSlide() {
+    currentSlide = (currentSlide % totalSlides) + 1;
+    updateCarouselView();
+  }
+
+  function prevSlide() {
+    currentSlide = currentSlide === 1 ? totalSlides : currentSlide - 1;
+    updateCarouselView();
+  }
+
+  function goToSlide(n) {
+    currentSlide = n;
+    updateCarouselView();
+  }
+
+  // Keyboard navigation for carousel
+  document.addEventListener('keydown', (e) => {
+    if (e.key === 'ArrowRight') nextSlide();
+    if (e.key === 'ArrowLeft') prevSlide();
+  });
+
+  // Dashboard Pipeline Simulation
+  let isRunning = false;
+  function simulatePipelineRun() {
+    if (isRunning) return;
+    isRunning = true;
+    const btn = document.getElementById('run-pipeline-btn');
+    const statusText = document.getElementById('pipeline-status-text');
+    const feedback = document.getElementById('run-feedback');
+    const stages = document.querySelectorAll('.stage-pill');
+
+    btn.disabled = true;
+    btn.textContent = 'Processing Run...';
+    statusText.textContent = 'Pipeline Running';
+    feedback.textContent = 'Reading Google Sheet submissions & running Claude 40-pt rubric...';
+
+    stages.forEach((st) => {
+      st.classList.remove('done');
+      st.classList.remove('active');
+    });
+
+    let step = 0;
+    const interval = setInterval(() => {
+      if (step < stages.length) {
+        if (step > 0) {
+          stages[step - 1].classList.remove('active');
+          stages[step - 1].classList.add('done');
+        }
+        stages[step].classList.add('active');
+        step++;
+      } else {
+        clearInterval(interval);
+        stages[stages.length - 1].classList.remove('active');
+        stages[stages.length - 1].classList.add('done');
+        btn.disabled = false;
+        btn.textContent = 'Run Pipeline Demo';
+        statusText.textContent = 'Pipeline Completed';
+        feedback.textContent = '✓ Run complete: Top 10 shortlisted & Final 3 awarded!';
+        isRunning = false;
+      }
+    }, 350);
+  }
+
+  // Code Inspector Tab Switching
+  const skillTexts = {
+    skill: "---\nname: scholarship-automation\ndescription: Automates the end-to-end evaluation, scoring, shortlisting, and fulfillment workflow for the MPOWER Global Citizen Scholarship. Ingests essay submissions from Google Sheets, runs automated grammar/eligibility gating, performs AI-powered multi-criteria rubric scoring, generates ranked Top 10 candidate shortlists, supports human-in-the-loop review ('Claire selects 3'), sends winner notification emails, tracks document verification, generates award certificates, and coordinates disbursement.\nallowed-tools: google drive sheets_agent docs_agent gmail\n---\n\n# Scholarship Journey Automation (MPOWER Global Citizen Scholarship)\n\nAn autonomous, human-in-the-loop pipeline built for Claude Cowork that automates 8 of the 9 manual steps in the MPOWER Global Citizen Scholarship evaluation cycle, cutting operational turnaround from weeks to days and reducing manual workload by ~95%.\n\n## Overview & Architecture\n\nEach scholarship cycle receives thousands of international student essay submissions answering:\n\"Tell us how your international education will empower your positive impact, whether locally or globally.\"\n\nPreviously, reviewing submissions required manual coordination across spreadsheets, email threads, evaluation rubrics, document requests, and certificate generation. This skill standardizes and automates the entire lifecycle through a structured 9-stage pipeline:\n\nPipeline Architecture:\n[1. Intake] -> [2. Grammar Gate] -> [3. Batch Scoring] -> [4. Top 10 Shortlist]\n                                                               \u2193\n[9. Cheque Disbursement] <- [8. Certificates] <- [7. Documents] <- [6. Winner Outreach] <- [5. Claire Selects 3]\n\n## The 9 Pipeline Stages\n\n### Stage 1: Intake\n- Reads applicant rows from the live Google Sheets submission form via the Google Sheets API.\n- Extracts applicant profile: Full Name, Email, Country of Origin, Target University, Degree Program, Funding Gap ($), and Essay Text (500-700 words).\n- Validates field completeness and normalizes phone/email formats.\n\n### Stage 2: Grammar & Eligibility Gate\n- Performs automated pre-screening for eligibility:\n  - Validates enrollment at an eligible U.S. or Canadian institution.\n  - Enforces word count thresholds (400-800 words).\n  - Flags automated AI plagiarism markers or coherence failures.\n- Non-qualifying entries are archived with audit reason; qualifying entries proceed to Stage 3.\n\n### Stage 3: Batch Rubric Scoring (AI Evaluator)\n- Evaluates qualifying essays using Claude against a 4-dimensional evaluation rubric (Total: 40 points):\n  1. Impact Potential (10 pts): Direct benefit to local community or global challenges; quantifiable outcomes.\n  2. Academic & Career Alignment (10 pts): How well the chosen degree program enables the stated mission.\n  3. Feasibility & Execution Plan (10 pts): Concrete roadmap, realistic milestones, and demonstrated commitment.\n  4. Resilience & Adversity (10 pts): Overcoming financial, socio-economic, or geographic barriers.\n- For every applicant, Claude outputs:\n  - Numerical scores per category (1-10)\n  - Composite Score (weighted 0-100%)\n  - 2-sentence executive summary\n  - Key standout quote\n\n### Stage 4: Top 10 Shortlist Generation\n- Sorts candidate pool by composite score and diversity parameters (geographic diversity across LATAM, Sub-Saharan Africa, South/Southeast Asia).\n- Formats top 10 finalists into the \"Shortlist\" tab of the Google Sheet with clickable links to full essays and synthesized rationale.\n- Updates the live Dashboard status to \"Awaiting Claire's Selection\".\n\n### Stage 5: Human-in-the-Loop Selection (\"Claire Selects 3\")\n- A dedicated review checkpoint where scholarship director (Claire) evaluates the Top 10 dossiers and selects the final Grand Prize ($10,000) and Honorable Mention ($3,000) winners.\n- The pipeline pauses until the 3 selections are confirmed in the control sheet.\n\n### Stage 6: Winner Outreach\n- Drafts personalized congratulatory emails via Gmail API to the 3 selected recipients.\n- Sends warm, encouraging updates to non-winning finalists offering MPOWER credit-building resources and future application waivers.\n\n### Stage 7: Document Verification\n- Automatically issues secure upload requests for required verification items:\n  - Official university offer letter / proof of enrollment\n  - Student visa (F-1 / J-1 / Study Permit)\n  - Government-issued photo ID\n- Tracks verification status in real-time.\n\n### Stage 8: Certificate Generation\n- Generates high-resolution branded award certificates (PDF) with unique verification IDs and digital signatures.\n- Attaches certificates directly to winner email confirmation threads.\n\n### Stage 9: Cheque Disbursement\n- Prepares finance disbursement package (recipient banking wire details, scholarship reference code, currency transfer schedule).\n- Triggers notification to treasury team for fund disbursement directly to university financial aid offices.",
+    rubric: "### 40-Point Multi-Dimensional Evaluation Rubric\n\n| Criterion | Points | Evaluation Guidelines |\n| :--- | :--- | :--- |\n| **1. Impact Potential** | 10 pts | Quantifiable societal or economic benefit to the home country or global community. Clear target beneficiaries and outcome metrics. |\n| **2. Academic Alignment** | 10 pts | Direct synergy between the university curriculum, faculty, research labs, and the student's stated impact roadmap. |\n| **3. Execution Feasibility** | 10 pts | Specific post-graduation plan with realistic milestones, organizational partnerships, and demonstrated leadership track record. |\n| **4. Adversity & Resilience** | 10 pts | First-generation status, financial hardship, geopolitical instability, or overcoming systemic educational barriers. |\n\n**Scoring Classification:**\n- **36 - 40 pts:** Tier 1 Shortlist (Automatic Top 10 Finalist consideration)\n- **30 - 35 pts:** Tier 2 Honorable Mention Pool\n- **20 - 29 pts:** Qualified Applicant Pool\n- **< 20 pts:** Gated / Archive",
+    arch: "### End-to-End Data & Integration Flow\n\n1. [Google Form / Portal] -> Submissions Google Sheet (`SUBMISSIONS_SHEET_ID`)\n2. [Cloud Trigger / Webhook] -> Triggers `scholarship-automation` Claude Skill\n3. [Claude Intelligence Layer]:\n   - Batch parses 500-700 word essays against the 40-point rubric\n   - Normalizes qualitative reasoning into structured JSON: `{candidate_id, scores: {impact, academic, feasibility, resilience}, composite_score, summary, standout_quote}`\n   - Ranks candidate pool and writes Top 10 finalist dossiers to the `SHORTLIST` tab\n4. [Live Dashboard UI]:\n   - Web frontend reads `SHORTLIST` and `CONTROL` tabs in real time\n   - Stage indicators update dynamically across the 9 pipeline checkpoints\n5. [Human Milestone Gate]:\n   - Director evaluates Top 10 candidates; marks 3 finalists in Google Sheets (`Claire Selects 3`)\n6. [Fulfillment & Delivery]:\n   - Gmail API drafts personalized award letters and documents requests\n   - PDF Certificate generator attaches digitally signed certificates\n   - Finance Webhook notifies university financial aid offices for cheque wire disbursement"
+  };
+
+  function switchSkillTab(tab) {
+    const codeView = document.getElementById('skill-code-view');
+    const tabs = document.querySelectorAll('.code-tab');
+    tabs.forEach(t => t.classList.remove('active'));
+
+    if (tab === 'skill') {
+      codeView.textContent = skillTexts.skill;
+      tabs[0].classList.add('active');
+    } else if (tab === 'rubric') {
+      codeView.textContent = skillTexts.rubric;
+      tabs[1].classList.add('active');
+    } else if (tab === 'arch') {
+      codeView.textContent = skillTexts.arch;
+      tabs[2].classList.add('active');
+    }
+  }
+
+  function copySkillText() {
+    const codeView = document.getElementById('skill-code-view');
+    navigator.clipboard.writeText(codeView.textContent).then(() => {
+      const lbl = document.getElementById('copy-label');
+      const icon = document.getElementById('copy-icon');
+      lbl.textContent = 'Copied!';
+      icon.textContent = '✓';
+      setTimeout(() => {
+        lbl.textContent = 'Copy SKILL.md';
+        icon.textContent = '📋';
+      }, 2000);
+    }).catch(err => {
+      alert('Copied to clipboard!');
+    });
+  }
+</script>
+
+</body>
+</html>
