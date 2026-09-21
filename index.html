@@ -529,6 +529,45 @@
   .contact-line { color:var(--ink-soft); margin:0 0 1.4rem; font-size:1.05rem; }
   .contact-actions { display:flex; flex-wrap:wrap; gap:.7rem; }
   .contact-actions .btn { min-height:44px; }
+
+  /* ===== Independent projects ===== */
+  .tool-card {
+    background:var(--card); border:1px solid var(--card-border);
+    border-radius:.9rem; padding:1.5rem; margin-bottom:1.25rem;
+    box-shadow:0 2px 8px rgba(22,36,61,.03);
+  }
+  .tool-card:last-child { margin-bottom:0; }
+  .tool-card-top {
+    display:flex; justify-content:space-between; align-items:baseline;
+    gap:.75rem; flex-wrap:wrap; margin-bottom:.5rem;
+  }
+  .tool-card h3 {
+    font-family:var(--display); font-size:1.15rem; font-weight:700;
+    margin:0; letter-spacing:-.01em;
+  }
+  .tool-card .idx {
+    font-family:var(--mono); font-size:.72rem; color:var(--accent);
+    letter-spacing:.1em; text-transform:uppercase;
+  }
+  .tool-card .problem {
+    color:var(--ink-soft); font-size:.95rem; margin:0 0 1rem; max-width:62ch;
+  }
+  .tool-metrics {
+    display:grid; grid-template-columns:repeat(auto-fit,minmax(150px,1fr));
+    gap:.6rem; margin-bottom:1rem;
+  }
+  .tool-metric { background:#fff; border:1px solid var(--line); border-radius:.5rem; padding:.7rem .8rem; }
+  .tool-metric b {
+    display:block; font-family:var(--display); font-weight:700;
+    font-size:1.1rem; color:var(--accent); line-height:1.15; margin-bottom:.15rem;
+  }
+  .tool-metric span { font-size:.76rem; color:var(--ink-soft); line-height:1.3; display:block; }
+  .tool-card .chips { margin-bottom:1rem; }
+  .tool-card .chips li { font-size:.78rem; padding:.25rem .6rem; }
+  .tool-note {
+    font-size:.82rem; color:var(--ink-soft); margin:.9rem 0 0;
+    padding-top:.9rem; border-top:1px solid var(--line);
+  }
   .contact-fallback { margin:1.1rem 0 0; color:var(--ink-soft); font-size:.95rem; word-break:break-word; }
 
   footer { padding:2rem 0 3rem; color:var(--ink-soft); font-size:.85rem; border-top:1px solid var(--line); }
@@ -558,6 +597,7 @@
     <ul class="nav-links">
       <li><a href="#about">About</a></li>
       <li><a href="#ai-automation">AI Work <span class="badge-new">New</span></a></li>
+      <li><a href="#independent-projects">Projects</a></li>
       <li><a href="#experience">Experience</a></li>
       <li><a href="#skills">Skills</a></li>
       <li><a href="#contact">Contact</a></li>
@@ -1097,6 +1137,83 @@ Pipeline Architecture:
             </div>
           </div>
         </div>
+      </article>
+    </div>
+  </section>
+
+
+  <!-- ===== INDEPENDENT PROJECTS ===== -->
+  <section id="independent-projects" aria-labelledby="ip-h">
+    <div class="wrap">
+      <p class="eyebrow">Independent Projects</p>
+      <h2 id="ip-h">Tools I built on my own time</h2>
+      <p class="section-intro">Three working tools for problems every marketing team has and nobody owns. Each one runs entirely in your browser — no backend, no sign-up, no sample video. Open them and put your own data in.</p>
+      <p class="section-intro" style="margin-top:-1.4rem">They share a deliberate design: <strong>the engine is deterministic, and AI is an optional layer on top</strong>. The taxonomy rules, the segment maths and the confidence intervals are real computation you can audit and reproduce. A model can improve the tagging and write the copy, but its output is validated by the same engine — it never gets to decide what counts as a result.</p>
+      <article class="tool-card">
+        <div class="tool-card-top">
+          <h3>Campaign UTM &amp; Taxonomy Governance Engine</h3>
+          <span class="idx">Build 01</span>
+        </div>
+        <p class="problem">Nobody governs UTM parameters, so one real campaign shows up in analytics as four rows with the spend split between them. Every optimisation decision made before the monthly cleanup is made on broken numbers.</p>
+        <div class="tool-metrics">
+          <div class="tool-metric"><b>71%</b><span>of tracking links carried at least one violation</span></div>
+          <div class="tool-metric"><b>9 &rarr; 6</b><span>phantom campaigns collapsed into real ones</span></div>
+          <div class="tool-metric"><b>$18,250</b><span>spend found sitting in mis-named duplicate rows</span></div>
+          <div class="tool-metric"><b>14 / 20</b><span>problem links fixed with no human involved</span></div>
+        </div>
+        <ul class="chips">
+          <li>Levenshtein clustering</li>
+          <li>Rule engine</li>
+          <li>Auto-fix</li>
+          <li>Taxonomy export</li>
+          <li>Zero dependencies</li>
+        </ul>
+        <a class="btn btn-accent btn-sm" href="tools/utm-governance.html">Open the live tool &rarr;</a>
+        <p class="tool-note">Clusters campaign names structurally rather than by raw edit distance — <code>in_</code> and <code>ph_</code> are two characters apart but are different countries, and merging them would be worse than the problem it solves.</p>
+      </article>
+      <article class="tool-card">
+        <div class="tool-card-top">
+          <h3>Creative Performance Post-Mortem</h3>
+          <span class="idx">Build 02</span>
+        </div>
+        <p class="problem">Ad platforms report performance per creative, never per angle — so teams relearn the same lesson every quarter, and usually scale a “winner” that was four conversions of noise.</p>
+        <div class="tool-metrics">
+          <div class="tool-metric"><b>38 &rarr; 6</b><span>creatives reduced to angle-level decisions</span></div>
+          <div class="tool-metric"><b>4 / 6</b><span>angles with a result the data can actually support</span></div>
+          <div class="tool-metric"><b>$18,916</b><span>spend in angles confidently below breakeven</span></div>
+          <div class="tool-metric"><b>17 / 36</b><span>hook &times; angle combinations ever tested</span></div>
+        </div>
+        <ul class="chips">
+          <li>Confidence gating</li>
+          <li>Auto-tagging</li>
+          <li>Reallocation model</li>
+          <li>CVD-safe charts</li>
+          <li>Hand-rolled SVG</li>
+        </ul>
+        <a class="btn btn-accent btn-sm" href="tools/creative-angle-miner.html">Open the live tool &rarr;</a>
+        <p class="tool-note">Every result carries a 95% interval, and any group whose interval straddles the blended average is labelled <em>not a finding</em>. A dashboard shows you numbers; this shows you which ones you are allowed to believe.</p>
+      </article>
+      <article class="tool-card">
+        <div class="tool-card-top">
+          <h3>Lifecycle Campaign Multiplier</h3>
+          <span class="idx">Build 03</span>
+        </div>
+        <p class="problem">One brief has to become Email, SMS, WhatsApp and Push copy for every lifecycle segment, each with hard limits nobody remembers. Copy goes to upload, bounces back, and someone spends an afternoon counting characters.</p>
+        <div class="tool-metrics">
+          <div class="tool-metric"><b>1 &rarr; 12</b><span>brief to channel-ready, validated variants</span></div>
+          <div class="tool-metric"><b>12 / 12</b><span>pass every channel rule on first generation</span></div>
+          <div class="tool-metric"><b>$300</b><span>hidden SMS cost exposed by a single curly quote</span></div>
+          <div class="tool-metric"><b>4 &times; 3</b><span>channels &times; lifecycle segments covered</span></div>
+        </div>
+        <ul class="chips">
+          <li>GSM-7 / UCS-2 maths</li>
+          <li>WhatsApp template rules</li>
+          <li>Live validation</li>
+          <li>Sequence planner</li>
+          <li>ESP-ready export</li>
+        </ul>
+        <a class="btn btn-accent btn-sm" href="tools/lifecycle-multiplier.html">Open the live tool &rarr;</a>
+        <p class="tool-note">Implements real GSM 03.38 encoding detection. One smart quote pasted from a doc drops the SMS limit from 160 to 70 and doubles the send cost — the tool catches it, names the character, and prices it.</p>
       </article>
     </div>
   </section>
