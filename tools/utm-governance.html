@@ -1,0 +1,1052 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Campaign UTM &amp; Taxonomy Governance Engine — Priyanshu Goyal</title>
+<meta name="description" content="Audits campaign tracking links against a governed taxonomy, collapses phantom campaigns, and quantifies how much ad spend is sitting in misattributed rows.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="tool-kit.css">
+</head>
+<body>
+
+<div class="tool-bar">
+  <div class="wrap tool-bar-inner">
+    <a class="back-link" href="../index.html">&larr; Priyanshu Goyal</a>
+    <span class="tool-bar-tag">Independent build &middot; 01</span>
+  </div>
+</div>
+
+<header class="wrap tool-header">
+  <p class="eyebrow">Marketing Ops Automation</p>
+  <h1>Campaign UTM &amp; Taxonomy Governance Engine</h1>
+  <p class="tool-sub">Finds every broken tracking link before it poisons your attribution — then fixes them, collapses the duplicates, and hands your team a naming standard they can't break.</p>
+
+  <div class="problem-box">
+    <h2>The problem</h2>
+    <p>Nobody governs UTM parameters. One person writes <code>Facebook</code>, another writes <code>fb</code>, a third leaves a space in the campaign name. Analytics tools treat every variant as a separate campaign, so one real campaign shows up as four rows with the spend split between them. Every month someone spends hours reconciling it in a spreadsheet, and every optimisation decision before that cleanup was made on broken numbers.</p>
+  </div>
+
+  <div class="metrics-ribbon" id="metrics"></div>
+</header>
+
+<main class="wrap">
+
+  <!-- ============ INPUT ============ -->
+  <section class="tool-section" style="border-top:none">
+    <h2>1. Load campaign links</h2>
+    <p class="section-intro">Paste tracking URLs (one per line), or a CSV with a <code>url</code> column and optional <code>spend</code> column. Two realistic datasets are loaded below — both are deliberately messy in the ways real accounts are.</p>
+
+    <div class="panel">
+      <div class="panel-head">
+        <h3>Input</h3>
+        <div class="seg" role="group" aria-label="Choose dataset">
+          <button type="button" data-ds="fintech" aria-pressed="true">Fintech / lending</button>
+          <button type="button" data-ds="consumer" aria-pressed="false">Consumer D2C</button>
+          <button type="button" data-ds="blank" aria-pressed="false">Your own data</button>
+        </div>
+      </div>
+
+      <div class="field">
+        <label for="raw">Campaign URLs or CSV</label>
+        <textarea id="raw" class="input" rows="9" spellcheck="false" aria-describedby="rawhint"></textarea>
+        <p id="rawhint" class="hint" style="font-size:.78rem;color:var(--ink-soft);margin:.4rem 0 0">
+          Accepts <code>url</code> alone, or <code>url,spend</code> as CSV with a header row. Spend is optional — it only powers the "spend at risk" figure.
+        </p>
+      </div>
+
+      <div class="btn-row">
+        <button class="btn btn-primary" id="run">Run audit</button>
+        <button class="btn btn-ghost btn-sm" id="clear">Clear</button>
+        <span id="parsemsg" style="font-size:.82rem;color:var(--ink-soft)"></span>
+      </div>
+    </div>
+
+    <div class="panel" id="taxpanel">
+      <div class="panel-head">
+        <h3>Taxonomy registry</h3>
+        <span class="hint">These are the rules the audit enforces. Edit them and re-run.</span>
+      </div>
+      <div class="grid-2">
+        <div class="field">
+          <label for="okSources">Approved <code>utm_source</code> values</label>
+          <textarea id="okSources" class="input" rows="3" spellcheck="false"></textarea>
+        </div>
+        <div class="field">
+          <label for="okMediums">Approved <code>utm_medium</code> values</label>
+          <textarea id="okMediums" class="input" rows="3" spellcheck="false"></textarea>
+        </div>
+      </div>
+      <div class="field" style="margin-bottom:0">
+        <label for="pattern">Campaign naming convention</label>
+        <input id="pattern" class="input" spellcheck="false" value="{geo}_{channel}_{product}_{objective}_{yyyymm}">
+        <p style="font-size:.78rem;color:var(--ink-soft);margin:.4rem 0 0">
+          Tokens: <code>{geo}</code> 2-letter code or <code>global</code> &middot; <code>{yyyymm}</code> 6 digits or <code>ongoing</code> &middot; all others lowercase alphanumeric.
+        </p>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ RESULTS ============ -->
+  <section class="tool-section" id="resultsSection" hidden>
+    <h2>2. Audit results</h2>
+    <p class="section-intro">Every violation below is detected deterministically — no model involved. Severity reflects whether the issue actually splits or destroys an attribution row.</p>
+
+    <div id="violationSummary"></div>
+
+    <div class="panel">
+      <div class="panel-head">
+        <h3>Link-by-link audit</h3>
+        <div class="btn-row">
+          <button class="btn btn-ghost btn-sm" id="filterToggle" aria-pressed="true">Show only problems</button>
+          <button class="btn btn-accent btn-sm" id="fixAll">Fix all auto-fixable</button>
+          <button class="btn btn-ghost btn-sm" id="exportCsv">Export CSV</button>
+          <button class="btn btn-ghost btn-sm" id="copyFixed">Copy fixed URLs</button>
+        </div>
+      </div>
+      <div class="table-wrap" style="max-height:32rem">
+        <table class="data" id="auditTable">
+          <thead><tr>
+            <th>#</th><th>Source</th><th>Medium</th><th>Campaign</th>
+            <th class="num-cell">Spend</th><th>Issues</th><th>Corrected link</th>
+          </tr></thead>
+          <tbody></tbody>
+        </table>
+      </div>
+      <p id="fixnote" style="font-size:.78rem;color:var(--ink-soft);margin:.7rem 0 0"></p>
+    </div>
+  </section>
+
+  <!-- ============ CLUSTERS ============ -->
+  <section class="tool-section" id="clusterSection" hidden>
+    <h2>3. Phantom campaigns</h2>
+    <p class="section-intro">Campaign names are normalised (case, separators, whitespace stripped) and then compared with Levenshtein edit distance to catch typos. Each cluster below is <em>one real campaign</em> that your analytics tool is currently reporting as several.</p>
+    <div id="clusters"></div>
+  </section>
+
+  <!-- ============ BUILDER ============ -->
+  <section class="tool-section" id="builderSection">
+    <h2>4. Governed link builder</h2>
+    <p class="section-intro">The fix isn't cleaning links once — it's making bad links impossible to create. This builder only emits URLs that satisfy the registry and the naming convention above.</p>
+
+    <div class="panel">
+      <div class="grid-2">
+        <div class="field">
+          <label for="bUrl">Destination URL</label>
+          <input id="bUrl" class="input" value="https://www.example.com/apply" spellcheck="false">
+        </div>
+        <div class="field">
+          <label for="bSource">Source</label>
+          <select id="bSource" class="input"></select>
+        </div>
+      </div>
+      <div class="grid-3">
+        <div class="field">
+          <label for="bMedium">Medium</label>
+          <select id="bMedium" class="input"></select>
+        </div>
+        <div class="field">
+          <label for="bGeo">Geo</label>
+          <input id="bGeo" class="input" value="in" maxlength="6" spellcheck="false">
+        </div>
+        <div class="field">
+          <label for="bDate">Year + month</label>
+          <input id="bDate" class="input" value="202509" maxlength="7" spellcheck="false">
+        </div>
+      </div>
+      <div class="grid-3">
+        <div class="field">
+          <label for="bChannel">Channel</label>
+          <input id="bChannel" class="input" value="paidsocial" spellcheck="false">
+        </div>
+        <div class="field">
+          <label for="bProduct">Product</label>
+          <input id="bProduct" class="input" value="loan" spellcheck="false">
+        </div>
+        <div class="field">
+          <label for="bObjective">Objective</label>
+          <input id="bObjective" class="input" value="apply" spellcheck="false">
+        </div>
+      </div>
+
+      <div id="builderOut"></div>
+
+      <div class="btn-row" style="margin-top:.9rem">
+        <button class="btn btn-primary btn-sm" id="copyBuilt">Copy link</button>
+        <button class="btn btn-ghost btn-sm" id="dlStandard">Download taxonomy standard (.md)</button>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ HOW ============ -->
+  <section class="tool-section">
+    <h2>How it works</h2>
+    <p class="section-intro">The audit is pure deterministic logic — it runs identically every time, with or without an API key. That matters: governance rules you can't reproduce aren't governance.</p>
+    <div class="arch-steps">
+      <div class="arch-step"><div class="arch-num">1</div><div class="arch-content">
+        <h6>Parse</h6><p>Each row is parsed with the native <code>URL</code> API. Malformed links are caught and reported rather than silently dropped.</p></div></div>
+      <div class="arch-step"><div class="arch-num">2</div><div class="arch-content">
+        <h6>Validate against registry</h6><p>Source and medium are checked against approved lists, plus a synonym map that resolves <code>ppc</code>, <code>paid_search</code> and <code>cpc</code> to one canonical value.</p></div></div>
+      <div class="arch-step"><div class="arch-num">3</div><div class="arch-content">
+        <h6>Cluster</h6><p>Campaign names are normalised and compared with Levenshtein distance scaled to name length, so typos merge but genuinely different campaigns stay apart.</p></div></div>
+      <div class="arch-step"><div class="arch-num">4</div><div class="arch-content">
+        <h6>Quantify</h6><p>Spend attached to non-canonical variants is summed — turning a hygiene problem into a number a CMO will act on.</p></div></div>
+      <div class="arch-step"><div class="arch-num">5</div><div class="arch-content">
+        <h6>Auto-fix</h6><p>Corrected URLs are regenerated from canonical values. Anything the engine can't fix without guessing is flagged for a human instead of invented.</p></div></div>
+      <div class="arch-step"><div class="arch-num">6</div><div class="arch-content">
+        <h6>Prevent</h6><p>The builder and the exported standard close the loop, so the same mess doesn't reappear next quarter.</p></div></div>
+    </div>
+
+    <div class="ai-panel" data-open="false" id="aiPanel">
+      <button class="ai-toggle" id="aiToggle" aria-expanded="false">
+        <span>Optional: add live AI commentary</span><span class="chev">&#9660;</span>
+      </button>
+      <div class="ai-body" style="margin-top:.9rem">
+        <p>Everything above works with no key. Adding one lets Claude write the plain-English rationale section of the exported taxonomy standard — the part that gets stakeholders to actually follow it. Your key is held in <code>sessionStorage</code>, sent only to <code>api.anthropic.com</code>, and dropped when the tab closes.</p>
+        <div class="field">
+          <label class="field-label" for="apiKey">Anthropic API key</label>
+          <input id="apiKey" class="input" type="password" placeholder="sk-ant-..." autocomplete="off" spellcheck="false">
+        </div>
+        <div class="btn-row">
+          <button class="btn btn-ghost btn-sm" id="aiRun">Generate rationale</button>
+          <button class="btn btn-ghost btn-sm" id="aiClear">Clear key</button>
+        </div>
+        <div class="ai-status" id="aiStatus"></div>
+        <div id="aiOut"></div>
+      </div>
+    </div>
+  </section>
+
+  <div class="footer-note">
+    <p>Built by Priyanshu Goyal as an independent project. No backend, no tracking, no data leaves your browser. <a href="../index.html">Back to portfolio</a></p>
+  </div>
+</main>
+
+<script>
+(function(){
+"use strict";
+
+/* ========================================================================
+   DATASETS
+   ======================================================================== */
+const DATASETS = {
+  fintech: {
+    sources: "google, facebook, instagram, linkedin, youtube, tiktok, twitter, email, whatsapp, affiliate, ambassador, quora, reddit",
+    mediums: "cpc, paid-social, email, referral, organic-social, affiliate, display, sms, push",
+    pattern: "{geo}_{channel}_{product}_{objective}_{yyyymm}",
+    builder: "https://www.mpowerfinancing.com/apply",
+    csv: `url,spend
+https://www.mpowerfinancing.com/apply?utm_source=facebook&utm_medium=paid-social&utm_campaign=in_paidsocial_loan_apply_202508,4200
+https://www.mpowerfinancing.com/apply?utm_source=Facebook&utm_medium=paid_social&utm_campaign=IN_PaidSocial_Loan_Apply_202508,3800
+https://www.mpowerfinancing.com/apply?utm_source=fb&utm_medium=cpc&utm_campaign=in paidsocial loan apply 202508,2100
+https://www.mpowerfinancing.com/apply?utm_source=google&utm_medium=cpc&utm_campaign=ng_search_loan_apply_202508,5600
+https://www.mpowerfinancing.com/apply?utm_source=Google&utm_medium=ppc&utm_campaign=NG_Search_Loan_Apply_202508,4100
+https://www.mpowerfinancing.com/apply?utm_source=google&utm_medium=paid_search&utm_campaign=ng-search-loan-apply-202508,1900
+https://www.mpowerfinancing.com/apply?utm_source=instagram&utm_medium=paid-social&utm_campaign=br_paidsocial_loan_awareness_202507,3300
+https://www.mpowerfinancing.com/apply?utm_source=IG&utm_medium=social&utm_campaign=BR Paid Social Loan Awareness 202507,2750
+https://www.mpowerfinancing.com/refer?utm_source=ambassador&utm_medium=referral&utm_campaign=global_ambassador_loan_referral_ongoing,0
+https://www.mpowerfinancing.com/refer?utm_source=ambassador&utm_medium=refferal&utm_campaign=global_ambassador_loan_referal_ongoing,0
+https://www.mpowerfinancing.com/apply?utm_source=linkedin&utm_medium=paid-social&utm_campaign=in_paidsocial_loan_retarget_202508,2400
+https://www.mpowerfinancing.com/apply?utm_source=LinkedIn&utm_medium=paidsocial&utm_campaign=in_paidsocial_loan_retarget_202508,1600
+https://www.mpowerfinancing.com/apply?utm_medium=email&utm_campaign=global_email_loan_nurture_202508,0
+https://www.mpowerfinancing.com/apply?utm_source=newsletter&utm_campaign=global_email_loan_nurture_202508,0
+https://www.mpowerfinancing.com/apply?utm_source=email&utm_medium=e-mail&utm_campaign=global_email_loan_nurture_202508,0
+https://www.mpowerfinancing.com/apply?utm_source=youtube&utm_medium=video&utm_campaign=ke_video_loan_awareness_202507,1800
+https://www.mpowerfinancing.com/apply?utm_source=yt&utm_medium=display&utm_campaign=ke_video_loan_awareness_202507,900
+https://www.mpowerfinancing.com/apply?utm_source=tiktok&utm_medium=paid-social&utm_campaign=ph_paidsocial_loan_apply_202508,2200
+https://www.mpowerfinancing.com/apply?utm_source=TikTok&utm_medium=Paid-Social&utm_campaign=PH_PaidSocial_Loan_Apply_202508,1750
+https://www.mpowerfinancing.com/apply?utm_source=quora&utm_medium=cpc&utm_campaign=no-cosigner-push,1200
+https://www.mpowerfinancing.com/apply?utm_source=quora&utm_medium=cpc&utm_campaign=no_cosigner_push,800
+https://www.mpowerfinancing.com/apply?utm_source=reddit&utm_medium=cpc&utm_campaign=No-Cosigner-Push,650
+https://www.mpowerfinancing.com/apply?utm_source=affiliate&utm_medium=affiliate&utm_campaign=ng_affiliate_loan_apply_202508,0
+https://www.mpowerfinancing.com/apply?utm_source=affiliates&utm_medium=affiliate&utm_campaign=ng_affiliate_loan_apply_202508,0
+https://www.mpowerfinancing.com/apply?utm_source=&utm_medium=cpc&utm_campaign=in_search_loan_apply_202509,3100
+https://www.mpowerfinancing.com/apply?utm_source=google&utm_medium=cpc,2700
+https://www.mpowerfinancing.com/apply?utm_source=whatsapp&utm_medium=sms&utm_campaign=in_sms_loan_reminder_202508,0
+https://www.mpowerfinancing.com/apply?utm_source=bing&utm_medium=cpc&utm_campaign=us_search_loan_apply_202508,1400`
+  },
+  consumer: {
+    sources: "google, meta, instagram, tiktok, pinterest, youtube, email, klaviyo, influencer, affiliate, reddit",
+    mediums: "cpc, paid-social, email, sms, referral, affiliate, organic-social, display",
+    pattern: "{geo}_{channel}_{product}_{objective}_{yyyymm}",
+    builder: "https://lumoraskin.com/shop",
+    csv: `url,spend
+https://lumoraskin.com/shop?utm_source=meta&utm_medium=paid-social&utm_campaign=us_paidsocial_serum_acquire_202508,6400
+https://lumoraskin.com/shop?utm_source=Meta&utm_medium=paidsocial&utm_campaign=US_PaidSocial_Serum_Acquire_202508,5100
+https://lumoraskin.com/shop?utm_source=facebook&utm_medium=paid-social&utm_campaign=us-paidsocial-serum-acquire-202508,2900
+https://lumoraskin.com/shop?utm_source=tiktok&utm_medium=paid-social&utm_campaign=us_paidsocial_cleanser_launch_202509,4800
+https://lumoraskin.com/shop?utm_source=TikTok&utm_medium=Paid-Social&utm_campaign=us_paidsocial_cleanser_launch_202509,3600
+https://lumoraskin.com/shop?utm_source=google&utm_medium=cpc&utm_campaign=us_search_serum_acquire_202508,7200
+https://lumoraskin.com/shop?utm_source=google&utm_medium=ppc&utm_campaign=us_search_serum_acquire_202508,3400
+https://lumoraskin.com/shop?utm_source=google&utm_medium=cpc&utm_campaign=us_search_serum_aquire_202508,1500
+https://lumoraskin.com/shop?utm_source=klaviyo&utm_medium=email&utm_campaign=global_email_bundle_winback_202508,0
+https://lumoraskin.com/shop?utm_source=klaviyo&utm_medium=e-mail&utm_campaign=Global_Email_Bundle_Winback_202508,0
+https://lumoraskin.com/shop?utm_source=klaviyo&utm_medium=email&utm_campaign=global email bundle winback 202508,0
+https://lumoraskin.com/shop?utm_source=pinterest&utm_medium=paid-social&utm_campaign=ca_paidsocial_serum_awareness_202507,2100
+https://lumoraskin.com/shop?utm_source=influencer&utm_medium=referral&utm_campaign=us_influencer_serum_launch_202509,5000
+https://lumoraskin.com/shop?utm_source=influencer&utm_medium=refferal&utm_campaign=us_influencer_serum_launch_202509,2200
+https://lumoraskin.com/shop?utm_source=Influencer&utm_medium=referral&utm_campaign=US Influencer Serum Launch 202509,1800
+https://lumoraskin.com/shop?utm_source=&utm_medium=paid-social&utm_campaign=uk_paidsocial_serum_acquire_202509,2600
+https://lumoraskin.com/shop?utm_source=meta&utm_medium=paid-social,3300
+https://lumoraskin.com/shop?utm_source=snapchat&utm_medium=paid-social&utm_campaign=us_paidsocial_cleanser_acquire_202509,1900
+https://lumoraskin.com/shop?utm_source=affiliate&utm_medium=affiliate&utm_campaign=us_affiliate_bundle_acquire_202508,0
+https://lumoraskin.com/shop?utm_source=affiliates&utm_medium=Affiliate&utm_campaign=us_affiliate_bundle_acquire_202508,0
+https://lumoraskin.com/shop?utm_source=email&utm_medium=sms&utm_campaign=summer-sale,1100
+https://lumoraskin.com/shop?utm_source=email&utm_medium=sms&utm_campaign=Summer_Sale,700
+https://lumoraskin.com/shop?utm_source=youtube&utm_medium=video&utm_campaign=us_video_serum_awareness_202508,2400
+https://lumoraskin.com/shop?utm_source=reddit&utm_medium=cpc&utm_campaign=us_search_cleanser_acquire_202509,800`
+  },
+  blank: { sources:"", mediums:"", pattern:"{geo}_{channel}_{product}_{objective}_{yyyymm}", builder:"https://www.example.com/apply", csv:"" }
+};
+
+/* Synonym maps — non-canonical value -> canonical value */
+const MEDIUM_SYNONYMS = {
+  "ppc":"cpc", "paid_search":"cpc", "paidsearch":"cpc", "paid-search":"cpc", "adwords":"cpc",
+  "paid_social":"paid-social", "paidsocial":"paid-social", "paid social":"paid-social",
+  "social":"paid-social", "social-paid":"paid-social", "socialpaid":"paid-social",
+  "e-mail":"email", "e_mail":"email", "mail":"email", "newsletter":"email", "emails":"email",
+  "refferal":"referral", "referal":"referral", "refer":"referral", "referrals":"referral",
+  "affiliates":"affiliate", "affilate":"affiliate",
+  "organic_social":"organic-social", "organicsocial":"organic-social",
+  "banner":"display", "text-message":"sms", "txt":"sms"
+};
+const SOURCE_SYNONYMS = {
+  "fb":"facebook", "facebook.com":"facebook", "meta-ads":"meta",
+  "ig":"instagram", "insta":"instagram", "instagram.com":"instagram",
+  "yt":"youtube", "youtube.com":"youtube",
+  "google.com":"google", "adwords":"google", "googleads":"google",
+  "li":"linkedin", "linkedin.com":"linkedin",
+  "affiliates":"affiliate", "ambassadors":"ambassador",
+  "newsletter":"email", "mailchimp":"email", "tt":"tiktok"
+};
+/* Fallback medium inferred from source — always surfaced as a suggestion, never silently applied */
+const DEFAULT_MEDIUM = {
+  google:"cpc", bing:"cpc", facebook:"paid-social", meta:"paid-social", instagram:"paid-social",
+  linkedin:"paid-social", tiktok:"paid-social", pinterest:"paid-social", snapchat:"paid-social",
+  twitter:"paid-social", youtube:"display", email:"email", klaviyo:"email", whatsapp:"sms",
+  affiliate:"affiliate", ambassador:"referral", influencer:"referral", quora:"cpc", reddit:"cpc"
+};
+
+const REQUIRED = ["utm_source","utm_medium","utm_campaign"];
+
+/* ========================================================================
+   VIOLATION DEFINITIONS
+   severity: high = destroys or splits an attribution row
+   ======================================================================== */
+const RULES = {
+  MISSING:      { sev:"high",   label:"Missing param",       why:"Traffic lands in (not set) / (direct) and cannot be credited to the campaign at all." },
+  EMPTY:        { sev:"high",   label:"Empty value",         why:"The parameter is present but blank, which analytics tools treat the same as missing." },
+  WHITESPACE:   { sev:"high",   label:"Whitespace",          why:"Spaces get encoded inconsistently across platforms, creating a separate row per encoding." },
+  CASE:         { sev:"high",   label:"Casing",              why:"Most analytics tools are case-sensitive, so Facebook and facebook become two different sources." },
+  NONCANON:     { sev:"high",   label:"Non-canonical value", why:"A synonym of an approved value. Splits one channel across multiple rows." },
+  UNKNOWN:      { sev:"medium", label:"Not in registry",     why:"Either a genuinely new channel that should be added to the registry, or a typo. Needs a human decision." },
+  CONVENTION:   { sev:"medium", label:"Breaks convention",   why:"Cannot be parsed into geo / channel / product / objective / date, so it can't be grouped or filtered in reporting." },
+  DUPLICATE:    { sev:"high",   label:"Duplicate campaign",  why:"Another link points at the same real campaign under a different name, splitting its spend and conversions." },
+  SPECIAL:      { sev:"medium", label:"Special characters",  why:"Characters that require encoding tend to be encoded differently by different tools." },
+  MALFORMED:    { sev:"high",   label:"Malformed URL",       why:"The URL could not be parsed at all and will not track." }
+};
+
+/* ========================================================================
+   ENGINE
+   ======================================================================== */
+function levenshtein(a,b){
+  if(a===b) return 0;
+  if(!a.length) return b.length;
+  if(!b.length) return a.length;
+  let prev = new Array(b.length+1);
+  for(let j=0;j<=b.length;j++) prev[j]=j;
+  for(let i=1;i<=a.length;i++){
+    const cur=[i];
+    for(let j=1;j<=b.length;j++){
+      cur[j] = Math.min(
+        prev[j]+1,
+        cur[j-1]+1,
+        prev[j-1] + (a[i-1]===b[j-1]?0:1)
+      );
+    }
+    prev=cur;
+  }
+  return prev[b.length];
+}
+
+/* Strip everything that is purely cosmetic: case, separators, whitespace */
+function normKey(s){ return (s||"").toLowerCase().replace(/[^a-z0-9]/g,""); }
+
+function tokenize(s){ return (s||"").toLowerCase().split(/[^a-z0-9]+/).filter(Boolean); }
+
+/* Two campaign names describe the same campaign only if they differ by a typo in exactly
+   ONE long, non-numeric token. Blind edit distance is unsafe here: geo codes (in/ph/ng/us)
+   and dates (202508/202509) sit 1-2 edits apart but are completely different campaigns. */
+function isTypoVariant(a, b){
+  if(a.length !== b.length) return false;
+  let diffs = 0;
+  for(let i=0;i<a.length;i++){
+    if(a[i]===b[i]) continue;
+    if(++diffs > 1) return false;
+    const x=a[i], y=b[i];
+    if(/^\d+$/.test(x) || /^\d+$/.test(y)) return false;  // dates and ids must match exactly
+    if(Math.min(x.length,y.length) < 5) return false;     // geo codes and short tokens too
+    if(levenshtein(x,y) > 1) return false;
+  }
+  return diffs === 1;
+}
+
+function parseInput(text){
+  const lines = text.split(/\r?\n/).map(l=>l.trim()).filter(Boolean);
+  if(!lines.length) return [];
+  const rows=[];
+  let start=0;
+  const isCsv = /(^|,)\s*url\s*(,|$)/i.test(lines[0]);
+  let urlIdx=0, spendIdx=-1;
+  if(isCsv){
+    const hdr = lines[0].split(",").map(h=>h.trim().toLowerCase());
+    urlIdx = hdr.indexOf("url");
+    spendIdx = hdr.findIndex(h=>h==="spend"||h==="cost");
+    start=1;
+  }
+  for(let i=start;i<lines.length;i++){
+    const line=lines[i];
+    let url=line, spend=null;
+    if(isCsv){
+      // URLs contain commas rarely, but spend is always the LAST field — split from the right
+      const parts=line.split(",");
+      if(spendIdx>-1 && parts.length>1){
+        const maybe = parts[parts.length-1].trim();
+        if(/^-?[\d.]+$/.test(maybe)){
+          spend=parseFloat(maybe);
+          url=parts.slice(0,parts.length-1).join(",").trim();
+        } else { url=line; }
+      } else {
+        url = parts[urlIdx!==-1?urlIdx:0].trim();
+      }
+    }
+    if(!url) continue;
+    rows.push({raw:url, spend:spend});
+  }
+  return rows;
+}
+
+function auditRows(rows, cfg){
+  const okSources = new Set(cfg.sources);
+  const okMediums = new Set(cfg.mediums);
+  const convRe = buildConventionRegex(cfg.pattern);
+
+  const items = rows.map((r,i)=>{
+    const item = {
+      idx:i+1, raw:r.raw, spend:r.spend, issues:[], params:{}, base:"",
+      canonical:{}, fixable:true, malformed:false
+    };
+    let u;
+    try { u = new URL(r.raw); }
+    catch(e){
+      item.malformed=true; item.fixable=false;
+      item.issues.push({code:"MALFORMED", detail:"Could not parse as a URL"});
+      return item;
+    }
+    item.base = u.origin + u.pathname;
+    const q = u.searchParams;
+    item.otherParams = [];
+    for(const [k,v] of q.entries()){
+      if(k.startsWith("utm_")) item.params[k]=v;
+      else item.otherParams.push([k,v]);
+    }
+
+    // required params
+    for(const p of REQUIRED){
+      if(!q.has(p)){
+        item.issues.push({code:"MISSING", detail:p, param:p});
+      } else if(!q.get(p).trim()){
+        item.issues.push({code:"EMPTY", detail:p, param:p});
+      }
+    }
+
+    // ---- source ----
+    let src = (item.params.utm_source||"").trim();
+    let canonSrc = src;
+    if(src){
+      if(/\s/.test(item.params.utm_source) || item.params.utm_source!==src)
+        item.issues.push({code:"WHITESPACE", detail:"utm_source", param:"utm_source"});
+      const lower = src.toLowerCase().replace(/\s+/g,"-");
+      if(src!==lower) item.issues.push({code:"CASE", detail:"utm_source = “"+src+"”", param:"utm_source"});
+      canonSrc = lower;
+      if(SOURCE_SYNONYMS[lower] && okSources.has(SOURCE_SYNONYMS[lower])){
+        canonSrc = SOURCE_SYNONYMS[lower];
+        item.issues.push({code:"NONCANON", detail:"utm_source “"+src+"” → “"+canonSrc+"”", param:"utm_source"});
+      } else if(okSources.size && !okSources.has(canonSrc)){
+        item.issues.push({code:"UNKNOWN", detail:"utm_source “"+canonSrc+"” is not in the registry", param:"utm_source"});
+        item.fixable=false;
+      }
+    }
+    item.canonical.utm_source = canonSrc;
+
+    // ---- medium ----
+    let med = (item.params.utm_medium||"").trim();
+    let canonMed = med;
+    let inferred = false;
+    if(med){
+      if(item.params.utm_medium!==med)
+        item.issues.push({code:"WHITESPACE", detail:"utm_medium", param:"utm_medium"});
+      const lower = med.toLowerCase().replace(/\s+/g,"-");
+      if(med!==lower) item.issues.push({code:"CASE", detail:"utm_medium = “"+med+"”", param:"utm_medium"});
+      canonMed = lower;
+      if(MEDIUM_SYNONYMS[lower] && okMediums.has(MEDIUM_SYNONYMS[lower])){
+        canonMed = MEDIUM_SYNONYMS[lower];
+        item.issues.push({code:"NONCANON", detail:"utm_medium “"+med+"” → “"+canonMed+"”", param:"utm_medium"});
+      } else if(okMediums.size && !okMediums.has(canonMed)){
+        item.issues.push({code:"UNKNOWN", detail:"utm_medium “"+canonMed+"” is not in the registry", param:"utm_medium"});
+        item.fixable=false;
+      }
+    } else if(canonSrc && DEFAULT_MEDIUM[canonSrc] && okMediums.has(DEFAULT_MEDIUM[canonSrc])){
+      canonMed = DEFAULT_MEDIUM[canonSrc];
+      inferred = true;
+      item.fixable = false; // an inference is a suggestion, not a fix
+    }
+    item.canonical.utm_medium = canonMed;
+    item.inferredMedium = inferred;
+
+    // ---- campaign ----
+    let camp = (item.params.utm_campaign||"");
+    if(camp){
+      const trimmed = camp.trim();
+      if(/\s/.test(trimmed)) item.issues.push({code:"WHITESPACE", detail:"utm_campaign contains spaces", param:"utm_campaign"});
+      if(camp!==trimmed) item.issues.push({code:"WHITESPACE", detail:"utm_campaign has leading/trailing space", param:"utm_campaign"});
+      if(/[^a-zA-Z0-9_\-\s]/.test(trimmed)) item.issues.push({code:"SPECIAL", detail:"utm_campaign = “"+trimmed+"”", param:"utm_campaign"});
+      const lower = trimmed.toLowerCase().replace(/\s+/g,"_").replace(/-/g,"_");
+      if(trimmed!==lower && !/\s/.test(trimmed) && trimmed.toLowerCase()!==trimmed)
+        item.issues.push({code:"CASE", detail:"utm_campaign = “"+trimmed+"”", param:"utm_campaign"});
+      item.canonical.utm_campaign = lower;
+      item.campNorm = normKey(trimmed);
+    } else {
+      item.canonical.utm_campaign = "";
+      item.campNorm = "";
+      item.fixable=false;
+    }
+    if(!item.params.utm_source) item.fixable=false;
+    if(!item.params.utm_campaign) item.fixable=false;
+    return item;
+  });
+
+  /* ---- fuzzy clustering of campaign names ---- */
+  const byNorm = new Map();
+  items.forEach(it=>{
+    if(!it.campNorm) return;
+    if(!byNorm.has(it.campNorm)) byNorm.set(it.campNorm, []);
+    byNorm.get(it.campNorm).push(it);
+  });
+
+  const keys = [...byNorm.keys()];
+  const parent = {}; keys.forEach(k=>parent[k]=k);
+  const find = k => parent[k]===k ? k : (parent[k]=find(parent[k]));
+  const union = (a,b)=>{ const ra=find(a), rb=find(b); if(ra!==rb) parent[rb]=ra; };
+
+  const origsOf = k => [...new Set(byNorm.get(k).map(it=>(it.params.utm_campaign||"").trim()))];
+  for(let i=0;i<keys.length;i++){
+    for(let j=i+1;j<keys.length;j++){
+      const A=origsOf(keys[i]), B=origsOf(keys[j]);
+      let merge=false;
+      for(const a of A){
+        for(const b of B){ if(isTypoVariant(tokenize(a),tokenize(b))){ merge=true; break; } }
+        if(merge) break;
+      }
+      if(merge) union(keys[i],keys[j]);
+    }
+  }
+
+  const clusters = new Map();
+  keys.forEach(k=>{
+    const root=find(k);
+    if(!clusters.has(root)) clusters.set(root, {variants:new Map(), items:[], spend:0});
+    const c=clusters.get(root);
+    byNorm.get(k).forEach(it=>{
+      c.items.push(it);
+      const shown = (it.params.utm_campaign||"").trim();
+      c.variants.set(shown, (c.variants.get(shown)||0) + 1);
+      if(typeof it.spend==="number") c.spend += it.spend;
+    });
+  });
+
+  /* choose canonical name per cluster and tag duplicates */
+  const clusterList=[];
+  clusters.forEach((c,root)=>{
+    const variants=[...c.variants.keys()];
+    const asNorm = v => v.toLowerCase().replace(/\s+/g,"_").replace(/-/g,"_");
+    const isClean = v => v === asNorm(v);
+    let canonical = variants.find(v=>convRe && convRe.test(asNorm(v)) && isClean(v))
+                 || variants.find(v=>convRe && convRe.test(asNorm(v)));
+    if(!canonical){
+      canonical = variants.slice().sort((a,b)=>
+        (isClean(b)-isClean(a)) ||
+        (c.variants.get(b)-c.variants.get(a)) ||
+        a.localeCompare(b)
+      )[0];
+    }
+    const canonNorm = canonical.toLowerCase().replace(/\s+/g,"_").replace(/-/g,"_");
+    let leak = 0;
+    c.items.forEach(it=>{
+      it.clusterCanonical = canonNorm;
+      it.canonical.utm_campaign = canonNorm;
+      if(convRe && !convRe.test(canonNorm)){
+        it.issues.push({code:"CONVENTION", detail:"“"+canonNorm+"” does not match "+cfg.pattern, param:"utm_campaign"});
+      }
+      if(variants.length>1){
+        const own=(it.params.utm_campaign||"").trim();
+        if(own!==canonical){
+          it.issues.push({code:"DUPLICATE", detail:"same campaign as “"+canonical+"”", param:"utm_campaign"});
+          if(typeof it.spend==="number") leak += it.spend;
+        }
+      }
+    });
+    if(variants.length>1){
+      clusterList.push({canonical, canonNorm, variants, count:variants.length, items:c.items, spend:c.spend, leak});
+    }
+  });
+  clusterList.sort((a,b)=> (b.leak-a.leak) || (b.count-a.count));
+
+  /* build corrected URLs */
+  items.forEach(it=>{
+    if(it.malformed){ it.fixed=null; return; }
+    const p = new URLSearchParams();
+    (it.otherParams||[]).forEach(([k,v])=>p.set(k,v));
+    const order=["utm_source","utm_medium","utm_campaign","utm_content","utm_term"];
+    order.forEach(k=>{
+      let v = it.canonical[k] !== undefined ? it.canonical[k] : (it.params[k]||"");
+      if(k==="utm_content"||k==="utm_term"){
+        v = (it.params[k]||"").trim().toLowerCase().replace(/\s+/g,"_");
+      }
+      if(v) p.set(k,v);
+    });
+    it.fixed = it.fixable ? (it.base + "?" + p.toString()) : null;
+    it.proposed = it.base + "?" + p.toString();
+  });
+
+  return {items, clusters:clusterList};
+}
+
+function buildConventionRegex(pattern){
+  if(!pattern || !pattern.trim()) return null;
+  const parts = pattern.trim().split("_");
+  const seg = parts.map(tok=>{
+    const t=tok.replace(/[{}]/g,"").toLowerCase();
+    if(t==="geo")    return "(?:[a-z]{2}|global)";
+    if(t==="yyyymm") return "(?:\\d{6}|ongoing)";
+    if(t==="yyyy")   return "\\d{4}";
+    if(/^\{?[a-z]+\}?$/.test(tok) && /^\{/.test(tok)) return "[a-z0-9]+";
+    return tok.replace(/[.*+?^${}()|[\]\\]/g,"\\$&");
+  });
+  try { return new RegExp("^"+seg.join("_")+"$"); } catch(e){ return null; }
+}
+
+/* ========================================================================
+   RENDER
+   ======================================================================== */
+const $ = s=>document.querySelector(s);
+const esc = s=>String(s==null?"":s).replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;","\"":"&quot;","'":"&#39;"}[c]));
+let STATE = { ds:"fintech", result:null, onlyProblems:true, currency:"$" };
+
+function money(n){
+  if(typeof n!=="number"||!isFinite(n)) return "—";
+  return STATE.currency + Math.round(n).toLocaleString("en-US");
+}
+
+function renderMetrics(res){
+  const total = res.items.length;
+  const bad = res.items.filter(i=>i.issues.length).length;
+  const pct = total ? Math.round(bad/total*100) : 0;
+  const phantomVariants = res.clusters.reduce((s,c)=>s+c.variants.length,0);
+  const realCampaigns  = res.clusters.length;
+  const phantom = phantomVariants - realCampaigns;
+  const leak = res.clusters.reduce((s,c)=>s+c.leak,0);
+  const hasSpend = res.items.some(i=>typeof i.spend==="number" && i.spend>0);
+  const highSev = res.items.reduce((s,i)=>s+i.issues.filter(v=>RULES[v.code].sev==="high").length,0);
+
+  const boxes = [
+    ["num-"+pct, pct+"%", "of links carry at least one violation"],
+    ["", String(highSev), "high-severity issues that split or kill attribution"],
+    ["", phantom+" → "+realCampaigns, "phantom campaigns collapsed into real ones"]
+  ];
+  if(hasSpend) boxes.push(["", money(leak), "spend sitting in mis-named duplicate rows"]);
+  boxes.push(["", res.items.filter(i=>i.issues.length && i.fixed).length+" / "+bad, "problem links auto-fixable without a human"]);
+
+  $("#metrics").innerHTML = boxes.map(b=>
+    '<div class="metric-box"><span class="num">'+esc(b[1])+'</span><span class="label">'+esc(b[2])+'</span></div>'
+  ).join("");
+}
+
+function renderSummary(res){
+  const counts={};
+  res.items.forEach(i=>i.issues.forEach(v=>{ counts[v.code]=(counts[v.code]||0)+1; }));
+  const order=Object.keys(counts).sort((a,b)=>counts[b]-counts[a]);
+  if(!order.length){
+    $("#violationSummary").innerHTML='<div class="callout callout-ok"><strong>Clean.</strong> Every link matched the registry and the naming convention.</div>';
+    return;
+  }
+  $("#violationSummary").innerHTML =
+    '<div class="panel"><div class="panel-head"><h3>Violations by type</h3>'+
+    '<span class="hint">Sorted by frequency. Severity is about attribution impact, not aesthetics.</span></div>'+
+    '<div class="table-wrap"><table class="data"><thead><tr><th>Issue</th><th class="num-cell">Count</th><th>Severity</th><th>Why it matters</th></tr></thead><tbody>'+
+    order.map(code=>{
+      const r=RULES[code];
+      const pill = r.sev==="high"?"pill-bad":r.sev==="medium"?"pill-warn":"pill-mute";
+      return '<tr><td><strong>'+esc(r.label)+'</strong></td>'+
+        '<td class="num-cell">'+counts[code]+'</td>'+
+        '<td><span class="pill '+pill+'">'+esc(r.sev)+'</span></td>'+
+        '<td style="color:var(--ink-soft)">'+esc(r.why)+'</td></tr>';
+    }).join("")+
+    '</tbody></table></div></div>';
+}
+
+function renderTable(res){
+  const tb=$("#auditTable tbody");
+  const rows = STATE.onlyProblems ? res.items.filter(i=>i.issues.length) : res.items;
+  if(!rows.length){
+    tb.innerHTML='<tr><td colspan="7" class="empty">No rows to show.</td></tr>';
+    return;
+  }
+  tb.innerHTML = rows.map(it=>{
+    const codeCounts = it.issues.reduce((m,v)=>{ m[v.code]=(m[v.code]||0)+1; return m; }, {});
+    const issues = it.issues.length
+      ? '<div class="pill-row">'+Object.keys(codeCounts).map(code=>{
+          const r=RULES[code];
+          const cls=r.sev==="high"?"pill-bad":r.sev==="medium"?"pill-warn":"pill-mute";
+          const k=codeCounts[code];
+          return '<span class="pill '+cls+'">'+esc(r.label)+(k>1?' \u00d7'+k:'')+'</span>';
+        }).join("")+'</div>'
+        + '<div style="font-size:.72rem;color:var(--ink-soft);margin-top:.25rem">'
+        + it.issues.map(v=>esc(v.detail)).join("<br>")+'</div>'
+      : '<span class="pill pill-ok">clean</span>';
+
+    let fixedCell;
+    if(it.malformed){
+      fixedCell = '<span style="color:var(--red-text);font-size:.78rem">unparseable — needs manual rewrite</span>';
+    } else if(it.fixed){
+      fixedCell = '<span class="mono">'+esc(it.fixed.replace(/^https?:\/\//,""))+'</span>';
+    } else {
+      const reasons=[];
+      if(!it.params.utm_source) reasons.push("no source to work from");
+      if(!it.params.utm_campaign) reasons.push("no campaign name to work from");
+      if(it.inferredMedium) reasons.push("medium inferred as “"+it.canonical.utm_medium+"” from source — confirm before use");
+      if(it.issues.some(v=>v.code==="UNKNOWN")) reasons.push("unregistered value needs a human decision");
+      fixedCell = '<span style="color:var(--amber-text);font-size:.78rem">Not auto-fixable: '+esc(reasons.join("; ")||"needs review")+'</span>'
+        + (it.inferredMedium ? '<div class="mono" style="margin-top:.3rem;opacity:.75">suggested: '+esc(it.proposed.replace(/^https?:\/\//,""))+'</div>' : '');
+    }
+
+    return '<tr'+(it.issues.length?'':' class="dim"')+'>'+
+      '<td class="num-cell">'+it.idx+'</td>'+
+      '<td>'+esc(it.params.utm_source===undefined?"—":(it.params.utm_source||"(empty)"))+'</td>'+
+      '<td>'+esc(it.params.utm_medium===undefined?"—":(it.params.utm_medium||"(empty)"))+'</td>'+
+      '<td style="max-width:16rem"><span class="mono">'+esc(it.params.utm_campaign===undefined?"—":(it.params.utm_campaign||"(empty)"))+'</span></td>'+
+      '<td class="num-cell">'+(typeof it.spend==="number"?money(it.spend):"—")+'</td>'+
+      '<td style="max-width:18rem">'+issues+'</td>'+
+      '<td style="max-width:22rem">'+fixedCell+'</td></tr>';
+  }).join("");
+
+  const nf = res.items.filter(i=>i.issues.length && !i.fixed).length;
+  $("#fixnote").textContent = nf
+    ? nf+" link"+(nf===1?"":"s")+" cannot be auto-fixed. The engine will not invent a source or campaign name that was never there — those need a human."
+    : "Every problem link can be corrected automatically.";
+}
+
+function renderClusters(res){
+  const el=$("#clusters");
+  if(!res.clusters.length){
+    el.innerHTML='<div class="callout callout-ok"><strong>No phantom campaigns.</strong> Every campaign name resolves to exactly one variant.</div>';
+    return;
+  }
+  el.innerHTML = res.clusters.map(c=>{
+    const leakLine = c.leak>0
+      ? '<div class="callout callout-warn" style="margin:.8rem 0 0"><strong>'+esc(money(c.leak))+'</strong> of spend is attached to the non-canonical variants and is being reported separately from the main campaign row.</div>'
+      : '';
+    return '<div class="panel">'+
+      '<div class="panel-head"><h3 class="mono" style="font-size:.95rem">'+esc(c.canonNorm)+'</h3>'+
+      '<span class="pill pill-bad">'+c.count+' variants → 1 campaign</span></div>'+
+      '<div class="table-wrap"><table class="data"><thead><tr><th>Variant as written</th><th>Links</th><th class="num-cell">Spend</th><th>Verdict</th></tr></thead><tbody>'+
+      c.variants.map(v=>{
+        const its=c.items.filter(i=>(i.params.utm_campaign||"").trim()===v);
+        const sp=its.reduce((s,i)=>s+(typeof i.spend==="number"?i.spend:0),0);
+        const isCanon = v===c.canonical;
+        const same = v.toLowerCase().replace(/\s+/g,"_").replace(/-/g,"_")===c.canonNorm;
+        return '<tr><td><span class="mono">'+esc(v)+'</span></td>'+
+          '<td class="num-cell">'+its.length+'</td>'+
+          '<td class="num-cell">'+(sp?money(sp):"—")+'</td>'+
+          '<td>'+(isCanon
+            ?'<span class="pill pill-ok">keep</span>'
+            :'<span class="pill pill-bad">'+(same?'rewrite':'merge')+' → '+esc(c.canonNorm)+'</span>')+'</td></tr>';
+      }).join("")+
+      '</tbody></table></div>'+leakLine+'</div>';
+  }).join("");
+}
+
+/* ========================================================================
+   BUILDER
+   ======================================================================== */
+function currentCfg(){
+  return {
+    sources: $("#okSources").value.split(/[,\n]/).map(s=>s.trim().toLowerCase()).filter(Boolean),
+    mediums: $("#okMediums").value.split(/[,\n]/).map(s=>s.trim().toLowerCase()).filter(Boolean),
+    pattern: $("#pattern").value.trim()
+  };
+}
+
+function refreshBuilderOptions(){
+  const cfg=currentCfg();
+  const fill=(sel,vals)=>{
+    const prev=sel.value;
+    sel.innerHTML = vals.map(v=>'<option value="'+esc(v)+'">'+esc(v)+'</option>').join("");
+    if(vals.includes(prev)) sel.value=prev;
+  };
+  fill($("#bSource"), cfg.sources.length?cfg.sources:["(add approved sources above)"]);
+  fill($("#bMedium"), cfg.mediums.length?cfg.mediums:["(add approved mediums above)"]);
+  renderBuilder();
+}
+
+function renderBuilder(){
+  const cfg=currentCfg();
+  const convRe=buildConventionRegex(cfg.pattern);
+  const tokens = cfg.pattern.split("_").map(t=>t.replace(/[{}]/g,"").toLowerCase());
+  const vals = {
+    geo: $("#bGeo").value.trim().toLowerCase(),
+    channel: $("#bChannel").value.trim().toLowerCase().replace(/[^a-z0-9]/g,""),
+    product: $("#bProduct").value.trim().toLowerCase().replace(/[^a-z0-9]/g,""),
+    objective: $("#bObjective").value.trim().toLowerCase().replace(/[^a-z0-9]/g,""),
+    yyyymm: $("#bDate").value.trim().toLowerCase()
+  };
+  const campaign = tokens.map(t=>vals[t]!==undefined?vals[t]:t).join("_");
+  const src=$("#bSource").value, med=$("#bMedium").value;
+  let url="";
+  let problems=[];
+  try{
+    const u=new URL($("#bUrl").value.trim());
+    const p=new URLSearchParams();
+    p.set("utm_source",src); p.set("utm_medium",med); p.set("utm_campaign",campaign);
+    url = u.origin+u.pathname+"?"+p.toString();
+  }catch(e){ problems.push("Destination URL is not valid."); }
+
+  if(convRe && !convRe.test(campaign)) problems.push("Campaign name does not satisfy "+cfg.pattern+".");
+  tokens.forEach(t=>{ if(vals[t]!==undefined && !vals[t]) problems.push("“"+t+"” is empty."); });
+
+  STATE.built = problems.length?null:url;
+  $("#builderOut").innerHTML = problems.length
+    ? '<div class="callout callout-warn"><strong>Not emitted.</strong> '+problems.map(esc).join(" ")+'</div>'
+    : '<div class="callout callout-ok"><strong>Valid.</strong><div class="mono" style="margin-top:.4rem;word-break:break-all">'+esc(url)+'</div></div>';
+  $("#copyBuilt").disabled = !!problems.length;
+}
+
+function standardMd(){
+  const cfg=currentCfg();
+  const res=STATE.result;
+  const ai = STATE.aiRationale ? "\n## Why this matters\n\n"+STATE.aiRationale+"\n" : "";
+  let audit="";
+  if(res){
+    const bad=res.items.filter(i=>i.issues.length).length;
+    audit = "\n## Current state (last audit)\n\n"+
+      "- Links audited: **"+res.items.length+"**\n"+
+      "- Links with at least one violation: **"+bad+"** ("+Math.round(bad/res.items.length*100)+"%)\n"+
+      "- Phantom campaigns found: **"+res.clusters.reduce((s,c)=>s+c.variants.length-1,0)+"**\n"+
+      (res.clusters.length?"\n### Campaigns to merge\n\n"+res.clusters.map(c=>
+        "- `"+c.canonNorm+"` ← "+c.variants.filter(v=>v!==c.canonical).map(v=>"`"+v+"`").join(", ")
+      ).join("\n")+"\n":"");
+  }
+  return "# Campaign Taxonomy Standard\n\n"+
+    "_Generated by the UTM Governance Engine._\n\n"+
+    "## Naming convention\n\n```\n"+cfg.pattern+"\n```\n\n"+
+    "| Token | Rule | Example |\n|---|---|---|\n"+
+    "| `{geo}` | ISO 2-letter country code, or `global` | `in`, `ng`, `global` |\n"+
+    "| `{channel}` | lowercase alphanumeric, no separators | `paidsocial`, `search` |\n"+
+    "| `{product}` | lowercase alphanumeric | `loan`, `serum` |\n"+
+    "| `{objective}` | lowercase alphanumeric | `apply`, `acquire`, `retarget` |\n"+
+    "| `{yyyymm}` | 6 digits, or `ongoing` for evergreen | `202509`, `ongoing` |\n\n"+
+    "## Approved `utm_source`\n\n"+cfg.sources.map(s=>"- `"+s+"`").join("\n")+"\n\n"+
+    "## Approved `utm_medium`\n\n"+cfg.mediums.map(s=>"- `"+s+"`").join("\n")+"\n\n"+
+    "## Hard rules\n\n"+
+    "1. **Lowercase everything.** Analytics platforms are case-sensitive; `Facebook` and `facebook` are two different sources.\n"+
+    "2. **Never use spaces.** Use `_` as the separator. Spaces get encoded differently by different platforms.\n"+
+    "3. **All three of `utm_source`, `utm_medium`, `utm_campaign` are required.** A link missing any of them lands in (direct)/(none).\n"+
+    "4. **Use canonical values only.** `ppc`, `paid_search` and `cpc` all mean `cpc` — pick one, which is `cpc`.\n"+
+    "5. **New channel? Update the registry first**, then use it. Do not invent values at link-build time.\n"+
+    audit+ai+
+    "\n---\n\nStandard generated "+new Date().toISOString().slice(0,10)+".\n";
+}
+
+/* ========================================================================
+   AI LAYER (optional)
+   ======================================================================== */
+const KEY="anthropic_api_key";
+function getKey(){ try{ return sessionStorage.getItem(KEY)||""; }catch(e){ return ""; } }
+function setKey(v){ try{ v?sessionStorage.setItem(KEY,v):sessionStorage.removeItem(KEY); }catch(e){} }
+
+async function callClaude(prompt, maxTokens){
+  const key=getKey();
+  if(!key) throw new Error("No API key entered.");
+  const res = await fetch("https://api.anthropic.com/v1/messages",{
+    method:"POST",
+    headers:{
+      "content-type":"application/json",
+      "x-api-key":key,
+      "anthropic-version":"2023-06-01",
+      "anthropic-dangerous-direct-browser-access":"true"
+    },
+    body:JSON.stringify({
+      model:"claude-sonnet-4-5-20250929",
+      max_tokens:maxTokens||900,
+      messages:[{role:"user",content:prompt}]
+    })
+  });
+  if(!res.ok){
+    let msg = res.status+" "+res.statusText;
+    try{ const j=await res.json(); if(j.error&&j.error.message) msg=j.error.message; }catch(e){}
+    throw new Error(msg);
+  }
+  const j=await res.json();
+  return (j.content||[]).filter(b=>b.type==="text").map(b=>b.text).join("");
+}
+
+/* ========================================================================
+   WIRING
+   ======================================================================== */
+function loadDataset(name){
+  const d=DATASETS[name];
+  STATE.ds=name;
+  STATE.currency = name==="consumer" ? "$" : "$";
+  $("#raw").value=d.csv;
+  $("#okSources").value=d.sources;
+  $("#okMediums").value=d.mediums;
+  $("#pattern").value=d.pattern;
+  $("#bUrl").value=d.builder;
+  document.querySelectorAll("[data-ds]").forEach(b=>b.setAttribute("aria-pressed", String(b.dataset.ds===name)));
+  refreshBuilderOptions();
+  if(d.csv) run(); else { STATE.result=null; $("#resultsSection").hidden=true; $("#clusterSection").hidden=true; $("#metrics").innerHTML=""; $("#parsemsg").textContent=""; }
+}
+
+function run(){
+  const rows=parseInput($("#raw").value);
+  if(!rows.length){
+    $("#parsemsg").textContent="Nothing to audit — paste some URLs first.";
+    $("#resultsSection").hidden=true; $("#clusterSection").hidden=true; $("#metrics").innerHTML="";
+    return;
+  }
+  const res=auditRows(rows,currentCfg());
+  STATE.result=res;
+  $("#parsemsg").textContent=rows.length+" link"+(rows.length===1?"":"s")+" parsed.";
+  $("#resultsSection").hidden=false;
+  $("#clusterSection").hidden=false;
+  renderMetrics(res); renderSummary(res); renderTable(res); renderClusters(res);
+}
+
+document.querySelectorAll("[data-ds]").forEach(b=>b.addEventListener("click",()=>loadDataset(b.dataset.ds)));
+$("#run").addEventListener("click", run);
+$("#clear").addEventListener("click", ()=>{ $("#raw").value=""; STATE.result=null;
+  $("#resultsSection").hidden=true; $("#clusterSection").hidden=true; $("#metrics").innerHTML=""; $("#parsemsg").textContent=""; });
+
+$("#filterToggle").addEventListener("click", e=>{
+  STATE.onlyProblems=!STATE.onlyProblems;
+  e.currentTarget.setAttribute("aria-pressed",String(STATE.onlyProblems));
+  e.currentTarget.textContent = STATE.onlyProblems?"Show only problems":"Showing all links";
+  if(STATE.result) renderTable(STATE.result);
+});
+
+$("#fixAll").addEventListener("click", ()=>{
+  if(!STATE.result) return;
+  const fixed=STATE.result.items.filter(i=>i.issues.length && i.fixed);
+  const hasSpend=STATE.result.items.some(i=>typeof i.spend==="number");
+  const lines=STATE.result.items.map(i=>{
+    const u=i.fixed||i.raw;
+    return hasSpend ? u+","+(typeof i.spend==="number"?i.spend:"") : u;
+  });
+  $("#raw").value=(hasSpend?"url,spend":"url")+"\n"+lines.join("\n");
+  run();
+  const left=STATE.result.items.filter(i=>i.issues.length).length;
+  $("#parsemsg").textContent=fixed.length+" problem link"+(fixed.length===1?"":"s")+
+    " corrected and re-audited. "+left+" still need"+(left===1?"s":"")+" a human decision.";
+});
+
+$("#exportCsv").addEventListener("click", ()=>{
+  if(!STATE.result) return;
+  const head="original_url,utm_source,utm_medium,utm_campaign,spend,issue_count,issues,corrected_url,auto_fixable\n";
+  const body=STATE.result.items.map(i=>[
+    i.raw, i.params.utm_source||"", i.params.utm_medium||"", i.params.utm_campaign||"",
+    (typeof i.spend==="number"?i.spend:""), i.issues.length,
+    i.issues.map(v=>RULES[v.code].label+": "+v.detail).join(" | "),
+    i.fixed||"", i.fixed?"yes":"no"
+  ].map(c=>'"'+String(c).replace(/"/g,'""')+'"').join(",")).join("\n");
+  download("utm-audit.csv", head+body, "text/csv");
+});
+
+$("#copyFixed").addEventListener("click", async e=>{
+  if(!STATE.result) return;
+  const txt=STATE.result.items.map(i=>i.fixed||i.raw).join("\n");
+  await copy(txt, e.currentTarget, "Copy fixed URLs");
+});
+
+$("#copyBuilt").addEventListener("click", async e=>{
+  if(STATE.built) await copy(STATE.built, e.currentTarget, "Copy link");
+});
+
+$("#dlStandard").addEventListener("click", ()=>download("Campaign-Taxonomy-Standard.md", standardMd(), "text/markdown"));
+
+["#bUrl","#bGeo","#bChannel","#bProduct","#bObjective","#bDate"].forEach(s=>$(s).addEventListener("input",renderBuilder));
+["#bSource","#bMedium"].forEach(s=>$(s).addEventListener("change",renderBuilder));
+["#okSources","#okMediums"].forEach(s=>$(s).addEventListener("input",refreshBuilderOptions));
+$("#pattern").addEventListener("input",renderBuilder);
+
+/* AI panel */
+$("#aiToggle").addEventListener("click",()=>{
+  const p=$("#aiPanel"); const open=p.dataset.open==="true";
+  p.dataset.open=String(!open);
+  $("#aiToggle").setAttribute("aria-expanded",String(!open));
+});
+$("#apiKey").value=getKey();
+$("#apiKey").addEventListener("input",e=>setKey(e.target.value.trim()));
+$("#aiClear").addEventListener("click",()=>{ setKey(""); $("#apiKey").value=""; $("#aiStatus").textContent="Key cleared."; });
+$("#aiRun").addEventListener("click", async ()=>{
+  const st=$("#aiStatus");
+  if(!getKey()){ st.textContent="Enter an API key first."; return; }
+  if(!STATE.result){ st.textContent="Run an audit first."; return; }
+  st.innerHTML='<span class="spin"></span> Calling Claude…';
+  $("#aiRun").disabled=true;
+  try{
+    const res=STATE.result;
+    const counts={}; res.items.forEach(i=>i.issues.forEach(v=>{counts[RULES[v.code].label]=(counts[RULES[v.code].label]||0)+1;}));
+    const prompt="You are writing the rationale section of an internal marketing-operations standard document.\n\n"+
+      "Audit findings from our campaign tracking links:\n"+
+      "- Links audited: "+res.items.length+"\n"+
+      "- Links with violations: "+res.items.filter(i=>i.issues.length).length+"\n"+
+      "- Violations by type: "+Object.entries(counts).map(([k,v])=>k+" ("+v+")").join(", ")+"\n"+
+      "- Duplicate campaign clusters: "+res.clusters.length+"\n"+
+      (res.clusters.length?"- Examples: "+res.clusters.slice(0,3).map(c=>c.variants.join(" / ")).join(" ; ")+"\n":"")+
+      "\nWrite 3 short paragraphs in plain business English aimed at a marketing team that finds governance boring. "+
+      "Explain the cost of this specific mess in terms of wasted budget and wrong decisions, not in terms of tidiness. "+
+      "No preamble, no headings, no bullet points. Do not invent numbers beyond those given.";
+    const out=await callClaude(prompt, 700);
+    STATE.aiRationale=out.trim();
+    $("#aiOut").innerHTML='<div class="callout callout-info" style="margin-top:.9rem;white-space:pre-wrap">'+esc(out.trim())+'</div>'+
+      '<p style="font-size:.8rem;color:#94A3B8;margin:.6rem 0 0">This is now included in the downloaded taxonomy standard.</p>';
+    st.textContent="Done.";
+  }catch(err){
+    st.textContent="Failed: "+err.message;
+  } finally { $("#aiRun").disabled=false; }
+});
+
+/* helpers */
+function download(name, text, mime){
+  const b=new Blob([text],{type:mime+";charset=utf-8"});
+  const a=document.createElement("a");
+  a.href=URL.createObjectURL(b); a.download=name;
+  document.body.appendChild(a); a.click();
+  setTimeout(()=>{ URL.revokeObjectURL(a.href); a.remove(); },0);
+}
+async function copy(text, btn, label){
+  try{ await navigator.clipboard.writeText(text); }
+  catch(e){
+    const ta=document.createElement("textarea"); ta.value=text; document.body.appendChild(ta);
+    ta.select(); try{document.execCommand("copy");}catch(_){} ta.remove();
+  }
+  if(btn){ btn.textContent="Copied"; setTimeout(()=>btn.textContent=label,1400); }
+}
+
+loadDataset("fintech");
+})();
+</script>
+</body>
+</html>

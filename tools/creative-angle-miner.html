@@ -1,0 +1,1157 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Creative Performance Post-Mortem — Priyanshu Goyal</title>
+<meta name="description" content="Tags every ad creative by hook, angle and format, then reports performance by angle with explicit confidence gating and a ranked next-test plan.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="tool-kit.css">
+<style>
+  .chart-wrap { background:#fff; border:1px solid var(--line); border-radius:.55rem; padding:1rem; overflow:visible; }
+  .chart-title { font-family:var(--display); font-size:.9rem; font-weight:700; margin:0 0 .15rem; }
+  .chart-sub { font-size:.78rem; color:var(--ink-soft); margin:0 0 .9rem; }
+  svg.chart { display:block; width:100%; height:auto; overflow:visible; }
+  .legend { display:flex; flex-wrap:wrap; gap:.6rem .9rem; margin-top:.75rem; font-size:.78rem; color:var(--ink-soft); }
+  .legend span.sw { width:11px; height:11px; border-radius:2px; display:inline-block; margin-right:.35rem; vertical-align:-1px; }
+  .tip {
+    position:fixed; pointer-events:none; z-index:200; background:var(--ink); color:#fff;
+    font-size:.76rem; line-height:1.45; padding:.5rem .65rem; border-radius:.4rem;
+    max-width:17rem; opacity:0; transition:opacity .1s ease; box-shadow:0 4px 14px rgba(0,0,0,.18);
+  }
+  .tip b { font-family:var(--display); }
+  .slider-row { display:flex; align-items:center; gap:.9rem; flex-wrap:wrap; }
+  .slider-row input[type=range] { flex:1; min-width:12rem; accent-color:var(--accent); }
+  .sim-grid { display:grid; grid-template-columns:1fr; gap:.75rem; margin-top:1rem; }
+  @media (min-width:720px){ .sim-grid { grid-template-columns:repeat(3,1fr); } }
+  .sim-box { background:#fff; border:1px solid var(--line); border-radius:.5rem; padding:.85rem; }
+  .sim-box .k { font-size:.72rem; text-transform:uppercase; letter-spacing:.07em; color:var(--ink-soft); display:block; margin-bottom:.3rem; }
+  .sim-box .v { font-family:var(--display); font-weight:700; font-size:1.35rem; display:block; line-height:1.15; }
+  .sim-box .d { font-size:.78rem; margin-top:.2rem; display:block; color:var(--ink-soft); }
+  .up { color:var(--green-text); } .down { color:var(--red-text); }
+  details.kw { margin-top:.9rem; }
+  details.kw summary { cursor:pointer; font-size:.82rem; color:var(--accent); font-family:var(--display); font-weight:500; }
+  details.kw .kwbody { margin-top:.7rem; font-size:.8rem; color:var(--ink-soft); }
+  details.kw code { background:var(--card); padding:.1rem .3rem; border-radius:.25rem; font-size:.75rem; }
+</style>
+</head>
+<body>
+
+<div class="tool-bar">
+  <div class="wrap tool-bar-inner">
+    <a class="back-link" href="../index.html">&larr; Priyanshu Goyal</a>
+    <span class="tool-bar-tag">Independent build &middot; 02</span>
+  </div>
+</div>
+
+<header class="wrap tool-header">
+  <p class="eyebrow">Marketing Ops Automation</p>
+  <h1>Creative Performance Post-Mortem</h1>
+  <p class="tool-sub">Ad platforms tell you which <em>creative</em> won. They never tell you which <em>angle</em> won — so teams relearn the same lesson every quarter. This tags every creative and reports by angle, with an explicit line between signal and noise.</p>
+
+  <div class="problem-box">
+    <h2>The problem</h2>
+    <p>After a campaign, someone exports the creative report and spends a day in a spreadsheet hand-labelling each ad — was it the discount hook or the social proof? — trying to work out what to make next. It's slow, it's inconsistent between analysts, and it usually ends with a confident conclusion drawn from four conversions. The expensive mistake isn't the lost day. It's scaling a "winner" that was noise.</p>
+  </div>
+
+  <div class="metrics-ribbon" id="metrics"></div>
+</header>
+
+<main class="wrap">
+
+  <!-- ===================== INPUT ===================== -->
+  <section class="tool-section" style="border-top:none">
+    <h2>1. Load creative performance</h2>
+    <p class="section-intro">Paste or upload the creative-level export from your ad platform. Required columns: <code>headline</code>, <code>spend</code>, <code>conversions</code>, <code>revenue</code>. Optional: <code>creative</code>, <code>format</code>, <code>geo</code>, <code>impressions</code>, <code>clicks</code>.</p>
+
+    <div class="panel">
+      <div class="panel-head">
+        <h3>Input</h3>
+        <div class="seg" role="group" aria-label="Choose dataset">
+          <button type="button" data-ds="fintech" aria-pressed="true">Fintech / lending</button>
+          <button type="button" data-ds="consumer" aria-pressed="false">Consumer D2C</button>
+        </div>
+      </div>
+
+      <div class="field">
+        <label for="csv">Creative export (CSV)</label>
+        <textarea id="csv" class="input" rows="7" spellcheck="false"></textarea>
+      </div>
+
+      <div class="grid-3">
+        <div class="field">
+          <label for="breakeven">Breakeven ROAS</label>
+          <input id="breakeven" class="input" type="number" step="0.1" min="0.1" value="2.0">
+        </div>
+        <div class="field">
+          <label for="minconv">Min conversions to call a result</label>
+          <input id="minconv" class="input" type="number" step="1" min="1" value="25">
+        </div>
+        <div class="field">
+          <label for="upload">Or upload a file</label>
+          <input id="upload" class="input" type="file" accept=".csv,.txt">
+        </div>
+      </div>
+
+      <div class="btn-row">
+        <button class="btn btn-primary" id="run">Analyse</button>
+        <span id="msg" style="font-size:.82rem;color:var(--ink-soft)"></span>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===================== TAGGING ===================== -->
+  <section class="tool-section" id="tagSection" hidden>
+    <h2>2. Automatic tagging</h2>
+    <p class="section-intro">Every creative is classified on three axes from its headline text. This runs offline with a transparent keyword classifier — you can read exactly why each tag was assigned, which matters more than accuracy you can't audit.</p>
+
+    <div class="panel">
+      <div class="panel-head">
+        <h3>Tagged creatives</h3>
+        <div class="btn-row">
+          <span class="hint" id="tagStats"></span>
+          <button class="btn btn-ghost btn-sm" id="exportTags">Export tagged CSV</button>
+        </div>
+      </div>
+      <div class="table-wrap" style="max-height:26rem">
+        <table class="data" id="tagTable">
+          <thead><tr>
+            <th>Creative</th><th>Headline</th><th>Angle</th><th>Hook</th><th>Format</th>
+            <th class="num-cell">Spend</th><th class="num-cell">Conv</th><th class="num-cell">ROAS</th>
+          </tr></thead><tbody></tbody>
+        </table>
+      </div>
+
+      <details class="kw">
+        <summary>How the classifier decides</summary>
+        <div class="kwbody" id="kwBody"></div>
+      </details>
+    </div>
+  </section>
+
+  <!-- ===================== ANGLE PERFORMANCE ===================== -->
+  <section class="tool-section" id="angleSection" hidden>
+    <h2>3. Performance by angle</h2>
+    <p class="section-intro">This is the view the ad platform never gives you. Bars show ROAS per angle; the whisker is a 95% interval based on conversion volume. <strong>An angle whose interval crosses the blended average is not a finding</strong> — it's a coin flip with a colour.</p>
+
+    <div class="panel">
+      <div class="chart-wrap">
+        <p class="chart-title">ROAS by angle</p>
+        <p class="chart-sub" id="angleChartSub"></p>
+        <div id="angleChart"></div>
+      </div>
+      <div class="table-wrap" style="margin-top:1rem">
+        <table class="data" id="angleTable">
+          <thead><tr>
+            <th>Angle</th><th class="num-cell">Creatives</th><th class="num-cell">Spend</th>
+            <th class="num-cell">Conv</th><th class="num-cell">ROAS</th><th class="num-cell">95% interval</th>
+            <th class="num-cell">CPA</th><th>Verdict</th>
+          </tr></thead><tbody></tbody>
+        </table>
+      </div>
+      <div id="angleCallout"></div>
+    </div>
+
+    <div class="panel">
+      <div class="chart-wrap">
+        <p class="chart-title">ROAS by hook type</p>
+        <p class="chart-sub">Same confidence rules. Hook is <em>how</em> the message opens; angle is <em>what</em> it argues.</p>
+        <div id="hookChart"></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===================== SCATTER ===================== -->
+  <section class="tool-section" id="scatterSection" hidden>
+    <h2>4. Where the money actually sits</h2>
+    <p class="section-intro">Each dot is one creative: spend on the x-axis, ROAS on the y-axis, dot size by conversions. The quadrant that matters is bottom-right — high spend, low return.</p>
+    <div class="panel">
+      <div class="chart-wrap">
+        <p class="chart-title">Spend vs ROAS by creative</p>
+        <p class="chart-sub">Dots below the dashed line are losing money at your stated breakeven.</p>
+        <div id="scatter"></div>
+        <div class="legend" id="scatterLegend"></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===================== MATRIX ===================== -->
+  <section class="tool-section" id="matrixSection" hidden>
+    <h2>5. Coverage matrix</h2>
+    <p class="section-intro">Hook &times; angle. Shaded cells are combinations you've tested; blank cells are the ones you haven't. Most teams discover they've tested the same three boxes for a year.</p>
+    <div class="panel">
+      <div class="chart-wrap">
+        <p class="chart-title">ROAS by hook &times; angle</p>
+        <p class="chart-sub" id="matrixSub"></p>
+        <div id="matrix"></div>
+        <div class="legend" id="matrixLegend"></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===================== SIMULATOR ===================== -->
+  <section class="tool-section" id="simSection" hidden>
+    <h2>6. Reallocation simulator</h2>
+    <p class="section-intro">Move budget out of angles that are <em>confidently</em> below breakeven and into the best-evidenced winner. Only angles the data can actually support are eligible to move.</p>
+    <div class="panel" id="simPanel"></div>
+  </section>
+
+  <!-- ===================== NEXT TEST ===================== -->
+  <section class="tool-section" id="planSection" hidden>
+    <h2>7. What to do next</h2>
+    <p class="section-intro">Two lists: combinations worth testing, and creatives worth killing. Both are derived only from groups that cleared the confidence bar.</p>
+    <div class="grid-2">
+      <div class="panel">
+        <div class="panel-head"><h3>Test next</h3><span class="hint">Untested hook &times; angle</span></div>
+        <div id="testPlan"></div>
+      </div>
+      <div class="panel">
+        <div class="panel-head"><h3>Kill list</h3><span class="hint">Spending into a loss</span></div>
+        <div id="killList"></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===================== HOW ===================== -->
+  <section class="tool-section">
+    <h2>How it works</h2>
+    <p class="section-intro">The arithmetic and the confidence gating are deterministic. The model, if you enable it, only improves the tagging step — and its tags go through exactly the same statistics afterwards.</p>
+    <div class="arch-steps">
+      <div class="arch-step"><div class="arch-num">1</div><div class="arch-content">
+        <h6>Parse &amp; compute</h6><p>CSV in, then CTR, CVR, CPA and ROAS per creative. Rows missing required columns are reported, not silently dropped.</p></div></div>
+      <div class="arch-step"><div class="arch-num">2</div><div class="arch-content">
+        <h6>Classify</h6><p>A word-boundary keyword classifier scores each headline across angles and hook types, and the highest score wins. The full keyword basis is visible in the page.</p></div></div>
+      <div class="arch-step"><div class="arch-num">3</div><div class="arch-content">
+        <h6>Aggregate by tag</h6><p>Spend, conversions and revenue are pooled per angle and per hook — turning 38 noisy creative rows into 6 decisions.</p></div></div>
+      <div class="arch-step"><div class="arch-num">4</div><div class="arch-content">
+        <h6>Gate on confidence</h6><p>Each group gets a 95% interval from its conversion count. Groups under the volume floor, or whose interval straddles the blended average, are labelled as such and excluded from recommendations.</p></div></div>
+      <div class="arch-step"><div class="arch-num">5</div><div class="arch-content">
+        <h6>Simulate</h6><p>Budget moves are modelled at the winner's observed CPA, with the assumption stated on screen rather than buried.</p></div></div>
+      <div class="arch-step"><div class="arch-num">6</div><div class="arch-content">
+        <h6>Recommend</h6><p>Untested combinations are ranked by the product of their angle and hook multipliers; creatives losing money at scale are listed for cutting.</p></div></div>
+    </div>
+
+    <div class="ai-panel" data-open="false" id="aiPanel">
+      <button class="ai-toggle" id="aiToggle" aria-expanded="false">
+        <span>Optional: upgrade tagging with live AI</span><span class="chev">&#9660;</span>
+      </button>
+      <div class="ai-body" style="margin-top:.9rem">
+        <p>The keyword classifier handles clear cases well and struggles with irony, implication and mixed messages. With a key, Claude re-tags every headline instead — and the result is fed through the same deterministic statistics, so the model never gets to decide what is significant. Your key stays in <code>sessionStorage</code>, goes only to <code>api.anthropic.com</code>, and is dropped when the tab closes.</p>
+        <div class="field">
+          <label class="field-label" for="apiKey">Anthropic API key</label>
+          <input id="apiKey" class="input" type="password" placeholder="sk-ant-..." autocomplete="off" spellcheck="false">
+        </div>
+        <div class="btn-row">
+          <button class="btn btn-ghost btn-sm" id="aiRun">Re-tag with Claude</button>
+          <button class="btn btn-ghost btn-sm" id="aiReset">Revert to keyword tags</button>
+          <button class="btn btn-ghost btn-sm" id="aiClear">Clear key</button>
+        </div>
+        <div class="ai-status" id="aiStatus"></div>
+      </div>
+    </div>
+  </section>
+
+  <div class="footer-note">
+    <p>Built by Priyanshu Goyal as an independent project. Runs entirely in your browser — no backend, no upload, no tracking. <a href="../index.html">Back to portfolio</a></p>
+  </div>
+</main>
+
+<div class="tip" id="tip" role="status" aria-live="polite"></div>
+
+<script>
+(function(){
+"use strict";
+
+/* ===================== DATA ===================== */
+const DATASETS = {
+  fintech:  { breakeven:2.0, minconv:25,
+    angles:["eligibility","cost","speed","trust","aspiration","outcomes"],
+    csv:`creative,headline,format,geo,spend,impressions,clicks,conversions,revenue
+MP-003,No collateral. No cosigner. No U.S. credit history.,ugc_video,BR,2526,34345,627,22,10378
+MP-010,Fixed rates from 9.99% APR. No prepayment penalty.,video,NG,2192,22851,531,12,5747
+MP-017,"Get a decision in 3 minutes, not 3 weeks.",single_image,KE,1734,11333,220,9,3797
+MP-019,"Apply today, hear back before the weekend.",carousel,PH,3331,17028,339,14,6256
+MP-029,Your dream degree shouldn't wait for a cosigner.,video,PH,4651,67039,748,14,6608
+MP-007,Can international students get a loan without a cosigner?,ugc_video,IN,3576,28127,547,26,11197
+MP-036,Rate lock closes Friday. Apply before it moves.,ugc_video,NG,4779,27734,597,31,14228
+MP-005,You don't need a U.S. cosigner to study abroad.,ugc_video,NG,4454,56738,971,42,19121
+MP-032,Build the life you moved countries for.,single_image,PH,1757,5583,131,6,2888
+MP-020,Skip the branch visit. The whole thing is online.,single_image,BR,1400,9386,191,8,3381
+MP-027,A lender that understands an F-1 visa timeline.,video,IN,4937,30165,695,19,8489
+MP-021,How long does a student loan decision really take?,video,PH,4508,39956,573,20,9281
+MP-031,Your future in tech starts with the right funding.,story,KE,4769,12936,240,9,4029
+MP-037,Last week to lock this term's fixed rate.,carousel,BR,2177,30059,390,14,5966
+MP-001,No cosigner? You can still get funded.,single_image,BR,2880,43582,613,26,10955
+MP-009,Turned down because you have no U.S. credit file?,story,NG,1994,44538,897,20,8380
+MP-023,"10,000 students funded at partner schools last year.",story,BR,2274,6806,140,7,3153
+MP-035,Term starts soon. Do not let funding be the reason you defer.,video,IN,2209,10084,201,4,1852
+MP-011,"Save up to \$4,200 versus a variable-rate loan.",single_image,NG,5179,129619,1079,25,10882
+MP-033,What would you build with the right degree?,carousel,KE,1691,15837,164,5,2159
+MP-002,Even if your family has no U.S. banking history.,ugc_video,KE,3579,33076,636,31,13111
+MP-016,What will this loan actually cost you by graduation?,ugc_video,BR,5059,21494,499,25,10910
+MP-018,Funds disbursed in as little as 5 business days.,carousel,PH,2850,15050,322,11,4751
+MP-025,Join students funded at 400+ partner universities.,carousel,IN,2857,24474,242,10,4506
+MP-008,Do you need a cosigner to study in the U.S.?,single_image,PH,4895,93950,1182,46,21082
+MP-026,Backed by lenders who specialise in visa students.,video,NG,1021,12136,98,4,1900
+MP-022,"Trusted by 25,000+ international students.",carousel,KE,4410,23078,451,22,10376
+MP-004,Rejected for no credit history? Read this.,single_image,IN,4706,64148,1036,39,17639
+MP-006,No U.S. credit score required to qualify.,single_image,KE,2396,98158,883,21,9613
+MP-028,Worried about hidden fees? Here is the full schedule.,ugc_video,BR,2359,17427,352,10,4191
+MP-014,Transparent pricing. No hidden origination surprises.,story,BR,1791,13460,212,8,3573
+MP-012,0.5% rate discount when you set up autopay.,single_image,BR,983,6296,117,6,2818
+MP-015,Pay interest only while you are still studying.,ugc_video,NG,3231,22085,526,22,9568
+MP-024,Rated 4.8 by students from 100+ countries.,video,NG,1886,12447,219,10,4762
+MP-034,Where do you want to be in five years?,carousel,IN,1962,30683,262,6,2827
+MP-038,94% of our borrowers are employed within 6 months.,single_image,KE,147,1534,23,1,478
+MP-013,"Fixed rates that never move, for your whole degree.",carousel,NG,1815,13051,217,10,4471
+MP-030,Fund the career you came here to build.,single_image,NG,1877,11513,197,4,1919` },
+  consumer: { breakeven:1.8, minconv:40,
+    angles:["cost","results","ingredients","social","routine","sustainability"],
+    csv:`creative,headline,format,geo,spend,impressions,clicks,conversions,revenue
+LM-001,3 serums for the price of 2. Save \$38.,single_image,AU,2137,277625,2863,81,5180
+LM-009,What if your texture cleared in two weeks?,story,AU,2184,115688,1974,99,6459
+LM-005,87% saw smoother skin in 14 days.,ugc_video,CA,790,87218,1208,42,2807
+LM-010,No fragrance. No alcohol. No mystery fillers.,carousel,CA,1021,99437,1775,51,3431
+LM-015,"The serum 30,000 people restocked twice.",carousel,AU,691,83559,1178,24,1710
+LM-017,A three-step routine you'll actually finish.,single_image,US,1582,175647,1638,35,2323
+LM-006,Clinically tested: 2x hydration in 7 days.,story,US,634,26351,585,27,1803
+LM-002,Cheaper per use than your morning coffee.,ugc_video,US,3293,373894,7204,130,8963
+LM-014,"Rated 4.9 by 12,000+ verified buyers.",ugc_video,AU,3567,122521,1702,83,5909
+LM-011,Sensitive skin? This one was built for you.,carousel,UK,3630,500756,8469,196,13495
+LM-020,Too many bottles on your shelf?,ugc_video,UK,1665,36635,675,30,2112
+LM-019,Skincare that fits the life you already have.,single_image,AU,3870,110823,2095,63,4506
+LM-018,"Two minutes, morning and night. That's it.",video,US,4077,162205,2960,82,5251
+LM-007,"Visible texture change in 3 weeks, or refunded.",carousel,UK,3997,583951,7352,197,13502
+LM-003,Bundle pricing ends Sunday night.,story,AU,3808,185006,4375,98,6453
+LM-013,"Barrier-safe niacinamide, buffered for daily use.",single_image,CA,1752,73457,1559,77,5051
+LM-012,Retinol without the peeling week.,video,US,845,106331,2506,49,3373
+LM-016,"Join 50,000 people who switched this year.",single_image,UK,2835,133062,2088,87,6018
+LM-021,Refill pouches that cut plastic by 80%.,story,CA,147,8460,117,4,283
+LM-008,Still waking up to dull skin?,carousel,US,1575,166965,3612,81,5420
+LM-004,Last day for 30% off the starter set.,story,UK,3306,435686,4899,116,7575` }
+};
+
+/* Categorical palette: 6 slots, all-pairs CVD validated against the #FDFCFB
+   surface (worst deutan pair ΔE 8.7, worst normal-vision pair ΔE 15.8).
+   Fixed order, never cycled - a 7th category folds into neutral OTHER rather
+   than getting a generated hue, because six is the honest limit on this surface. */
+const CAT = ["#994733","#2E6CA3","#9B8D36","#652EA3","#D5156F","#BD32D2"];
+const OTHER = "#5B6472";
+const catColor = i => (i >= 0 && i < CAT.length) ? CAT[i] : OTHER;
+
+/* Stable colour identity: alphabetical by angle name, with "other" always
+   neutral. Re-sorting the table by ROAS must never repaint the scatter. */
+function colorIndex(names){
+  const stable = names.filter(a=>a!=="other").slice().sort((a,b)=>a.localeCompare(b));
+  const m = new Map();
+  stable.forEach((a,i)=>m.set(a, i));
+  m.set("other", -1);
+  return m;
+}
+/* Validated single-hue sequential ramp (light -> dark) */
+const SEQ = ["#CFA285","#BB8461","#A46543","#8B4B2C","#70351B"];
+const INK="#16243D", INKSOFT="#4A566B", LINE="#E4E0DA", SURFACE="#FDFCFB";
+const GOOD="#15803D", BAD="#B91C1C";
+
+/* ===================== CLASSIFIER ===================== */
+const ANGLE_KW = {
+  eligibility: ["cosigner","co-signer","collateral","credit history","credit score","credit file","qualify","eligible","eligibility","rejected","turned down","banking history","approval"],
+  cost:        ["apr","rate","rates","interest","fee","fees","price","pricing","cost","save","discount","autopay","cheaper","bundle","% off","prepayment","origination"],
+  speed:       ["minutes","fast","quick","instant","decision in","disbursed","weekend","online","branch","business days","how long"],
+  trust:       ["trusted","rated","backed","specialise","specialize","understands","hidden fees","partner","licensed","secure","verified"],
+  aspiration:  ["dream","career","future","build","life","degree","five years","defer","goal"],
+  outcomes:    ["employed","salary","hired","job placement","placement","within 6 months"],
+  results:     ["saw","visible","hydration","texture","clinically","refunded","smoother","in 14 days","in 7 days","results"],
+  ingredients: ["fragrance","alcohol","fillers","retinol","niacinamide","sensitive skin","barrier","ingredients"],
+  social:      ["verified buyers","restocked","switched","reviews","people who","buyers"],
+  routine:     ["routine","step","steps","bottles","shelf","morning and night","two minutes"],
+  sustainability:["refill","plastic","sustainable","recycl"]
+};
+const HOOK_KW = {
+  urgency:      ["closes","ends","last day","last week","before it","hurry","deadline","soon","term starts"],
+  objection:    ["no ","without","even if","don't need","do not need","rejected","turned down","worried","skip","still get","no-"],
+  social_proof: ["trusted by","rated","join ","students funded","verified buyers","restocked","switched","people who","funded at"],
+  stat:         ["%","x hydration","$","+ ","2x","3 minutes","14 days","7 days","business days"],
+  question:     ["?"]
+};
+const HOOK_ORDER = ["urgency","objection","social_proof","stat","question","benefit"];
+
+function classify(text, kwmap, fallback){
+  const t = " " + (text||"").toLowerCase() + " ";
+  let best = fallback, bestScore = 0, hits = {};
+  for(const [label, words] of Object.entries(kwmap)){
+    let score = 0, matched = [];
+    for(const w of words){
+      const needle = w.toLowerCase();
+      let found;
+      if(/^[a-z0-9]/.test(needle) && /[a-z0-9]$/.test(needle)){
+        found = new RegExp("\\b" + needle.replace(/[.*+?^${}()|[\]\\]/g,"\\$&") + "\\b").test(t);
+      } else {
+        found = t.indexOf(needle) !== -1;
+      }
+      if(found){ score++; matched.push(w); }
+    }
+    if(score) hits[label] = matched;
+    if(score > bestScore){ bestScore = score; best = label; }
+  }
+  return { label: best, score: bestScore, hits };
+}
+
+function activeAngleKw(){
+  /* The same word means different things in different categories: "rated" is a
+     trust signal in lending and a social-proof signal in skincare. So the angle
+     vocabulary is scoped per account rather than global - a single universal
+     taxonomy would mislabel one domain to serve the other. */
+  const allow = STATE.angleVocab;
+  if(!allow || !allow.length) return ANGLE_KW;
+  const out = {};
+  allow.forEach(k=>{ if(ANGLE_KW[k]) out[k]=ANGLE_KW[k]; });
+  return Object.keys(out).length ? out : ANGLE_KW;
+}
+
+function tagRow(r){
+  const a = classify(r.headline, activeAngleKw(), "other");
+  const h = classify(r.headline, HOOK_KW, "benefit");
+  r.angle = a.label; r.angleWhy = a.hits[a.label] || [];
+  r.hook  = h.score ? h.label : "benefit";
+  r.hookWhy = h.hits[r.hook] || [];
+  return r;
+}
+
+/* ===================== CSV ===================== */
+function parseCsv(text){
+  const lines = text.split(/\r?\n/).map(l=>l.trim()).filter(Boolean);
+  if(lines.length < 2) return { rows:[], errors:["Need a header row and at least one data row."] };
+  const hdr = splitLine(lines[0]).map(h=>h.trim().toLowerCase());
+  const col = n => hdr.indexOf(n);
+  const need = ["headline","spend","conversions","revenue"];
+  const missing = need.filter(n=>col(n)===-1);
+  if(missing.length) return { rows:[], errors:["Missing required column(s): "+missing.join(", ")+". Found: "+hdr.join(", ")] };
+
+  const rows=[], errors=[];
+  for(let i=1;i<lines.length;i++){
+    const p = splitLine(lines[i]);
+    const num = n => { const v=parseFloat((p[col(n)]||"").replace(/[^0-9.\-]/g,"")); return isFinite(v)?v:0; };
+    const headline = (p[col("headline")]||"").trim();
+    if(!headline){ errors.push("Row "+(i+1)+": empty headline, skipped."); continue; }
+    const spend = num("spend");
+    if(spend <= 0){ errors.push("Row "+(i+1)+": spend is zero or unreadable, skipped."); continue; }
+    rows.push({
+      creative: col("creative")>-1 ? (p[col("creative")]||"").trim() : "row "+i,
+      headline, spend,
+      format: col("format")>-1 ? (p[col("format")]||"").trim() : "",
+      geo:    col("geo")>-1 ? (p[col("geo")]||"").trim() : "",
+      impressions: col("impressions")>-1 ? num("impressions") : 0,
+      clicks:      col("clicks")>-1 ? num("clicks") : 0,
+      conversions: num("conversions"),
+      revenue:     num("revenue")
+    });
+  }
+  return { rows, errors };
+}
+function splitLine(line){
+  const out=[]; let cur="", q=false;
+  for(let i=0;i<line.length;i++){
+    const c=line[i];
+    if(c === '"'){ if(q && line[i+1]==='"'){ cur+='"'; i++; } else q=!q; }
+    else if(c === "," && !q){ out.push(cur); cur=""; }
+    else cur+=c;
+  }
+  out.push(cur); return out;
+}
+
+/* ===================== STATS ===================== */
+function group(rows, key){
+  const m = new Map();
+  rows.forEach(r=>{
+    const k = r[key] || "other";
+    if(!m.has(k)) m.set(k, { key:k, rows:[], spend:0, revenue:0, conversions:0, clicks:0, impressions:0 });
+    const g = m.get(k);
+    g.rows.push(r); g.spend+=r.spend; g.revenue+=r.revenue;
+    g.conversions+=r.conversions; g.clicks+=r.clicks; g.impressions+=r.impressions;
+  });
+  return [...m.values()];
+}
+
+function decorate(groups, overallRoas, breakeven, minConv){
+  groups.forEach(g=>{
+    g.roas = g.spend ? g.revenue/g.spend : 0;
+    g.cpa  = g.conversions ? g.spend/g.conversions : null;
+    g.cvr  = g.clicks ? g.conversions/g.clicks : null;
+    /* Conversion counts are Poisson-ish; SE of a ratio scales with 1/sqrt(n).
+       This is an approximation and is labelled as one in the UI. */
+    const se = g.conversions>0 ? g.roas/Math.sqrt(g.conversions) : Infinity;
+    g.ciLo = Math.max(0, g.roas - 1.96*se);
+    g.ciHi = g.roas + 1.96*se;
+    g.thin = g.conversions < minConv;
+    if(g.thin){
+      g.verdict = "thin"; g.verdictText = "Too few conversions to call";
+    } else if(g.ciLo > overallRoas){
+      g.verdict = "above"; g.verdictText = "Above average";
+    } else if(g.ciHi < overallRoas){
+      g.verdict = "below"; g.verdictText = "Below average";
+    } else {
+      g.verdict = "flat"; g.verdictText = "Not distinguishable from average";
+    }
+    g.belowBreakeven = !g.thin && g.ciHi < breakeven;
+  });
+  groups.sort((a,b)=>b.roas-a.roas);
+  return groups;
+}
+
+/* ===================== SVG HELPERS ===================== */
+const NS="http://www.w3.org/2000/svg";
+function el(tag, attrs, parent){
+  const n=document.createElementNS(NS,tag);
+  for(const k in attrs) if(attrs[k]!==null&&attrs[k]!==undefined) n.setAttribute(k,attrs[k]);
+  if(parent) parent.appendChild(n);
+  return n;
+}
+/* rounded on the far end only, anchored flat to the baseline */
+function barPath(x,y,w,h,r){
+  r = Math.max(0, Math.min(r, w, h/2));
+  if(w<=0) return "M"+x+","+y+"h0";
+  return "M"+x+","+y+"h"+(w-r)+"a"+r+","+r+" 0 0 1 "+r+","+r+
+         "v"+(h-2*r)+"a"+r+","+r+" 0 0 1 "+(-r)+","+r+"H"+x+"Z";
+}
+const tip = document.getElementById("tip");
+function showTip(e, html){
+  tip.innerHTML = html;
+  tip.style.opacity = "1";
+  const pad = 14;
+  let x = e.clientX + pad, y = e.clientY + pad;
+  const r = tip.getBoundingClientRect();
+  if(x + r.width > window.innerWidth - 8) x = e.clientX - r.width - pad;
+  if(y + r.height > window.innerHeight - 8) y = e.clientY - r.height - pad;
+  tip.style.left = x+"px"; tip.style.top = y+"px";
+}
+function hideTip(){ tip.style.opacity = "0"; }
+function hoverable(node, html){
+  node.addEventListener("mousemove", e=>showTip(e, html));
+  node.addEventListener("mouseleave", hideTip);
+  node.setAttribute("tabindex","0");
+  node.addEventListener("focus", e=>{
+    const b=node.getBoundingClientRect();
+    showTip({clientX:b.left+b.width/2, clientY:b.top}, html);
+  });
+  node.addEventListener("blur", hideTip);
+}
+
+/* ===================== CHARTS ===================== */
+function hatchDef(svg, id, color){
+  const defs = el("defs",{},svg);
+  const p = el("pattern",{id:id,width:6,height:6,patternUnits:"userSpaceOnUse",patternTransform:"rotate(45)"},defs);
+  el("rect",{width:6,height:6,fill:"#fff"},p);
+  el("rect",{width:2.5,height:6,fill:color,opacity:.55},p);
+}
+
+function barChart(mount, groups, opts){
+  mount.innerHTML="";
+  const rows = groups.length;
+  const rowH = 40, padT = 30, padB = 34, padL = 104, padR = 86;
+  const W = 760, H = padT + rows*rowH + padB;
+  const svg = el("svg",{class:"chart", viewBox:"0 0 "+W+" "+H, role:"img",
+    "aria-label":opts.aria||"Bar chart"}, mount);
+  hatchDef(svg, opts.hatchId, opts.color);
+
+  /* Scale on the VALUES, not the intervals: one thin group with a huge
+     interval must not compress every real bar into the left margin.
+     Intervals that run past the axis are clipped and marked with a chevron. */
+  const maxV = Math.max(opts.breakeven, opts.overall, ...groups.map(g=>g.roas)) * 1.18;
+  const plotW = W - padL - padR;
+  const x = v => padL + (Math.min(v, maxV)/maxV)*plotW;
+
+  const ticks = 5;
+  for(let i=0;i<=ticks;i++){
+    const v = maxV*i/ticks;
+    el("line",{x1:x(v),y1:padT,x2:x(v),y2:H-padB,stroke:LINE,"stroke-width":1},svg);
+    el("text",{x:x(v),y:H-padB+16,"text-anchor":"middle","font-size":11,fill:INKSOFT,
+      "font-family":"var(--mono)"},svg).textContent = v.toFixed(1);
+  }
+  el("text",{x:padL+plotW/2,y:H-4,"text-anchor":"middle","font-size":11,fill:INKSOFT},svg)
+    .textContent = "ROAS (revenue \u00f7 spend)";
+
+  /* reference lines - labels stacked on separate rows so they never collide */
+  const refs = [
+    {v:opts.breakeven, label:"breakeven", dash:"6 3", row:0},
+    {v:opts.overall,   label:"blended avg", dash:"2 3", row:1}
+  ].filter(r=>r.v>0 && r.v<=maxV).sort((a,b)=>a.v-b.v);
+  if(refs.length===2 && Math.abs(x(refs[0].v)-x(refs[1].v)) > 70) refs[1].row = 0;
+  refs.forEach(r=>{
+    el("line",{x1:x(r.v),y1:padT-(r.row===0?6:19),x2:x(r.v),y2:H-padB,stroke:INK,
+      "stroke-width":1.5,"stroke-dasharray":r.dash,opacity:.5},svg);
+    el("text",{x:x(r.v),y:padT-(r.row===0?10:23),"text-anchor":"middle","font-size":10,
+      fill:INK,opacity:.8,"font-family":"var(--display)"},svg).textContent = r.label;
+  });
+
+  groups.forEach((g,i)=>{
+    const y = padT + i*rowH + 8;
+    const h = rowH - 20;
+    const w = Math.max(0, x(g.roas) - padL);
+    const dim = g.thin || g.verdict==="flat";
+
+    const bar = el("path",{d:barPath(padL,y,w,h,4),
+      fill: dim ? "url(#"+opts.hatchId+")" : opts.color,
+      stroke: dim ? opts.color : "none", "stroke-width": dim?1:0, "stroke-opacity":.5},svg);
+
+    let rightEdge = x(g.roas);
+    if(g.conversions>0 && isFinite(g.ciHi)){
+      const cy = y + h/2;
+      const hiClipped = g.ciHi > maxV;
+      const xHi = x(Math.min(g.ciHi, maxV));
+      el("line",{x1:x(g.ciLo),y1:cy,x2:xHi,y2:cy,stroke:INK,"stroke-width":1.5,opacity:.6},svg);
+      el("line",{x1:x(g.ciLo),y1:cy-4,x2:x(g.ciLo),y2:cy+4,stroke:INK,"stroke-width":1.5,opacity:.6},svg);
+      if(hiClipped){
+        el("path",{d:"M"+(xHi-5)+","+(cy-4.5)+"L"+xHi+","+cy+"L"+(xHi-5)+","+(cy+4.5),
+          fill:"none",stroke:INK,"stroke-width":1.5,opacity:.6},svg);
+      } else {
+        el("line",{x1:xHi,y1:cy-4,x2:xHi,y2:cy+4,stroke:INK,"stroke-width":1.5,opacity:.6},svg);
+      }
+      rightEdge = Math.max(rightEdge, xHi);
+    }
+
+    el("text",{x:padL-10,y:y+h/2+4,"text-anchor":"end","font-size":12,
+      fill:INK,"font-family":"var(--display)","font-weight":600},svg).textContent = g.key;
+
+    /* value label clears the whisker, and never runs off the canvas */
+    const labelX = Math.min(rightEdge + 9, W - 8);
+    const anchor = labelX > W - 52 ? "end" : "start";
+    const vlabel = el("text",{x: anchor==="end" ? W-8 : labelX, y:y+h/2+4,"font-size":12,
+      fill:INK,"font-family":"var(--mono)","text-anchor":anchor},svg);
+    vlabel.textContent = g.roas.toFixed(2) + (g.thin ? " \u00b7?" : "");
+
+    hoverable(bar,
+      "<b>"+esc(g.key)+"</b><br>ROAS "+g.roas.toFixed(2)+
+      "<br>95% interval "+g.ciLo.toFixed(2)+"\u2013"+(isFinite(g.ciHi)?g.ciHi.toFixed(2):"\u221e")+
+      "<br>"+fmt(g.spend)+" spend \u00b7 "+g.conversions+" conv"+
+      "<br>"+g.rows.length+" creative"+(g.rows.length===1?"":"s")+
+      "<br><i>"+esc(g.verdictText)+"</i>");
+  });
+  return svg;
+}
+
+function scatterChart(mount, rows, angles, opts){
+  mount.innerHTML="";
+  const W=760, H=400, padL=56, padR=78, padT=16, padB=46;
+  const svg = el("svg",{class:"chart",viewBox:"0 0 "+W+" "+H,role:"img",
+    "aria-label":"Scatter plot of spend versus ROAS for each creative"},mount);
+  const maxSpend = Math.max(...rows.map(r=>r.spend))*1.08;
+  const maxRoas  = Math.max(opts.breakeven, ...rows.map(r=>r.roas))*1.08;
+  const maxConv  = Math.max(...rows.map(r=>r.conversions), 1);
+  const x = v => padL + (v/maxSpend)*(W-padL-padR);
+  const y = v => H-padB - (v/maxRoas)*(H-padT-padB);
+  const idx = colorIndex(angles);
+  const color = a => catColor(idx.has(a) ? idx.get(a) : -1);
+
+  for(let i=0;i<=4;i++){
+    const v = maxRoas*i/4;
+    el("line",{x1:padL,y1:y(v),x2:W-padR,y2:y(v),stroke:LINE,"stroke-width":1},svg);
+    el("text",{x:padL-8,y:y(v)+4,"text-anchor":"end","font-size":11,fill:INKSOFT,
+      "font-family":"var(--mono)"},svg).textContent = v.toFixed(1);
+  }
+  for(let i=0;i<=4;i++){
+    const v = maxSpend*i/4;
+    el("text",{x:x(v),y:H-padB+17,"text-anchor":"middle","font-size":11,fill:INKSOFT,
+      "font-family":"var(--mono)"},svg).textContent = fmt(v);
+  }
+  el("text",{x:padL+(W-padL-padR)/2,y:H-8,"text-anchor":"middle","font-size":11,fill:INKSOFT},svg)
+    .textContent = "Spend";
+  el("text",{x:14,y:padT+(H-padT-padB)/2,"font-size":11,fill:INKSOFT,
+    transform:"rotate(-90 14 "+(padT+(H-padT-padB)/2)+")","text-anchor":"middle"},svg)
+    .textContent = "ROAS";
+
+  el("line",{x1:padL,y1:y(opts.breakeven),x2:W-padR,y2:y(opts.breakeven),
+    stroke:INK,"stroke-width":1.5,"stroke-dasharray":"6 3",opacity:.6},svg);
+  el("text",{x:W-padR+6,y:y(opts.breakeven)+4,"text-anchor":"start","font-size":10,fill:INK,
+    opacity:.8,"font-family":"var(--display)"},svg).textContent = "breakeven "+opts.breakeven.toFixed(1);
+
+  rows.slice().sort((a,b)=>b.conversions-a.conversions).forEach(r=>{
+    const rad = 4 + 7*Math.sqrt(r.conversions/maxConv);
+    const c = el("circle",{cx:x(r.spend),cy:y(r.roas),r:rad,
+      fill:color(r.angle),"fill-opacity":.78,stroke:SURFACE,"stroke-width":2},svg);
+    hoverable(c, "<b>"+esc(r.creative)+"</b><br>"+esc(r.headline)+
+      "<br>"+esc(r.angle)+" · "+esc(r.hook)+(r.format?" · "+esc(r.format):"")+
+      "<br>"+fmt(r.spend)+" spend · "+r.conversions+" conv · ROAS "+r.roas.toFixed(2));
+  });
+  return svg;
+}
+
+function matrixChart(mount, rows, angles, hooks, opts){
+  mount.innerHTML="";
+  const cw=96, ch=46, padL=104, padT=44, padR=14, padB=14;
+  const W = padL + angles.length*cw + padR;
+  const H = padT + hooks.length*ch + padB;
+  const svg = el("svg",{class:"chart",viewBox:"0 0 "+W+" "+H,role:"img",
+    "aria-label":"Matrix of ROAS by hook type and angle"},mount);
+  hatchDef(svg,"mxHatch",INKSOFT);
+
+  const cells = new Map();
+  rows.forEach(r=>{
+    const k = r.hook+"||"+r.angle;
+    if(!cells.has(k)) cells.set(k,{spend:0,revenue:0,conversions:0,n:0});
+    const c=cells.get(k);
+    c.spend+=r.spend; c.revenue+=r.revenue; c.conversions+=r.conversions; c.n++;
+  });
+  const vals=[...cells.values()].filter(c=>c.conversions>=opts.minConv).map(c=>c.revenue/c.spend);
+  const lo = vals.length?Math.min(...vals):0, hi = vals.length?Math.max(...vals):1;
+  const step = v => {
+    if(hi===lo) return SEQ[2];
+    const t=(v-lo)/(hi-lo);
+    return SEQ[Math.max(0,Math.min(SEQ.length-1,Math.floor(t*SEQ.length)))];
+  };
+
+  angles.forEach((a,i)=>{
+    el("text",{x:padL+i*cw+cw/2,y:padT-22,"text-anchor":"middle","font-size":11,
+      fill:INK,"font-family":"var(--display)","font-weight":600},svg).textContent = a;
+  });
+  hooks.forEach((h,j)=>{
+    el("text",{x:padL-10,y:padT+j*ch+ch/2+4,"text-anchor":"end","font-size":11,
+      fill:INK,"font-family":"var(--display)","font-weight":600},svg).textContent = h.replace("_"," ");
+  });
+
+  hooks.forEach((h,j)=>{
+    angles.forEach((a,i)=>{
+      const c = cells.get(h+"||"+a);
+      const X = padL+i*cw+1, Y = padT+j*ch+1, w = cw-3, hh = ch-3;  /* 2px surface gap */
+      if(!c){
+        el("rect",{x:X,y:Y,width:w,height:hh,rx:3,fill:"none",stroke:LINE,
+          "stroke-width":1,"stroke-dasharray":"3 3"},svg);
+        const t = el("text",{x:X+w/2,y:Y+hh/2+4,"text-anchor":"middle","font-size":11,
+          fill:INKSOFT,opacity:.6},svg); t.textContent="untested";
+        return;
+      }
+      const roas = c.revenue/c.spend;
+      const thin = c.conversions < opts.minConv;
+      const rect = el("rect",{x:X,y:Y,width:w,height:hh,rx:3,
+        fill: thin ? "url(#mxHatch)" : step(roas),
+        stroke: thin ? INKSOFT : "none", "stroke-width": thin?1:0, "stroke-opacity":.4},svg);
+      const dark = !thin && SEQ.indexOf(step(roas)) >= 3;
+      const label = thin ? roas.toFixed(1)+"?" : roas.toFixed(2);
+      if(thin){
+        /* the hatch would otherwise compete with the digits */
+        el("rect",{x:X+w/2-20,y:Y+hh/2-9,width:40,height:17,rx:3,
+          fill:"#fff","fill-opacity":.86},svg);
+      }
+      const t = el("text",{x:X+w/2,y:Y+hh/2+4,"text-anchor":"middle","font-size":11.5,
+        fill: dark ? "#fff" : INK, "font-family":"var(--mono)"},svg);
+      t.textContent = label;
+      hoverable(rect, "<b>"+esc(h.replace("_"," "))+" × "+esc(a)+"</b>"+
+        "<br>ROAS "+roas.toFixed(2)+"<br>"+fmt(c.spend)+" spend · "+c.conversions+" conv"+
+        "<br>"+c.n+" creative"+(c.n===1?"":"s")+
+        (thin?"<br><i>below the "+opts.minConv+"-conversion floor — not reliable</i>":""));
+    });
+  });
+  return svg;
+}
+
+/* ===================== FORMAT ===================== */
+const $ = s=>document.querySelector(s);
+const esc = s=>String(s==null?"":s).replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;","\"":"&quot;","'":"&#39;"}[c]));
+const fmt = n => "$"+Math.round(n).toLocaleString("en-US");
+
+let STATE = { rows:[], ds:"fintech", aiTags:null, angleVocab:null };
+
+/* ===================== ANALYSIS ===================== */
+function analyse(){
+  const breakeven = parseFloat($("#breakeven").value)||2;
+  const minConv   = parseInt($("#minconv").value,10)||25;
+  const parsed = parseCsv($("#csv").value);
+
+  if(!parsed.rows.length){
+    $("#msg").innerHTML = '<span style="color:var(--red-text)">'+esc(parsed.errors.join(" "))+'</span>';
+    ["tagSection","angleSection","scatterSection","matrixSection","simSection","planSection"]
+      .forEach(id=>document.getElementById(id).hidden=true);
+    $("#metrics").innerHTML="";
+    return;
+  }
+
+  const rows = parsed.rows.map(r=>{
+    r.roas = r.spend ? r.revenue/r.spend : 0;
+    r.cpa  = r.conversions ? r.spend/r.conversions : null;
+    r.ctr  = r.impressions ? r.clicks/r.impressions : null;
+    r.cvr  = r.clicks ? r.conversions/r.clicks : null;
+    return tagRow(r);
+  });
+
+  if(STATE.aiTags){
+    rows.forEach(r=>{
+      const t = STATE.aiTags[r.creative] || STATE.aiTags[r.headline];
+      if(t){ r.angle=t.angle; r.hook=t.hook; r.angleWhy=["AI"]; r.hookWhy=["AI"]; }
+    });
+  }
+
+  STATE.rows = rows;
+  STATE.breakeven = breakeven;
+  STATE.minConv = minConv;
+
+  const totalSpend = rows.reduce((s,r)=>s+r.spend,0);
+  const totalRev   = rows.reduce((s,r)=>s+r.revenue,0);
+  const totalConv  = rows.reduce((s,r)=>s+r.conversions,0);
+  const overall    = totalSpend ? totalRev/totalSpend : 0;
+  STATE.overall = overall;
+
+  const angles = decorate(group(rows,"angle"), overall, breakeven, minConv);
+  const hooks  = decorate(group(rows,"hook"),  overall, breakeven, minConv);
+  STATE.angles = angles; STATE.hooks = hooks;
+
+  $("#msg").innerHTML = rows.length+" creatives analysed."+
+    (parsed.errors.length ? ' <span style="color:var(--amber-text)">'+parsed.errors.length+" row(s) skipped: "+esc(parsed.errors[0])+"</span>" : "");
+
+  ["tagSection","angleSection","scatterSection","matrixSection","simSection","planSection"]
+    .forEach(id=>document.getElementById(id).hidden=false);
+
+  renderMetrics(rows, angles, overall, totalSpend, totalConv);
+  renderTags(rows);
+  renderAngles(angles, hooks, overall, breakeven, minConv);
+  renderScatter(rows, angles);
+  renderMatrix(rows, angles, hooks, minConv);
+  renderSim(angles, overall, breakeven, totalSpend, totalRev, totalConv);
+  renderPlan(rows, angles, hooks, overall, breakeven);
+}
+
+function renderMetrics(rows, angles, overall, totalSpend, totalConv){
+  const conf = angles.filter(a=>!a.thin);
+  const callable = angles.filter(a=>a.verdict==="above"||a.verdict==="below");
+  const losing = angles.filter(a=>a.belowBreakeven);
+  const losingSpend = losing.reduce((s,a)=>s+a.spend,0);
+  const boxes = [
+    [rows.length+" → "+angles.length, "creatives reduced to angle-level decisions"],
+    [callable.length+" / "+angles.length, "angles with a result the data can actually support"],
+    [fmt(losingSpend), "spend in angles confidently below breakeven"],
+    [(angles.length - conf.length)+"", "angles flagged as too thin to call"],
+    [overall.toFixed(2), "blended ROAS across "+fmt(totalSpend)]
+  ];
+  $("#metrics").innerHTML = boxes.map(b=>
+    '<div class="metric-box"><span class="num">'+esc(b[0])+'</span><span class="label">'+esc(b[1])+'</span></div>'
+  ).join("");
+}
+
+function renderTags(rows){
+  const byAngle = {};
+  rows.forEach(r=>{ byAngle[r.angle]=(byAngle[r.angle]||0)+1; });
+  const other = byAngle["other"]||0;
+  $("#tagStats").textContent = Object.keys(byAngle).length+" angles detected"+
+    (other?" · "+other+" unclassified":"") + (STATE.aiTags?" · AI-tagged":" · keyword-tagged") +
+    (STATE.angleVocab?" · vocabulary scoped to this account":" · full vocabulary");
+
+  $("#tagTable tbody").innerHTML = rows.slice().sort((a,b)=>b.spend-a.spend).map(r=>
+    '<tr><td class="mono">'+esc(r.creative)+'</td>'+
+    '<td style="max-width:22rem">'+esc(r.headline)+'</td>'+
+    '<td><span class="pill '+(r.angle==="other"?"pill-mute":"pill-info")+'" title="matched: '+
+      esc((r.angleWhy||[]).join(", ")||"no keyword match")+'">'+esc(r.angle)+'</span></td>'+
+    '<td><span class="pill pill-mute" title="matched: '+
+      esc((r.hookWhy||[]).join(", ")||"default")+'">'+esc(r.hook.replace("_"," "))+'</span></td>'+
+    '<td>'+esc(r.format||"—")+'</td>'+
+    '<td class="num-cell">'+fmt(r.spend)+'</td>'+
+    '<td class="num-cell">'+r.conversions+'</td>'+
+    '<td class="num-cell">'+r.roas.toFixed(2)+'</td></tr>'
+  ).join("");
+
+  $("#kwBody").innerHTML =
+    (STATE.angleVocab
+      ? "<p><strong>Active angle vocabulary:</strong> "+STATE.angleVocab.map(a=>"<code>"+esc(a)+"</code>").join(" ")+
+        ". The same word carries different intent in different categories — <code>rated</code> is a trust signal for a lender and a social-proof signal for a skincare brand — so the vocabulary is scoped per account instead of being universal. Upload your own file to score against every label.</p>"
+      : "<p><strong>Active angle vocabulary:</strong> all labels, because this is your own data.</p>")+
+    "<p>Each headline is scored against every label's keyword list using word-boundary matching; the highest score wins, ties break toward the first label. Hover any tag in the table to see which keywords matched.</p>"+
+    "<p><strong>Angles:</strong> "+Object.entries(ANGLE_KW).map(([k,v])=>
+      "<code>"+esc(k)+"</code> ("+v.slice(0,5).map(esc).join(", ")+"…)").join(" · ")+"</p>"+
+    "<p><strong>Hooks:</strong> "+Object.entries(HOOK_KW).map(([k,v])=>
+      "<code>"+esc(k)+"</code> ("+v.slice(0,4).map(esc).join(", ")+"…)").join(" · ")+
+      " · <code>benefit</code> (default when nothing else matches)</p>"+
+    "<p>This is deliberately simple and auditable. It will mislabel irony and implication — which is exactly what the optional AI tagging step is for.</p>";
+}
+
+function renderAngles(angles, hooks, overall, breakeven, minConv){
+  $("#angleChartSub").textContent =
+    "Hatched bars are results the data can't support: either under "+minConv+
+    " conversions, or an interval that straddles the blended average of "+overall.toFixed(2)+".";
+
+  barChart($("#angleChart"), angles, {color:CAT[0], hatchId:"angleHatch",
+    breakeven, overall, aria:"ROAS by angle"});
+  barChart($("#hookChart"), hooks, {color:CAT[1], hatchId:"hookHatch",
+    breakeven, overall, aria:"ROAS by hook type"});
+
+  $("#angleTable tbody").innerHTML = angles.map(g=>{
+    const cls = g.verdict==="above"?"pill-ok":g.verdict==="below"?"pill-bad":
+                g.verdict==="thin"?"pill-mute":"pill-warn";
+    const icon = g.verdict==="above"?"▲ ":g.verdict==="below"?"▼ ":g.verdict==="thin"?"◌ ":"= ";
+    return '<tr'+(g.thin?' class="dim"':'')+'>'+
+      '<td><strong>'+esc(g.key)+'</strong></td>'+
+      '<td class="num-cell">'+g.rows.length+'</td>'+
+      '<td class="num-cell">'+fmt(g.spend)+'</td>'+
+      '<td class="num-cell">'+g.conversions+'</td>'+
+      '<td class="num-cell"><strong>'+g.roas.toFixed(2)+'</strong></td>'+
+      '<td class="num-cell">'+g.ciLo.toFixed(2)+"–"+(isFinite(g.ciHi)?g.ciHi.toFixed(2):"∞")+'</td>'+
+      '<td class="num-cell">'+(g.cpa?fmt(g.cpa):"—")+'</td>'+
+      '<td><span class="pill '+cls+'">'+icon+esc(g.verdictText)+'</span></td></tr>';
+  }).join("");
+
+  const callable = angles.filter(g=>g.verdict==="above"||g.verdict==="below");
+  const thin = angles.filter(g=>g.thin);
+  const flat = angles.filter(g=>g.verdict==="flat");
+  let html = '<div class="callout callout-info"><strong>How to read this.</strong> ';
+  html += callable.length
+    ? "Only <strong>"+callable.length+" of "+angles.length+"</strong> angles differ from the blended average by more than sampling noise. "
+    : "No angle differs from the blended average by more than sampling noise. ";
+  if(flat.length) html += flat.length+" ("+flat.map(g=>esc(g.key)).join(", ")+") look different on the bar chart but are not: their intervals overlap the average. ";
+  if(thin.length) html += thin.length+" ("+thin.map(g=>esc(g.key)).join(", ")+") "+(thin.length===1?"has":"have")+" too few conversions to judge at all — the honest action is more volume, not a verdict.";
+  html += "</div>";
+  $("#angleCallout").innerHTML = html;
+}
+
+function renderScatter(rows, angles){
+  const names = angles.map(a=>a.key);
+  scatterChart($("#scatter"), rows, names, {breakeven:STATE.breakeven});
+  const idx = colorIndex(names);
+  $("#scatterLegend").innerHTML = names.map(a=>{
+    const i = idx.has(a) ? idx.get(a) : -1;
+    return '<span><span class="sw" style="background:'+catColor(i)+'"></span>'+esc(a)+
+      (i<0||i>=CAT.length?' <span style="opacity:.7">(neutral)</span>':'')+'</span>';
+  }).join("") + '<span style="margin-left:auto;opacity:.8">dot size = conversions</span>';
+}
+
+function renderMatrix(rows, angles, hooks, minConv){
+  const aNames = angles.map(a=>a.key);
+  const hNames = HOOK_ORDER.filter(h=>hooks.some(x=>x.key===h))
+    .concat(hooks.map(h=>h.key).filter(h=>HOOK_ORDER.indexOf(h)===-1));
+  const total = aNames.length*hNames.length;
+  const tested = new Set(rows.map(r=>r.hook+"||"+r.angle)).size;
+  $("#matrixSub").textContent = tested+" of "+total+" hook × angle combinations have ever been tested. "+
+    "Darker is higher ROAS; hatched cells are below the "+minConv+"-conversion floor.";
+  matrixChart($("#matrix"), rows, aNames, hNames, {minConv});
+  $("#matrixLegend").innerHTML =
+    SEQ.map((c,i)=>'<span><span class="sw" style="background:'+c+'"></span>'+
+      (i===0?"lower ROAS":i===SEQ.length-1?"higher ROAS":"")+'</span>').join("")+
+    '<span><span class="sw" style="background:#fff;border:1px dashed '+LINE+'"></span>untested</span>';
+}
+
+/* ===================== SIMULATOR ===================== */
+function renderSim(angles, overall, breakeven, totalSpend, totalRev, totalConv){
+  const losers = angles.filter(g=>g.belowBreakeven);
+  const winners = angles.filter(g=>!g.thin && g.verdict==="above")
+    .sort((a,b)=>b.ciLo-a.ciLo);
+  const winner = winners[0];
+
+  if(!losers.length || !winner){
+    $("#simPanel").innerHTML = '<div class="callout callout-warn"><strong>Nothing to simulate.</strong> '+
+      (!winner ? "No angle is confidently above the blended average, so there is no evidenced destination for the budget. " : "")+
+      (!losers.length ? "No angle is confidently below breakeven, so there is no budget that clearly should move. " : "")+
+      "Moving spend on this evidence would be guessing.</div>";
+    return;
+  }
+
+  $("#simPanel").innerHTML =
+    '<div class="callout callout-info" style="margin-top:0"><strong>Eligible to move:</strong> '+
+      losers.map(g=>esc(g.key)+" ("+fmt(g.spend)+", ROAS "+g.roas.toFixed(2)+")").join(", ")+
+      '. <strong>Destination:</strong> '+esc(winner.key)+' (ROAS '+winner.roas.toFixed(2)+
+      ', CPA '+fmt(winner.cpa)+').</div>'+
+    '<div class="slider-row">'+
+      '<label class="field-label" for="shift" style="margin:0">Share of that spend to move</label>'+
+      '<input id="shift" type="range" min="0" max="100" step="5" value="50">'+
+      '<strong id="shiftVal" style="font-family:var(--display);min-width:3.2rem">50%</strong>'+
+    '</div>'+
+    '<div class="sim-grid" id="simOut"></div>'+
+    '<div class="callout callout-warn" id="simAssume"></div>';
+
+  const loserSpend = losers.reduce((s,g)=>s+g.spend,0);
+  const winnerRevPerConv = winner.conversions ? winner.revenue/winner.conversions : 0;
+
+  function update(){
+    const pct = parseInt($("#shift").value,10)/100;
+    $("#shiftVal").textContent = Math.round(pct*100)+"%";
+    const moved = loserSpend*pct;
+
+    /* remove the moved spend from losers pro-rata at their own observed efficiency */
+    let lostConv = 0, lostRev = 0;
+    losers.forEach(g=>{
+      const share = loserSpend ? g.spend/loserSpend : 0;
+      const gMoved = moved*share;
+      const frac = g.spend ? gMoved/g.spend : 0;
+      lostConv += g.conversions*frac;
+      lostRev  += g.revenue*frac;
+    });
+    const gainedConv = winner.cpa ? moved/winner.cpa : 0;
+    const gainedRev  = gainedConv*winnerRevPerConv;
+
+    const newConv = totalConv - lostConv + gainedConv;
+    const newRev  = totalRev  - lostRev  + gainedRev;
+    const newRoas = totalSpend ? newRev/totalSpend : 0;
+
+    const d = (a,b)=>{ const v=a-b; const s=v>=0?"up":"down";
+      return '<span class="'+s+'">'+(v>=0?"+":"")+Math.round(v).toLocaleString("en-US")+'</span>'; };
+
+    $("#simOut").innerHTML =
+      '<div class="sim-box"><span class="k">Budget moved</span><span class="v">'+fmt(moved)+'</span>'+
+        '<span class="d">of '+fmt(loserSpend)+' eligible</span></div>'+
+      '<div class="sim-box"><span class="k">Conversions</span><span class="v">'+Math.round(newConv).toLocaleString("en-US")+'</span>'+
+        '<span class="d">'+d(newConv,totalConv)+' vs '+Math.round(totalConv).toLocaleString("en-US")+'</span></div>'+
+      '<div class="sim-box"><span class="k">Blended ROAS</span><span class="v">'+newRoas.toFixed(2)+'</span>'+
+        '<span class="d"><span class="'+(newRoas>=overall?"up":"down")+'">'+
+        (newRoas>=overall?"+":"")+(newRoas-overall).toFixed(2)+'</span> vs '+overall.toFixed(2)+'</span></div>';
+
+    $("#simAssume").innerHTML = "<strong>Read this before quoting the number.</strong> "+
+      "The model assumes "+esc(winner.key)+" keeps its observed CPA of "+fmt(winner.cpa)+
+      " as it absorbs "+fmt(moved)+" of extra budget. In practice CPA rises as you scale into a "+
+      "narrower audience, so treat this as an optimistic ceiling and a reason to test the shift "+
+      "at "+Math.min(25,Math.round(pct*100))+"% first — not as a forecast.";
+  }
+  $("#shift").addEventListener("input", update);
+  update();
+}
+
+/* ===================== PLAN ===================== */
+function renderPlan(rows, angles, hooks, overall, breakeven){
+  const tested = new Set(rows.map(r=>r.hook+"||"+r.angle));
+  const goodAngles = angles.filter(g=>!g.thin);
+  const goodHooks  = hooks.filter(g=>!g.thin);
+
+  const combos=[];
+  goodAngles.forEach(a=>goodHooks.forEach(h=>{
+    if(tested.has(h.key+"||"+a.key)) return;
+    const aLift = overall ? a.roas/overall : 1;
+    const hLift = overall ? h.roas/overall : 1;
+    combos.push({angle:a.key, hook:h.key, expected: overall*aLift*hLift, aLift, hLift});
+  }));
+  combos.sort((x,y)=>y.expected-x.expected);
+
+  $("#testPlan").innerHTML = combos.length
+    ? '<div class="table-wrap"><table class="data"><thead><tr><th>Hook × angle</th>'+
+      '<th class="num-cell">Implied ROAS</th><th>Basis</th></tr></thead><tbody>'+
+      combos.slice(0,6).map(c=>
+        '<tr><td><strong>'+esc(c.hook.replace("_"," "))+'</strong> × '+esc(c.angle)+'</td>'+
+        '<td class="num-cell">'+c.expected.toFixed(2)+'</td>'+
+        '<td style="font-size:.76rem;color:var(--ink-soft)">angle ×'+c.aLift.toFixed(2)+
+        ' · hook ×'+c.hLift.toFixed(2)+'</td></tr>').join("")+
+      '</tbody></table></div>'+
+      '<p style="font-size:.78rem;color:var(--ink-soft);margin:.7rem 0 0">Implied ROAS multiplies the angle and hook effects, which assumes they are independent. They are usually not — this ranks what to try, it does not predict what you will get.</p>'
+    : '<div class="empty">Every combination of the angles and hooks with usable volume has already been tested.</div>';
+
+  const kills = rows.filter(r=>r.roas<breakeven && r.spend>=(STATE.overall?0:0))
+    .filter(r=>r.conversions>=3 || r.spend > 1500)
+    .sort((a,b)=>(b.spend*(breakeven-b.roas))-(a.spend*(breakeven-a.roas)))
+    .slice(0,8);
+  const wasted = kills.reduce((s,r)=>s+r.spend*(1 - r.roas/breakeven),0);
+
+  $("#killList").innerHTML = kills.length
+    ? '<div class="table-wrap"><table class="data"><thead><tr><th>Creative</th>'+
+      '<th class="num-cell">Spend</th><th class="num-cell">ROAS</th></tr></thead><tbody>'+
+      kills.map(r=>'<tr><td style="max-width:15rem"><span class="mono">'+esc(r.creative)+
+        '</span><br><span style="font-size:.75rem;color:var(--ink-soft)">'+esc(r.headline)+'</span></td>'+
+        '<td class="num-cell">'+fmt(r.spend)+'</td>'+
+        '<td class="num-cell" style="color:var(--red-text)">'+r.roas.toFixed(2)+'</td></tr>').join("")+
+      '</tbody></table></div>'+
+      '<div class="callout callout-warn" style="margin-bottom:0">Roughly <strong>'+fmt(wasted)+
+      '</strong> of the spend on these '+kills.length+' creatives is below what breakeven would have returned.</div>'
+    : '<div class="empty">No creative is spending meaningfully below breakeven.</div>';
+}
+
+/* ===================== AI ===================== */
+const KEY="anthropic_api_key";
+function getKey(){ try{ return sessionStorage.getItem(KEY)||""; }catch(e){ return ""; } }
+function setKey(v){ try{ v?sessionStorage.setItem(KEY,v):sessionStorage.removeItem(KEY); }catch(e){} }
+
+async function callClaude(prompt, maxTokens){
+  const key=getKey();
+  if(!key) throw new Error("No API key entered.");
+  const res = await fetch("https://api.anthropic.com/v1/messages",{
+    method:"POST",
+    headers:{"content-type":"application/json","x-api-key":key,
+      "anthropic-version":"2023-06-01","anthropic-dangerous-direct-browser-access":"true"},
+    body:JSON.stringify({model:"claude-sonnet-4-5-20250929",max_tokens:maxTokens||2000,
+      messages:[{role:"user",content:prompt}]})
+  });
+  if(!res.ok){
+    let msg=res.status+" "+res.statusText;
+    try{ const j=await res.json(); if(j.error&&j.error.message) msg=j.error.message; }catch(e){}
+    throw new Error(msg);
+  }
+  const j=await res.json();
+  return (j.content||[]).filter(b=>b.type==="text").map(b=>b.text).join("");
+}
+
+/* ===================== WIRING ===================== */
+function loadDataset(name){
+  const d=DATASETS[name];
+  STATE.ds=name; STATE.aiTags=null; STATE.angleVocab=d.angles||null;
+  $("#csv").value=d.csv;
+  $("#breakeven").value=d.breakeven;
+  $("#minconv").value=d.minconv;
+  document.querySelectorAll("[data-ds]").forEach(b=>b.setAttribute("aria-pressed",String(b.dataset.ds===name)));
+  analyse();
+}
+
+document.querySelectorAll("[data-ds]").forEach(b=>b.addEventListener("click",()=>loadDataset(b.dataset.ds)));
+$("#run").addEventListener("click", analyse);
+["#breakeven","#minconv"].forEach(s=>$(s).addEventListener("change", analyse));
+
+$("#upload").addEventListener("change", e=>{
+  const f=e.target.files && e.target.files[0];
+  if(!f) return;
+  const fr=new FileReader();
+  fr.onload=()=>{ $("#csv").value=String(fr.result||""); STATE.aiTags=null;
+    STATE.angleVocab=null; analyse(); };
+  fr.onerror=()=>{ $("#msg").innerHTML='<span style="color:var(--red-text)">Could not read that file.</span>'; };
+  fr.readAsText(f);
+});
+
+$("#exportTags").addEventListener("click", ()=>{
+  const head="creative,headline,angle,hook,format,geo,spend,impressions,clicks,conversions,revenue,roas,cpa\n";
+  const body=STATE.rows.map(r=>[r.creative,r.headline,r.angle,r.hook,r.format,r.geo,
+    r.spend,r.impressions,r.clicks,r.conversions,r.revenue,r.roas.toFixed(3),
+    r.cpa?r.cpa.toFixed(2):""]
+    .map(c=>'"'+String(c).replace(/"/g,'""')+'"').join(",")).join("\n");
+  const b=new Blob([head+body],{type:"text/csv;charset=utf-8"});
+  const a=document.createElement("a");
+  a.href=URL.createObjectURL(b); a.download="creatives-tagged.csv";
+  document.body.appendChild(a); a.click();
+  setTimeout(()=>{URL.revokeObjectURL(a.href); a.remove();},0);
+});
+
+$("#aiToggle").addEventListener("click",()=>{
+  const p=$("#aiPanel"); const open=p.dataset.open==="true";
+  p.dataset.open=String(!open);
+  $("#aiToggle").setAttribute("aria-expanded",String(!open));
+});
+$("#apiKey").value=getKey();
+$("#apiKey").addEventListener("input",e=>setKey(e.target.value.trim()));
+$("#aiClear").addEventListener("click",()=>{ setKey(""); $("#apiKey").value=""; $("#aiStatus").textContent="Key cleared."; });
+$("#aiReset").addEventListener("click",()=>{ STATE.aiTags=null; $("#aiStatus").textContent="Reverted to keyword tags."; analyse(); });
+
+$("#aiRun").addEventListener("click", async ()=>{
+  const st=$("#aiStatus");
+  if(!getKey()){ st.textContent="Enter an API key first."; return; }
+  if(!STATE.rows.length){ st.textContent="Run an analysis first."; return; }
+  st.innerHTML='<span class="spin"></span> Re-tagging '+STATE.rows.length+' headlines…';
+  $("#aiRun").disabled=true;
+  try{
+    const angleNames=[...new Set(STATE.angles.map(a=>a.key))].filter(a=>a!=="other");
+    const list=STATE.rows.map(r=>({id:r.creative, headline:r.headline}));
+    const prompt="You are tagging advertising creatives for a marketing analysis.\n\n"+
+      "For each headline, assign:\n"+
+      "- angle: the ARGUMENT it makes. Use one of: "+angleNames.join(", ")+". If none fit, use \"other\".\n"+
+      "- hook: how it OPENS. Use exactly one of: question, stat, objection, social_proof, urgency, benefit.\n\n"+
+      "Headlines:\n"+JSON.stringify(list,null,0)+"\n\n"+
+      "Respond with ONLY a JSON array, no markdown fence, no commentary, in this exact shape:\n"+
+      '[{"id":"...","angle":"...","hook":"..."}]';
+    const out=await callClaude(prompt, 4000);
+    const m=out.match(/\[[\s\S]*\]/);
+    if(!m) throw new Error("Model did not return JSON.");
+    const arr=JSON.parse(m[0]);
+    const map={};
+    arr.forEach(t=>{ if(t && t.id) map[t.id]={angle:String(t.angle||"other"), hook:String(t.hook||"benefit")}; });
+    if(!Object.keys(map).length) throw new Error("No usable tags returned.");
+    STATE.aiTags=map;
+    analyse();
+    st.textContent="Re-tagged "+Object.keys(map).length+" creatives with Claude. The statistics below are unchanged in method.";
+  }catch(err){ st.textContent="Failed: "+err.message; }
+  finally{ $("#aiRun").disabled=false; }
+});
+
+window.addEventListener("scroll", hideTip, {passive:true});
+loadDataset("fintech");
+})();
+</script>
+</body>
+</html>

@@ -1,0 +1,902 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Lifecycle Campaign Multiplier — Priyanshu Goyal</title>
+<meta name="description" content="Turns one campaign brief into channel-compliant Email, SMS, WhatsApp and Push copy, with real GSM-7 segment maths and per-channel validation.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="tool-kit.css">
+<style>
+  .variant { background:#fff; border:1px solid var(--line); border-radius:.6rem; padding:1rem; margin-bottom:.9rem; }
+  .variant.bad { border-color:#FCA5A5; }
+  .variant-head { display:flex; justify-content:space-between; align-items:center; gap:.6rem; flex-wrap:wrap; margin-bottom:.7rem; }
+  .variant-head h5 { font-family:var(--display); font-size:.86rem; margin:0; font-weight:700; }
+  .vfield { margin-bottom:.6rem; }
+  .vfield label { display:block; font-size:.68rem; text-transform:uppercase; letter-spacing:.07em; color:var(--ink-soft); margin-bottom:.25rem; font-family:var(--display); font-weight:600; }
+  .vfield textarea {
+    width:100%; font-family:var(--body); font-size:.86rem; line-height:1.5; color:var(--ink);
+    background:var(--card); border:1px solid var(--line); border-radius:.4rem;
+    padding:.5rem .6rem; resize:vertical;
+  }
+  .vfield textarea:focus { outline:none; border-color:var(--accent); background:#fff; }
+  .counter { display:flex; justify-content:space-between; gap:.5rem; font-size:.72rem; margin-top:.25rem; font-family:var(--mono); color:var(--ink-soft); }
+  .counter .over { color:var(--red-text); font-weight:700; }
+  .counter .warn { color:var(--amber-text); }
+  .meter { height:3px; background:var(--line); border-radius:2px; overflow:hidden; margin-top:.3rem; }
+  .meter i { display:block; height:100%; background:var(--accent); transition:width .12s linear; }
+  .meter i.over { background:var(--red-text); }
+  .meter i.warn { background:var(--gold); }
+  .preview { border:1px solid var(--line); border-radius:.5rem; padding:.7rem .8rem; background:var(--card); font-size:.82rem; margin-top:.5rem; }
+  .preview .p-from { font-weight:700; font-family:var(--display); font-size:.8rem; }
+  .preview .p-sub { color:var(--ink); }
+  .preview .p-pre { color:var(--ink-soft); }
+  .phone-push { background:var(--navy-deep); color:#fff; border-radius:.6rem; padding:.7rem .85rem; font-size:.8rem; }
+  .phone-push .t { font-weight:700; font-family:var(--display); margin-bottom:.15rem; }
+  .phone-push .b { color:#CBD5E1; line-height:1.4; }
+  .seq { display:grid; grid-template-columns:1fr; gap:.6rem; }
+  .seq-step { display:flex; gap:.8rem; align-items:flex-start; background:#fff; border:1px solid var(--line); border-radius:.5rem; padding:.75rem .9rem; }
+  .seq-day { font-family:var(--display); font-weight:700; font-size:.78rem; color:var(--accent); min-width:3.4rem; }
+  .seq-body { flex:1; }
+  .seq-body strong { font-family:var(--display); font-size:.88rem; }
+  .seq-body p { margin:.15rem 0 0; font-size:.8rem; color:var(--ink-soft); }
+  .spec-table td.ok { color:var(--green-text); }
+  @media (min-width:900px){ .variant-cols { display:grid; grid-template-columns:1fr 1fr; gap:1rem; align-items:start; } }
+</style>
+</head>
+<body>
+
+<div class="tool-bar">
+  <div class="wrap tool-bar-inner">
+    <a class="back-link" href="../index.html">&larr; Priyanshu Goyal</a>
+    <span class="tool-bar-tag">Independent build &middot; 03</span>
+  </div>
+</div>
+
+<header class="wrap tool-header">
+  <p class="eyebrow">Marketing Ops Automation</p>
+  <h1>Lifecycle Campaign Multiplier</h1>
+  <p class="tool-sub">One brief becomes Email, SMS, WhatsApp and Push copy for every lifecycle segment — each one validated against the channel's real limits before it ever reaches your ESP.</p>
+
+  <div class="problem-box">
+    <h2>The problem</h2>
+    <p>A single campaign brief has to become copy for four channels across several lifecycle segments. Each channel has different hard limits, and they're the kind nobody remembers: SMS silently splits into two billed segments the moment you type a curly apostrophe, push bodies truncate mid-sentence on the lock screen, WhatsApp templates get rejected for a variable in the wrong place. So copy goes to upload, bounces back, and someone spends an afternoon counting characters by hand.</p>
+  </div>
+
+  <div class="metrics-ribbon" id="metrics"></div>
+</header>
+
+<main class="wrap">
+
+  <!-- ============ BRIEF ============ -->
+  <section class="tool-section" style="border-top:none">
+    <h2>1. The brief</h2>
+    <p class="section-intro">Fill this once. Everything downstream is generated from it — and stays editable, because the validator is the point, not the copy.</p>
+
+    <div class="panel">
+      <div class="panel-head">
+        <h3>Campaign brief</h3>
+        <div class="seg" role="group" aria-label="Choose example">
+          <button type="button" data-ds="fintech" aria-pressed="true">Fintech / lending</button>
+          <button type="button" data-ds="consumer" aria-pressed="false">Consumer D2C</button>
+        </div>
+      </div>
+
+      <div class="grid-2">
+        <div class="field">
+          <label for="brand">Brand name</label>
+          <input id="brand" class="input">
+        </div>
+        <div class="field">
+          <label for="product">Product / offer</label>
+          <input id="product" class="input">
+        </div>
+      </div>
+      <div class="grid-2">
+        <div class="field">
+          <label for="proof">Proof point (a number if you have one)</label>
+          <input id="proof" class="input">
+        </div>
+        <div class="field">
+          <label for="cta">Call to action</label>
+          <input id="cta" class="input">
+        </div>
+      </div>
+      <div class="grid-2">
+        <div class="field">
+          <label for="objection">Main objection to defuse</label>
+          <input id="objection" class="input">
+        </div>
+        <div class="field">
+          <label for="deadline">Deadline / urgency (optional)</label>
+          <input id="deadline" class="input">
+        </div>
+      </div>
+
+      <div class="field">
+        <span class="field-label">Lifecycle segment</span>
+        <div class="checkrow" id="segments"></div>
+      </div>
+
+      <div class="field">
+        <span class="field-label">Channels</span>
+        <div class="checkrow" id="channels"></div>
+      </div>
+
+      <div class="grid-3">
+        <div class="field">
+          <label for="smsRate">SMS cost per segment</label>
+          <input id="smsRate" class="input" type="number" step="0.0005" min="0" value="0.0075">
+        </div>
+        <div class="field">
+          <label for="audience">Audience size</label>
+          <input id="audience" class="input" type="number" step="1000" min="0" value="40000">
+        </div>
+        <div class="field">
+          <label for="tz">Recipient timezone spread</label>
+          <select id="tz" class="input">
+            <option value="single">Single timezone</option>
+            <option value="global" selected>Global (quiet-hours risk)</option>
+          </select>
+        </div>
+      </div>
+
+      <div class="btn-row">
+        <button class="btn btn-primary" id="gen">Generate variants</button>
+        <span id="genMsg" style="font-size:.82rem;color:var(--ink-soft)"></span>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ OUTPUT ============ -->
+  <section class="tool-section" id="outSection" hidden>
+    <h2>2. Channel-compliant variants</h2>
+    <p class="section-intro">Every field below is live-validated as you type. The counters are not decoration — the SMS one implements real GSM-7 encoding detection and segment maths, which is where most billing surprises come from.</p>
+    <div id="output"></div>
+  </section>
+
+  <!-- ============ SPECS ============ -->
+  <section class="tool-section" id="specSection" hidden>
+    <h2>3. The limits being enforced</h2>
+    <p class="section-intro">These are the constraints the validator applies. They're visible so you can argue with them — an enforcement rule you can't inspect is just a different kind of guesswork.</p>
+    <div class="panel">
+      <div class="table-wrap">
+        <table class="data spec-table" id="specTable">
+          <thead><tr><th>Channel</th><th>Field</th><th class="num-cell">Limit</th><th>Why</th></tr></thead>
+          <tbody></tbody>
+        </table>
+      </div>
+      <div class="callout callout-info">
+        <strong>On SMS segments.</strong> A message stays in the 7-bit GSM alphabet until one character falls outside it — a curly apostrophe, an em dash, an emoji — at which point the whole message switches to UCS-2 and the limit drops from 160 characters to 70. A single smart quote pasted from a doc can double your send cost. The counter below detects this and tells you which character did it.
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ SEQUENCE ============ -->
+  <section class="tool-section" id="seqSection" hidden>
+    <h2>4. Send sequence</h2>
+    <p class="section-intro">Channels ordered by cost and intrusiveness, with frequency-cap and quiet-hours checks applied across the whole sequence rather than per message.</p>
+    <div class="panel" id="seqPanel"></div>
+  </section>
+
+  <!-- ============ EXPORT ============ -->
+  <section class="tool-section" id="exportSection" hidden>
+    <h2>5. Export</h2>
+    <p class="section-intro">Ready for upload. Only variants that pass validation are included by default — the whole point is that nothing broken reaches the ESP.</p>
+    <div class="panel">
+      <div class="btn-row">
+        <button class="btn btn-primary btn-sm" id="expCsv">Export CSV</button>
+        <button class="btn btn-ghost btn-sm" id="expJson">Export JSON payload</button>
+        <button class="btn btn-ghost btn-sm" id="copyAll">Copy all copy</button>
+        <label style="display:inline-flex;align-items:center;gap:.4rem;font-size:.84rem;margin-left:.5rem">
+          <input type="checkbox" id="incFailing"> include failing variants
+        </label>
+      </div>
+      <div id="exportSummary" style="margin-top:.9rem"></div>
+    </div>
+  </section>
+
+  <!-- ============ HOW ============ -->
+  <section class="tool-section">
+    <h2>How it works</h2>
+    <p class="section-intro">The validation layer is deterministic and is the part that earns its keep. Generation is the easy half — and whether it comes from a template or from Claude, it goes through the same gate.</p>
+    <div class="arch-steps">
+      <div class="arch-step"><div class="arch-num">1</div><div class="arch-content">
+        <h6>Brief once</h6><p>Product, proof, objection, CTA and deadline become the variables every channel draws from, so the message stays consistent across them.</p></div></div>
+      <div class="arch-step"><div class="arch-num">2</div><div class="arch-content">
+        <h6>Expand</h6><p>Each selected segment × channel produces three variants on different angles — value, reassurance, urgency — rather than three rewordings of the same sentence.</p></div></div>
+      <div class="arch-step"><div class="arch-num">3</div><div class="arch-content">
+        <h6>Encode &amp; count</h6><p>SMS is checked against the real GSM 03.38 alphabet, including the extension characters that cost two. Segment maths uses 160/153 for GSM-7 and 70/67 for UCS-2.</p></div></div>
+      <div class="arch-step"><div class="arch-num">4</div><div class="arch-content">
+        <h6>Validate</h6><p>Length, truncation point, WhatsApp variable placement and subject-line preview width are all checked live, on every keystroke.</p></div></div>
+      <div class="arch-step"><div class="arch-num">5</div><div class="arch-content">
+        <h6>Sequence</h6><p>Messages are spaced with a frequency cap, and a global audience triggers a quiet-hours warning rather than a silent 2am send.</p></div></div>
+      <div class="arch-step"><div class="arch-num">6</div><div class="arch-content">
+        <h6>Export clean</h6><p>Failing variants are excluded by default, so the upload file cannot carry a message that would be rejected.</p></div></div>
+    </div>
+
+    <div class="ai-panel" data-open="false" id="aiPanel">
+      <button class="ai-toggle" id="aiToggle" aria-expanded="false">
+        <span>Optional: generate the copy with live AI</span><span class="chev">&#9660;</span>
+      </button>
+      <div class="ai-body" style="margin-top:.9rem">
+        <p>Without a key you get structured template variants — useful for testing the validator, obviously templated as copy. With a key, Claude writes them from your brief and the result is passed straight back through the same validator, so a model that blows the SMS limit gets flagged exactly like a human would. Your key stays in <code>sessionStorage</code>, goes only to <code>api.anthropic.com</code>, and is dropped when the tab closes.</p>
+        <div class="field">
+          <label class="field-label" for="apiKey">Anthropic API key</label>
+          <input id="apiKey" class="input" type="password" placeholder="sk-ant-..." autocomplete="off" spellcheck="false">
+        </div>
+        <div class="btn-row">
+          <button class="btn btn-ghost btn-sm" id="aiRun">Write copy with Claude</button>
+          <button class="btn btn-ghost btn-sm" id="aiClear">Clear key</button>
+        </div>
+        <div class="ai-status" id="aiStatus"></div>
+      </div>
+    </div>
+  </section>
+
+  <div class="footer-note">
+    <p>Built by Priyanshu Goyal as an independent project. Runs entirely in your browser — no backend, no tracking. <a href="../index.html">Back to portfolio</a></p>
+  </div>
+</main>
+
+<script>
+(function(){
+"use strict";
+
+/* ==================================================================
+   GSM 03.38 — the 7-bit alphabet SMS uses until one character forces
+   the whole message to UCS-2 and halves the limit.
+   ================================================================== */
+const GSM_BASIC = "@£$¥èéùìòÇ\nØø\rÅåΔ_ΦΓΛΩΠΨΣΘΞÆæßÉ !\"#¤%&'()*+,-./0123456789:;<=>?¡ABCDEFGHIJKLMNOPQRSTUVWXYZÄÖÑÜ§¿abcdefghijklmnopqrstuvwxyzäöñüà";
+const GSM_EXT = "^{}\\[~]|€";
+const BASIC = new Set(GSM_BASIC.split(""));
+const EXT = new Set(GSM_EXT.split(""));
+
+function smsInfo(text){
+  text = text || "";
+  let units = 0, offenders = [];
+  let gsm = true;
+  for(const ch of text){
+    if(BASIC.has(ch)) { units += 1; }
+    else if(EXT.has(ch)) { units += 2; }
+    else { gsm = false; offenders.push(ch); }
+  }
+  const chars = [...text].length;
+  let segments, limit, per;
+  if(gsm){
+    per = units;
+    limit = 160;
+    segments = per === 0 ? 0 : (per <= 160 ? 1 : Math.ceil(per/153));
+  } else {
+    per = chars;
+    limit = 70;
+    segments = per === 0 ? 0 : (per <= 70 ? 1 : Math.ceil(per/67));
+  }
+  const uniqueOffenders = [...new Set(offenders)];
+  return { gsm, units:per, limit, segments, chars, offenders:uniqueOffenders };
+}
+
+/* ==================================================================
+   CHANNEL SPECS
+   ================================================================== */
+const SPECS = {
+  email: { label:"Email", fields:[
+    { key:"subject",   label:"Subject line", max:50,
+      why:"Mobile inboxes cut the subject around 35–50 characters; past that, the end of your line is invisible on the device most people read on." },
+    { key:"preheader", label:"Preheader",    max:100,
+      why:"The preview text next to the subject. Under ~40 it looks empty; over ~100 it is truncated." },
+    { key:"body",      label:"Body",         max:900,
+      why:"Not a hard limit, but lifecycle email that runs past this stops being read and starts being skimmed." }
+  ]},
+  sms: { label:"SMS", fields:[
+    { key:"text", label:"Message", max:160, sms:true,
+      why:"160 GSM-7 characters per segment, or 153 each when concatenated. One non-GSM character drops the limit to 70 and doubles your bill." }
+  ]},
+  whatsapp: { label:"WhatsApp", fields:[
+    { key:"header", label:"Header", max:60,
+      why:"WhatsApp template headers are capped at 60 characters and cannot contain variables in most template categories." },
+    { key:"body",   label:"Body",   max:1024, wa:true,
+      why:"1024 characters. Variables use {{1}} numbering, cannot sit adjacent to each other, and cannot open or close the body." },
+    { key:"footer", label:"Footer", max:60,
+      why:"60 characters, no variables, no formatting." }
+  ]},
+  push: { label:"Push", fields:[
+    { key:"title", label:"Title", max:65, soft:40,
+      why:"Android allows about 65; iOS lock screens show roughly 40 before truncating." },
+    { key:"body",  label:"Body",  max:240, soft:110,
+      why:"240 is the technical ceiling; an unexpanded iOS notification shows about 110." }
+  ]}
+};
+
+/* ==================================================================
+   EXAMPLE BRIEFS
+   ================================================================== */
+const BRIEFS = {
+  fintech: {
+    brand:"MPOWER", product:"no-cosigner student loan",
+    proof:"25,000+ international students funded",
+    cta:"Finish your application", objection:"you need a U.S. cosigner",
+    deadline:"before the term deposit date", smsRate:0.0075, audience:40000,
+    segments:[
+      { id:"applied_not_submitted", label:"Applied, not submitted",
+        context:"started an application and stopped partway", urgencyOk:true },
+      { id:"approved_not_disbursed", label:"Approved, not disbursed",
+        context:"has an approved offer but has not accepted it", urgencyOk:true },
+      { id:"lapsed_90d", label:"Lapsed 90 days",
+        context:"has not opened or engaged in three months", urgencyOk:false }
+    ]
+  },
+  consumer: {
+    brand:"Lumora", product:"barrier-repair serum",
+    proof:"rated 4.9 by 12,000+ buyers",
+    cta:"Complete your order", objection:"it might irritate sensitive skin",
+    deadline:"while the bundle price lasts", smsRate:0.0075, audience:85000,
+    segments:[
+      { id:"cart_abandoned", label:"Cart abandoned",
+        context:"left items in the basket in the last 48 hours", urgencyOk:true },
+      { id:"first_purchase_no_repeat", label:"One purchase, no repeat",
+        context:"bought once and has not come back", urgencyOk:false },
+      { id:"lapsed_180d", label:"Lapsed 180 days",
+        context:"has not ordered in six months", urgencyOk:false }
+    ]
+  }
+};
+
+/* ==================================================================
+   TEMPLATE GENERATION (offline)
+   ================================================================== */
+const ANGLES = [
+  { id:"value",       label:"Value" },
+  { id:"reassurance", label:"Reassurance" },
+  { id:"urgency",     label:"Urgency" }
+];
+
+function cap(s){ return s ? s.charAt(0).toUpperCase()+s.slice(1) : s; }
+
+function templates(b, seg, channel, angle){
+  const P = b.product, BR = b.brand, CTA = b.cta, PROOF = b.proof,
+        OBJ = b.objection, DL = b.deadline;
+  const short = P.length > 20 ? P.split(" ").slice(-2).join(" ") : P;
+
+  if(channel === "email"){
+    if(angle === "value") return {
+      subject: cap(short)+": pick up where you left off",
+      preheader: "You are further along than you think. "+cap(PROOF)+".",
+      body: "Hi {{first_name}},\n\nYou started your "+P+" with "+BR+" and stopped partway. Everything you entered is still saved.\n\n"+cap(PROOF)+" — and the part you have left takes about five minutes.\n\n"+CTA+" →\n\n— The "+BR+" team"
+    };
+    if(angle === "reassurance") return {
+      subject: "About "+OBJ,
+      preheader: "The short answer: that is not how this works.",
+      body: "Hi {{first_name}},\n\nMost people who stop at this stage stop because they believe "+OBJ+".\n\nThat is the assumption worth checking. "+cap(PROOF)+", and the requirement you are worried about is not one of ours.\n\n"+CTA+" →\n\n— The "+BR+" team"
+    };
+    return {
+      subject: "Closing soon: your "+short,
+      preheader: "A short window left "+DL+".",
+      body: "Hi {{first_name}},\n\nYour "+P+" is still open, but not indefinitely — it closes "+DL+".\n\n"+cap(PROOF)+".\n\n"+CTA+" →\n\n— The "+BR+" team"
+    };
+  }
+
+  if(channel === "sms"){
+    /* Straight apostrophes are inside GSM-7, so these pass as written. Swap one
+       for a curly quote and the whole message falls to UCS-2 - which is what the
+       "paste from Word" button demonstrates. */
+    if(angle === "value") return { text:
+      BR+": your "+short+" is saved and you're about 5 minutes from done. "+CTA+": {{link}}" };
+    if(angle === "reassurance") return { text:
+      BR+": worried "+OBJ+"? That's not a requirement here. "+CTA+": {{link}}" };
+    return { text:
+      BR+": your "+short+" closes "+DL+". Don't lose your place. "+CTA+": {{link}}" };
+  }
+
+  if(channel === "whatsapp"){
+    const base = { header: cap(BR)+" update", footer: "Reply STOP to opt out" };
+    if(angle === "value") return Object.assign({}, base, { body:
+      "Hi {{1}}, your "+P+" is saved and roughly five minutes from complete. "+PROOF+". "+CTA+" here: {{2}} and we will take it from there." });
+    if(angle === "reassurance") return Object.assign({}, base, { body:
+      "Hi {{1}}, a lot of people stop because they think "+OBJ+". It is not a requirement with us. "+PROOF+". "+CTA+" here: {{2}} to see your options." });
+    return Object.assign({}, base, { body:
+      "Hi {{1}}, your "+P+" closes "+DL+". "+PROOF+". "+CTA+" here: {{2}} before it does." });
+  }
+
+  if(angle === "value") return {
+    title: "Almost done",
+    body: "Your "+short+" is saved — about 5 minutes left. "+CTA+"." };
+  if(angle === "reassurance") return {
+    title: "Not a requirement",
+    body: cap(OBJ)+"? Not with "+BR+". "+CTA+"." };
+  return {
+    title: "Closes "+DL.replace(/^before the /,"").replace(/^while the /,""),
+    body: "Your "+short+" is still open, but not for long. "+CTA+"." };
+}
+
+/* ==================================================================
+   VALIDATION
+   ================================================================== */
+function validateField(channel, field, value){
+  const issues = [];
+  const v = value || "";
+  const len = [...v].length;
+
+  if(field.sms){
+    const s = smsInfo(v);
+    if(!s.gsm){
+      issues.push({ level:"warn",
+        msg:"Non-GSM character"+(s.offenders.length>1?"s":"")+" ("+s.offenders.map(c=>"“"+c+"”").join(" ")+
+            ") forced UCS-2 encoding — the limit dropped from 160 to 70 and every segment now costs double." });
+    }
+    if(s.segments > 1){
+      issues.push({ level: s.segments > 2 ? "error" : "warn",
+        msg:"Splits into "+s.segments+" billed segments." });
+    }
+    return { issues, sms:s, len };
+  }
+
+  if(len === 0){ issues.push({ level:"error", msg:"Empty." }); return { issues, len }; }
+  if(len > field.max) issues.push({ level:"error", msg:"Over the "+field.max+"-character limit by "+(len-field.max)+"." });
+  else if(field.soft && len > field.soft) issues.push({ level:"warn",
+    msg:"Past ~"+field.soft+" characters, so it will be truncated on many devices." });
+
+  if(field.wa){
+    const vars = v.match(/\{\{\s*\d+\s*\}\}/g) || [];
+    if(/^\s*\{\{/.test(v)) issues.push({ level:"error", msg:"A WhatsApp template body cannot start with a variable." });
+    if(/\}\}\s*$/.test(v))  issues.push({ level:"error", msg:"A WhatsApp template body cannot end with a variable." });
+    if(/\}\}\s*\{\{/.test(v)) issues.push({ level:"error", msg:"Two variables cannot sit next to each other." });
+    const nums = vars.map(x=>parseInt(x.replace(/\D/g,""),10)).sort((a,b)=>a-b);
+    nums.forEach((num,i)=>{ if(num !== i+1) issues.push({ level:"error",
+      msg:"Variables must be numbered consecutively from {{1}}; found {{"+num+"}} in position "+(i+1)+"." }); });
+  }
+  return { issues, len };
+}
+
+/* ==================================================================
+   STATE + RENDER
+   ================================================================== */
+const $ = s=>document.querySelector(s);
+const esc = s=>String(s==null?"":s).replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;","\"":"&quot;","'":"&#39;"}[c]));
+let STATE = { ds:"fintech", brief:null, variants:[], aiCopy:null };
+
+function readBrief(){
+  const b = BRIEFS[STATE.ds];
+  return {
+    brand:$("#brand").value.trim() || b.brand,
+    product:$("#product").value.trim() || b.product,
+    proof:$("#proof").value.trim() || b.proof,
+    cta:$("#cta").value.trim() || b.cta,
+    objection:$("#objection").value.trim() || b.objection,
+    deadline:$("#deadline").value.trim() || b.deadline,
+    smsRate:parseFloat($("#smsRate").value)||0,
+    audience:parseInt($("#audience").value,10)||0,
+    tz:$("#tz").value,
+    segments:[...document.querySelectorAll("#segments input:checked")].map(i=>i.value),
+    channels:[...document.querySelectorAll("#channels input:checked")].map(i=>i.value)
+  };
+}
+
+function generate(){
+  const b = readBrief();
+  STATE.brief = b;
+  if(!b.segments.length || !b.channels.length){
+    $("#genMsg").innerHTML = '<span style="color:var(--red-text)">Pick at least one segment and one channel.</span>';
+    ["outSection","specSection","seqSection","exportSection"].forEach(id=>$("#"+id).hidden=true);
+    return;
+  }
+  const segDefs = BRIEFS[STATE.ds].segments;
+  const variants = [];
+  b.segments.forEach(segId=>{
+    const seg = segDefs.find(s=>s.id===segId) || {id:segId,label:segId,urgencyOk:true};
+    b.channels.forEach(ch=>{
+      ANGLES.forEach(angle=>{
+        if(angle.id === "urgency" && !seg.urgencyOk) return;
+        const key = segId+"|"+ch+"|"+angle.id;
+        const content = (STATE.aiCopy && STATE.aiCopy[key]) || templates(b, seg, ch, angle.id);
+        variants.push({ key, seg, channel:ch, angle, content });
+      });
+    });
+  });
+  STATE.variants = variants;
+  ["outSection","specSection","seqSection","exportSection"].forEach(id=>$("#"+id).hidden=false);
+  $("#genMsg").textContent = variants.length+" variants generated across "+
+    b.segments.length+" segment"+(b.segments.length===1?"":"s")+" and "+b.channels.length+" channel"+(b.channels.length===1?"":"s")+".";
+  renderOutput();
+  renderSpecs();
+  renderSequence();
+  renderMetrics();
+}
+
+function renderOutput(){
+  const bySeg = {};
+  STATE.variants.forEach(v=>{ (bySeg[v.seg.id] = bySeg[v.seg.id] || []).push(v); });
+  $("#output").innerHTML = Object.keys(bySeg).map(segId=>{
+    const list = bySeg[segId];
+    const seg = list[0].seg;
+    return '<div class="panel"><div class="panel-head">'+
+      '<h3>'+esc(seg.label)+'</h3>'+
+      '<span class="hint">'+esc(seg.context||"")+
+      (seg.urgencyOk===false?' · urgency angle suppressed for this segment':'')+'</span></div>'+
+      '<div class="variant-cols">'+list.map(v=>variantHtml(v)).join("")+'</div></div>';
+  }).join("");
+  STATE.variants.forEach(v=>wireVariant(v));
+  updateAllCounters();
+}
+
+function variantHtml(v){
+  const spec = SPECS[v.channel];
+  return '<div class="variant" id="v-'+cssId(v.key)+'">'+
+    '<div class="variant-head"><h5>'+esc(spec.label)+' · '+esc(v.angle.label)+'</h5>'+
+      '<span class="pill pill-mute" data-role="status">checking…</span></div>'+
+    (v.channel==="sms"
+      ? '<div class="btn-row" style="margin:-.2rem 0 .7rem">'+
+        '<button class="btn btn-ghost btn-sm" data-act="smart">Simulate paste from Word</button>'+
+        '<button class="btn btn-ghost btn-sm" data-act="plain">Repair encoding</button>'+
+        '<span style="font-size:.72rem;color:var(--ink-soft)">see what one curly quote costs</span>'+
+        '</div>'
+      : '')+
+    spec.fields.map(f=>
+      '<div class="vfield">'+
+        '<label for="f-'+cssId(v.key)+'-'+f.key+'">'+esc(f.label)+'</label>'+
+        '<textarea id="f-'+cssId(v.key)+'-'+f.key+'" rows="'+(f.key==="body"&&v.channel==="email"?6:f.max>200?3:2)+'" '+
+          'data-vkey="'+esc(v.key)+'" data-fkey="'+esc(f.key)+'">'+esc(v.content[f.key]||"")+'</textarea>'+
+        '<div class="counter" data-counter="'+f.key+'"></div>'+
+        '<div class="meter"><i></i></div>'+
+        '<div class="vissues" data-issues="'+f.key+'"></div>'+
+      '</div>').join("")+
+    '<div data-preview="1"></div>'+
+  '</div>';
+}
+function cssId(k){ return k.replace(/[^a-zA-Z0-9]/g,"_"); }
+
+function wireVariant(v){
+  const root = document.getElementById("v-"+cssId(v.key));
+  if(!root) return;
+  const smart = root.querySelector('[data-act="smart"]');
+  const plain = root.querySelector('[data-act="plain"]');
+  if(smart) smart.addEventListener("click", ()=>{
+    const ta = root.querySelector("textarea");
+    ta.value = ta.value.replace(/'/g,"\u2019").replace(/ - /g," \u2014 ").replace(/\.\.\./g,"\u2026");
+    v.content[ta.dataset.fkey] = ta.value;
+    updateVariant(v); renderMetrics(); renderSequence();
+  });
+  if(plain) plain.addEventListener("click", ()=>{
+    const ta = root.querySelector("textarea");
+    ta.value = ta.value.replace(/[\u2018\u2019]/g,"'").replace(/[\u201c\u201d]/g,'"')
+                       .replace(/\s*\u2014\s*/g," - ").replace(/\u2026/g,"...");
+    v.content[ta.dataset.fkey] = ta.value;
+    updateVariant(v); renderMetrics(); renderSequence();
+  });
+  root.querySelectorAll("textarea").forEach(ta=>{
+    ta.addEventListener("input", ()=>{
+      v.content[ta.dataset.fkey] = ta.value;
+      updateVariant(v);
+      renderMetrics();
+      renderSequence();
+    });
+  });
+}
+
+function updateVariant(v){
+  const root = document.getElementById("v-"+cssId(v.key));
+  if(!root) return;
+  const spec = SPECS[v.channel];
+  let worst = "ok";
+  let smsSeg = 0;
+
+  spec.fields.forEach(f=>{
+    const val = v.content[f.key] || "";
+    const res = validateField(v.channel, f, val);
+    const counter = root.querySelector('[data-counter="'+f.key+'"]');
+    const meter = root.querySelector('[data-counter="'+f.key+'"] + .meter i');
+    const issuesEl = root.querySelector('[data-issues="'+f.key+'"]');
+
+    let left, pct, cls="";
+    if(f.sms){
+      smsSeg = res.sms.segments;
+      left = res.sms.units+" / "+res.sms.limit+" "+(res.sms.gsm?"GSM-7":"UCS-2");
+      pct = Math.min(100, res.sms.units/res.sms.limit*100);
+      if(!res.sms.gsm || res.sms.segments>1) cls = res.sms.segments>2?"over":"warn";
+      counter.innerHTML = '<span class="'+cls+'">'+esc(left)+'</span><span>'+
+        res.sms.segments+' segment'+(res.sms.segments===1?'':'s')+'</span>';
+    } else {
+      pct = Math.min(100, res.len/f.max*100);
+      if(res.len > f.max) cls="over";
+      else if(f.soft && res.len > f.soft) cls="warn";
+      counter.innerHTML = '<span class="'+cls+'">'+res.len+' / '+f.max+'</span>'+
+        (f.soft?'<span>'+(res.len>f.soft?'truncates on many devices':'within ~'+f.soft+' safe zone')+'</span>':'<span></span>');
+    }
+    if(meter){ meter.style.width = pct+"%"; meter.className = cls; }
+
+    issuesEl.innerHTML = res.issues.map(i=>
+      '<div style="font-size:.74rem;margin-top:.3rem;color:'+
+      (i.level==="error"?"var(--red-text)":"var(--amber-text)")+'">'+
+      (i.level==="error"?"● ":"▲ ")+esc(i.msg)+'</div>').join("");
+
+    res.issues.forEach(i=>{ if(i.level==="error") worst="error";
+      else if(i.level==="warn" && worst!=="error") worst="warn"; });
+  });
+
+  v.status = worst;
+  v.smsSegments = smsSeg;
+  const badge = root.querySelector('[data-role="status"]');
+  badge.className = "pill " + (worst==="error"?"pill-bad":worst==="warn"?"pill-warn":"pill-ok");
+  badge.textContent = worst==="error"?"will be rejected":worst==="warn"?"ships, with a cost":"passes";
+  root.classList.toggle("bad", worst==="error");
+
+  const pv = root.querySelector('[data-preview="1"]');
+  pv.innerHTML = previewHtml(v);
+}
+
+function previewHtml(v){
+  const c = v.content;
+  if(v.channel === "email"){
+    const sub = c.subject||"", pre = c.preheader||"";
+    const cut = [...sub].slice(0,42).join("");
+    return '<div class="preview"><div class="p-from">'+esc(STATE.brief.brand)+'</div>'+
+      '<div class="p-sub">'+esc(cut)+(([...sub].length>42)?'<span style="color:var(--red-text)">…cut here on mobile</span>':'')+'</div>'+
+      '<div class="p-pre">'+esc([...pre].slice(0,90).join(""))+'</div></div>';
+  }
+  if(v.channel === "push"){
+    const t = c.title||"", b = c.body||"";
+    return '<div class="preview" style="background:transparent;border:none;padding:0"><div class="phone-push">'+
+      '<div class="t">'+esc([...t].slice(0,40).join(""))+(([...t].length>40)?'…':'')+'</div>'+
+      '<div class="b">'+esc([...b].slice(0,110).join(""))+(([...b].length>110)?'…':'')+'</div></div></div>';
+  }
+  if(v.channel === "sms"){
+    const s = smsInfo(c.text||"");
+    const cost = (s.segments * (STATE.brief.smsRate||0) * (STATE.brief.audience||0));
+    return '<div class="preview">Send cost at '+ (STATE.brief.audience||0).toLocaleString("en-US") +
+      ' recipients: <strong>$'+cost.toFixed(2)+'</strong>'+
+      (s.segments>1?' — '+s.segments+'× what a single segment would cost':'')+'</div>';
+  }
+  return "";
+}
+
+function updateAllCounters(){ STATE.variants.forEach(v=>updateVariant(v)); }
+
+function renderMetrics(){
+  const v = STATE.variants;
+  if(!v.length){ $("#metrics").innerHTML=""; return; }
+  const pass = v.filter(x=>x.status==="ok").length;
+  const fail = v.filter(x=>x.status==="error").length;
+  const sms = v.filter(x=>x.channel==="sms");
+  const extraSeg = sms.reduce((s,x)=>s+Math.max(0,(x.smsSegments||1)-1),0);
+  const b = STATE.brief;
+  const overspend = extraSeg * (b.smsRate||0) * (b.audience||0);
+  const channels = new Set(v.map(x=>x.channel)).size;
+  const segs = new Set(v.map(x=>x.seg.id)).size;
+
+  $("#metrics").innerHTML = [
+    ["1 → "+v.length, "brief to channel-ready variants"],
+    [channels+" × "+segs, "channels × lifecycle segments covered"],
+    [pass+" / "+v.length, "pass every channel rule on first generation"],
+    [fail===0?"0":String(fail), "would be rejected at upload"],
+    ["$"+overspend.toFixed(0), "avoidable SMS spend from extra segments"]
+  ].map(b2=>'<div class="metric-box"><span class="num">'+esc(b2[0])+'</span><span class="label">'+esc(b2[1])+'</span></div>').join("");
+}
+
+function renderSpecs(){
+  const rows=[];
+  Object.entries(SPECS).forEach(([ch,spec])=>{
+    spec.fields.forEach(f=>{
+      rows.push('<tr><td><strong>'+esc(spec.label)+'</strong></td><td>'+esc(f.label)+'</td>'+
+        '<td class="num-cell">'+(f.sms?"160 GSM-7 / 70 UCS-2":f.max+(f.soft?" (safe ~"+f.soft+")":""))+'</td>'+
+        '<td style="color:var(--ink-soft);font-size:.8rem">'+esc(f.why)+'</td></tr>');
+    });
+  });
+  $("#specTable tbody").innerHTML = rows.join("");
+}
+
+function renderSequence(){
+  const b = STATE.brief;
+  const order = ["email","push","whatsapp","sms"];
+  const used = order.filter(c=>b.channels.includes(c));
+  if(!used.length){ $("#seqPanel").innerHTML=""; return; }
+  const days = [0,2,4,7,10];
+  const steps = used.map((ch,i)=>({ day:days[i]!==undefined?days[i]:(days[days.length-1]+3*(i-days.length+1)), ch }));
+
+  const smsVariants = STATE.variants.filter(v=>v.channel==="sms");
+  const smsSegs = smsVariants.length ? Math.max(...smsVariants.map(v=>v.smsSegments||1)) : 0;
+
+  let warnings = [];
+  if(steps.length >= 4 && (steps[steps.length-1].day - steps[0].day) < 8){
+    warnings.push("Four touches inside "+(steps[steps.length-1].day-steps[0].day)+" days is above a typical 3-per-week frequency cap for a single campaign.");
+  }
+  if(b.tz === "global"){
+    warnings.push("A global audience means a fixed send time lands in someone's night. Push and SMS need local-time sending or a 09:00–20:00 window per timezone — email can tolerate a fixed UTC slot.");
+  }
+  if(smsSegs > 1){
+    warnings.push("The SMS step currently bills "+smsSegs+" segments per recipient. Tightening it under one segment is the single cheapest change in this sequence.");
+  }
+
+  $("#seqPanel").innerHTML =
+    '<div class="seq">'+steps.map(s=>{
+      const spec = SPECS[s.ch];
+      const note = s.ch==="email" ? "Cheapest and least intrusive — lead with it."
+        : s.ch==="push" ? "Free, but only reaches app-installed users who opted in."
+        : s.ch==="whatsapp" ? "High open rate, per-conversation cost, needs an approved template."
+        : "Highest cost and highest intrusion — last resort, and only for opted-in numbers.";
+      return '<div class="seq-step"><div class="seq-day">Day '+s.day+'</div>'+
+        '<div class="seq-body"><strong>'+esc(spec.label)+'</strong><p>'+esc(note)+'</p></div></div>';
+    }).join("")+'</div>'+
+    (warnings.length
+      ? warnings.map(w=>'<div class="callout callout-warn">'+esc(w)+'</div>').join("")
+      : '<div class="callout callout-ok">No frequency-cap or quiet-hours conflicts detected in this sequence.</div>');
+}
+
+/* ==================================================================
+   EXPORT
+   ================================================================== */
+function exportRows(){
+  const inc = $("#incFailing").checked;
+  return STATE.variants.filter(v=>inc || v.status!=="error");
+}
+function download(name, text, mime){
+  const b=new Blob([text],{type:mime+";charset=utf-8"});
+  const a=document.createElement("a");
+  a.href=URL.createObjectURL(b); a.download=name;
+  document.body.appendChild(a); a.click();
+  setTimeout(()=>{URL.revokeObjectURL(a.href); a.remove();},0);
+}
+
+$("#expCsv").addEventListener("click", ()=>{
+  const rows = exportRows();
+  const head = "segment,channel,angle,field,copy,characters,sms_segments,status\n";
+  const body = rows.flatMap(v=>SPECS[v.channel].fields.map(f=>{
+    const val = v.content[f.key]||"";
+    return [v.seg.label, SPECS[v.channel].label, v.angle.label, f.label, val,
+      [...val].length, f.sms?smsInfo(val).segments:"", v.status]
+      .map(c=>'"'+String(c).replace(/"/g,'""')+'"').join(",");
+  })).join("\n");
+  download("lifecycle-variants.csv", head+body, "text/csv");
+  summarise(rows);
+});
+
+$("#expJson").addEventListener("click", ()=>{
+  const rows = exportRows();
+  const payload = {
+    campaign: { brand: STATE.brief.brand, product: STATE.brief.product,
+      generated: new Date().toISOString() },
+    messages: rows.map(v=>({
+      segment: v.seg.id, channel: v.channel, angle: v.angle.id,
+      content: v.content,
+      validation: { status: v.status,
+        sms_segments: v.channel==="sms" ? smsInfo(v.content.text||"").segments : null }
+    }))
+  };
+  download("lifecycle-payload.json", JSON.stringify(payload,null,2), "application/json");
+  summarise(rows);
+});
+
+$("#copyAll").addEventListener("click", async e=>{
+  const rows = exportRows();
+  const txt = rows.map(v=>
+    "["+v.seg.label+" · "+SPECS[v.channel].label+" · "+v.angle.label+"]\n"+
+    SPECS[v.channel].fields.map(f=>f.label+": "+(v.content[f.key]||"")).join("\n")
+  ).join("\n\n");
+  try{ await navigator.clipboard.writeText(txt); }
+  catch(err){
+    const ta=document.createElement("textarea"); ta.value=txt; document.body.appendChild(ta);
+    ta.select(); try{document.execCommand("copy");}catch(_){} ta.remove();
+  }
+  e.currentTarget.textContent="Copied"; setTimeout(()=>e.currentTarget.textContent="Copy all copy",1400);
+  summarise(rows);
+});
+
+function summarise(rows){
+  const excluded = STATE.variants.length - rows.length;
+  $("#exportSummary").innerHTML = '<div class="callout '+(excluded?"callout-warn":"callout-ok")+'">'+
+    rows.length+' variant'+(rows.length===1?'':'s')+' exported'+
+    (excluded? ' · <strong>'+excluded+'</strong> failing variant'+(excluded===1?'':'s')+
+      ' held back, which is the point — tick the box above to override.' : ' · all passed validation.')+'</div>';
+}
+
+/* ==================================================================
+   AI
+   ================================================================== */
+const KEY="anthropic_api_key";
+function getKey(){ try{ return sessionStorage.getItem(KEY)||""; }catch(e){ return ""; } }
+function setKey(v){ try{ v?sessionStorage.setItem(KEY,v):sessionStorage.removeItem(KEY); }catch(e){} }
+
+async function callClaude(prompt, maxTokens){
+  const key=getKey();
+  if(!key) throw new Error("No API key entered.");
+  const res = await fetch("https://api.anthropic.com/v1/messages",{
+    method:"POST",
+    headers:{"content-type":"application/json","x-api-key":key,
+      "anthropic-version":"2023-06-01","anthropic-dangerous-direct-browser-access":"true"},
+    body:JSON.stringify({model:"claude-sonnet-4-5-20250929",max_tokens:maxTokens||4000,
+      messages:[{role:"user",content:prompt}]})
+  });
+  if(!res.ok){
+    let msg=res.status+" "+res.statusText;
+    try{ const j=await res.json(); if(j.error&&j.error.message) msg=j.error.message; }catch(e){}
+    throw new Error(msg);
+  }
+  const j=await res.json();
+  return (j.content||[]).filter(b=>b.type==="text").map(b=>b.text).join("");
+}
+
+$("#aiRun").addEventListener("click", async ()=>{
+  const st=$("#aiStatus");
+  if(!getKey()){ st.textContent="Enter an API key first."; return; }
+  if(!STATE.variants.length){ st.textContent="Generate variants first."; return; }
+  st.innerHTML='<span class="spin"></span> Writing '+STATE.variants.length+' variants…';
+  $("#aiRun").disabled=true;
+  try{
+    const b = STATE.brief;
+    const specLines = STATE.variants.map(v=>{
+      const f = SPECS[v.channel].fields.map(x=>x.key+" (max "+(x.sms?"160 GSM-7 characters, plain ASCII only":x.max)+")").join(", ");
+      return '{"key":"'+v.key+'","channel":"'+v.channel+'","angle":"'+v.angle.id+
+        '","segment":"'+v.seg.label+'","audience_state":"'+v.seg.context+'","fields":"'+f+'"}';
+    }).join("\n");
+    const prompt =
+      "You are a lifecycle marketing copywriter. Write copy for each item below.\n\n"+
+      "BRAND: "+b.brand+"\nPRODUCT: "+b.product+"\nPROOF POINT: "+b.proof+"\n"+
+      "MAIN OBJECTION: "+b.objection+"\nCALL TO ACTION: "+b.cta+"\nDEADLINE: "+b.deadline+"\n\n"+
+      "RULES:\n"+
+      "- Respect every character limit exactly. They are hard constraints, not suggestions.\n"+
+      "- SMS must use plain ASCII only: straight quotes, no em dashes, no emoji. A single curly quote doubles the send cost.\n"+
+      "- Keep {{first_name}}, {{link}} and WhatsApp {{1}}/{{2}} placeholders where the templates use them.\n"+
+      "- A WhatsApp body must not start or end with a variable.\n"+
+      "- angle 'value' sells the benefit, 'reassurance' defuses the objection, 'urgency' uses the deadline.\n"+
+      "- Write like a person, not a brand deck. No exclamation marks.\n\n"+
+      "ITEMS:\n"+specLines+"\n\n"+
+      "Respond with ONLY a JSON object mapping each key to an object of its fields, no markdown fence:\n"+
+      '{"<key>":{"subject":"...","preheader":"...","body":"..."}}';
+    const out = await callClaude(prompt, 8000);
+    const m = out.match(/\{[\s\S]*\}/);
+    if(!m) throw new Error("Model did not return JSON.");
+    const parsed = JSON.parse(m[0]);
+    STATE.aiCopy = parsed;
+    generate();
+    const failing = STATE.variants.filter(v=>v.status==="error").length;
+    st.textContent = "Claude wrote "+Object.keys(parsed).length+" variants. "+
+      (failing ? failing+" still fail validation — the model is held to the same rules."
+               : "All passed validation.");
+  }catch(err){ st.textContent="Failed: "+err.message; }
+  finally{ $("#aiRun").disabled=false; }
+});
+
+$("#aiToggle").addEventListener("click",()=>{
+  const p=$("#aiPanel"); const open=p.dataset.open==="true";
+  p.dataset.open=String(!open);
+  $("#aiToggle").setAttribute("aria-expanded",String(!open));
+});
+$("#apiKey").value=getKey();
+$("#apiKey").addEventListener("input",e=>setKey(e.target.value.trim()));
+$("#aiClear").addEventListener("click",()=>{ setKey(""); $("#apiKey").value=""; $("#aiStatus").textContent="Key cleared."; });
+
+/* ==================================================================
+   WIRING
+   ================================================================== */
+function loadBrief(name){
+  const b = BRIEFS[name];
+  STATE.ds = name; STATE.aiCopy = null;
+  $("#brand").value=b.brand; $("#product").value=b.product;
+  $("#proof").value=b.proof; $("#cta").value=b.cta;
+  $("#objection").value=b.objection; $("#deadline").value=b.deadline;
+  $("#smsRate").value=b.smsRate; $("#audience").value=b.audience;
+  document.querySelectorAll("[data-ds]").forEach(x=>x.setAttribute("aria-pressed",String(x.dataset.ds===name)));
+
+  $("#segments").innerHTML = b.segments.map((s,i)=>
+    '<label><input type="checkbox" value="'+esc(s.id)+'"'+(i===0?" checked":"")+'> '+esc(s.label)+'</label>'
+  ).join("");
+  $("#channels").innerHTML = Object.entries(SPECS).map(([k,v])=>
+    '<label><input type="checkbox" value="'+esc(k)+'" checked> '+esc(v.label)+'</label>'
+  ).join("");
+  generate();
+}
+
+document.querySelectorAll("[data-ds]").forEach(b=>b.addEventListener("click",()=>loadBrief(b.dataset.ds)));
+$("#gen").addEventListener("click", ()=>{ STATE.aiCopy=null; generate(); });
+["#segments","#channels"].forEach(sel=>{
+  $(sel).addEventListener("change", ()=>{ STATE.aiCopy=null; generate(); });
+});
+["#smsRate","#audience","#tz"].forEach(s=>$(s).addEventListener("change", ()=>{ updateAllCounters(); renderMetrics(); renderSequence(); }));
+$("#incFailing").addEventListener("change", ()=>summarise(exportRows()));
+
+loadBrief("fintech");
+})();
+</script>
+</body>
+</html>
