@@ -376,7 +376,7 @@
   .carousel-container {
     background:#0B2341;
     border-radius:1rem;
-    padding:1.5rem 1.25rem;
+    padding:.75rem .75rem 1rem;
     color:#fff;
     box-shadow:0 8px 24px rgba(11, 35, 65, 0.15);
     position:relative;
@@ -384,15 +384,20 @@
   }
   .carousel-slide-view {
     position:relative;
-    min-height:430px;
-    display:flex; flex-direction:column; justify-content:space-between;
+    /* The slides are real 1080x1350 exports, so the image sets the height
+       instead of a hard-coded min-height that would letterbox them. */
+    aspect-ratio: 4 / 5;
   }
   .carousel-slide {
     display:none; flex-direction:column; justify-content:space-between;
     animation:fadeIn .3s ease forwards;
   }
   .carousel-slide.active {
-    display:flex; min-height:430px;
+    display:block;
+  }
+  .carousel-slide img {
+    width:100%; height:auto; display:block;
+    border-radius:.6rem; background:#0B2341;
   }
   @keyframes fadeIn {
     from { opacity:0.3; transform:translateY(4px); }
@@ -991,88 +996,25 @@ Pipeline Architecture:
           <div>
             <div class="carousel-container" aria-label="MPOWER Ad Creative Carousel">
               <div class="carousel-slide-view">
-                <!-- Slide 1: Hook -->
+                <!-- Slide 1 -->
                 <div class="carousel-slide active" id="c-slide-1">
-                  <div>
-                    <span class="slide-header-badge">Study Abroad</span>
-                    <h4 class="slide-title">No Cosigner?<br>You Still Have Options.</h4>
-                    <p class="slide-desc">MPOWER offers no-cosigner, no-collateral loans for eligible U.S. and Canadian schools.</p>
-                  </div>
-                  
-                  <div class="slide-visual-box">
-                    <div class="visual-avatar-mock">&#127891;</div>
-                    <div class="visual-text-mock">
-                      <h6>Global Student Mobility</h6>
-                      <p>Funding built specifically for international students</p>
-                    </div>
-                  </div>
-
-                  <div class="slide-cta-banner">
-                    <span class="slide-cta-btn">Swipe to see what matters &rarr;</span>
-                    <span class="mpower-logo-text">
-                      <svg viewBox="0 0 24 24"><path d="M12 2L2 22h6l4-8 4 8h6L12 2z"/></svg> MPOWER
-                    </span>
-                  </div>
+                  <img src="assets/creative-engine/slide-1-hook.webp" width="1080" height="1350" loading="eager" decoding="async"
+                       alt="Slide 1 of 4: navy MPOWER ad creative with a Study Abroad badge, the headline “No Cosigner? You Still Have Options.”, a smiling student holding documents, and a “Swipe to see what matters” call to action.">
                 </div>
-
-                <!-- Slide 2: Offer -->
+                <!-- Slide 2 -->
                 <div class="carousel-slide" id="c-slide-2">
-                  <div>
-                    <div class="slide-tag-text">Start here</div>
-                    <h4 class="slide-title">Funding that fits your life <span class="highlight-gold">&#10003;</span></h4>
-                    <ul class="slide-bullets">
-                      <li><span class="check">&#10003;</span> <b>No cosigner or collateral:</b> funding for eligible U.S. &amp; Canadian schools.</li>
-                      <li><span class="check">&#10003;</span> <b>Borrow for your degree:</b> request US$2,001&ndash;US$100,000.</li>
-                      <li><span class="check">&#10003;</span> <b>Fixed rates:</b> your rate stays the same over time.</li>
-                      <li><span class="check">&#10003;</span> <b>No prepayment fees</b> when you pay early.</li>
-                    </ul>
-                  </div>
-
-                  <div class="slide-cta-banner">
-                    <span style="font-size:.78rem; color:#94A3B8;">Slide 2 of 4 &middot; Core Terms</span>
-                    <span class="mpower-logo-text">
-                      <svg viewBox="0 0 24 24"><path d="M12 2L2 22h6l4-8 4 8h6L12 2z"/></svg> MPOWER
-                    </span>
-                  </div>
+                  <img src="assets/creative-engine/slide-2-offer.webp" width="1080" height="1350" loading="eager" decoding="async"
+                       alt="Slide 2 of 4: “Funding that fits your life” — no cosigner or collateral, US$2,001 to US$100,000, fixed rates, and no prepayment fees.">
                 </div>
-
-                <!-- Slide 3: Support -->
+                <!-- Slide 3 -->
                 <div class="carousel-slide" id="c-slide-3">
-                  <div>
-                    <div class="slide-tag-text">Beyond the loan</div>
-                    <h4 class="slide-title">Support that helps you succeed</h4>
-                    <ul class="slide-bullets">
-                      <li><span class="check">&#10003;</span> <b>Visa support:</b> free visa support letter &amp; prep course.</li>
-                      <li><span class="check">&#10003;</span> <b>Career tools:</b> resume builder, search tool &amp; F-1 job directory.</li>
-                      <li><span class="check">&#10003;</span> <b>Credit building:</b> on-time payments help build U.S. credit.</li>
-                      <li><span class="check">&#10003;</span> <b>Global payments:</b> pay from anywhere, anytime.</li>
-                    </ul>
-                  </div>
-
-                  <div class="slide-cta-banner">
-                    <span style="font-size:.78rem; color:#94A3B8;">Slide 3 of 4 &middot; Value Adds</span>
-                    <span class="mpower-logo-text">
-                      <svg viewBox="0 0 24 24"><path d="M12 2L2 22h6l4-8 4 8h6L12 2z"/></svg> MPOWER
-                    </span>
-                  </div>
+                  <img src="assets/creative-engine/slide-3-support.webp" width="1080" height="1350" loading="eager" decoding="async"
+                       alt="Slide 3 of 4: “Support that helps you succeed” — visa support letter, career tools and F-1 job directory, U.S. credit building, and global payments.">
                 </div>
-
-                <!-- Slide 4: CTA -->
+                <!-- Slide 4 -->
                 <div class="carousel-slide" id="c-slide-4">
-                  <div style="margin:auto 0; text-align:center;">
-                    <div style="background:rgba(255,255,255,0.08); border:1px solid rgba(255,255,255,0.15); border-radius:.75rem; padding:2rem 1.25rem;">
-                      <h4 class="slide-title" style="font-size:1.9rem; margin-bottom:.5rem;">Your dream<br>starts <span class="highlight-gold">here.</span></h4>
-                      <p style="font-size:.95rem; color:#CBD5E1; margin:0 0 1.5rem;">Join 25,000+ MPOWER-funded students abroad.</p>
-                      <span class="slide-cta-btn" style="font-size:.95rem; padding:.7rem 1.8rem;">Check Your Eligibility &nearr;</span>
-                    </div>
-                  </div>
-
-                  <div class="slide-cta-banner">
-                    <span style="font-size:.78rem; color:#94A3B8;">Slide 4 of 4 &middot; Conversion</span>
-                    <span class="mpower-logo-text">
-                      <svg viewBox="0 0 24 24"><path d="M12 2L2 22h6l4-8 4 8h6L12 2z"/></svg> MPOWER
-                    </span>
-                  </div>
+                  <img src="assets/creative-engine/slide-4-cta.webp" width="1080" height="1350" loading="eager" decoding="async"
+                       alt="Slide 4 of 4: “Your dream starts here.” — join 25,000+ MPOWER-funded students abroad, with a Check Your Eligibility button.">
                 </div>
               </div>
 
