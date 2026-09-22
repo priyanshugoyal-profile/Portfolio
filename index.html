@@ -1,675 +1,372 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Priyanshu Goyal - Growth Marketing &amp; AI Automation</title>
-<meta name="description" content="Priyanshu Goyal - zero-to-scale growth marketer &amp; AI automation builder. Autonomous scholarship pipelines, programmatic creative generation with ChatGPT Codex &amp; Canva, ambassador funnels for fintech. Based in Bengaluru.">
-
-<!-- Google Font Space Grotesk -->
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Priyanshu Goyal &mdash; Growth Marketing &amp; AI Automation</title>
+<meta name="description" content="Growth marketer who builds things. Ambassador programmes, paid funnels and AI automation for fintech - scaled a loan book from $5M to $40M, then built the tools to prove it.">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&display=swap" rel="stylesheet">
-
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=Instrument+Serif:ital@1&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="assets/site.css">
 <style>
-  :root {
-    --bg:#FDFCFB;
-    --ink:#16243D;        /* body text - 15.14:1 on bg */
-    --ink-soft:#4A566B;   /* secondary text - 7.23:1 on bg */
-    --accent:#9A4F2C;     /* clay - 5.81:1 on bg, safe for links */
-    --accent-weak:#E9DDD3;
-    --line:#E4E0DA;
-    --card:#FBF8F5;
-    --card-border:#E8E2D9;
-    --navy-deep:#0D2447;
-    --navy-card:#132B53;
-    --gold:#F5A623;
-    --gold-light:#FEF3C7;
-    --green-light:#DCFCE7;
-    --green-text:#15803D;
-    --display:"Space Grotesk", ui-sans-serif, system-ui, sans-serif;
-    --body:ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
-    --mono:ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
-    --maxw:64rem;
-  }
+  /* ---------------- hero ---------------- */
+  .hero{ padding-block:clamp(3rem,7vw,6rem) clamp(3.5rem,8vw,7rem); position:relative; overflow:hidden; }
+  .hero-grid{ display:grid; grid-template-columns:1fr; gap:clamp(2.5rem,5vw,4rem); align-items:center; }
+  @media (min-width:64rem){ .hero-grid{ grid-template-columns:1.06fr .94fr; } }
+  .hero h1{ margin-bottom:1.4rem; }
+  .hero .lede{ margin-bottom:2rem; }
+  .hero-trust{ display:flex; flex-wrap:wrap; gap:.5rem 1.4rem; margin-top:2.2rem;
+    font-size:.82rem; color:var(--ink-soft); font-family:var(--mono); }
+  .hero-trust span{ display:inline-flex; align-items:center; gap:.45rem; }
+  .hero-trust b{ color:var(--ink); font-family:var(--display); font-weight:700; }
+  .hero-card{ background:var(--paper); border:1px solid var(--line); border-radius:var(--r-xl);
+    padding:clamp(1.2rem,2.4vw,1.9rem); box-shadow:var(--shadow-lg); }
+  .hero-card-top{ display:flex; justify-content:space-between; align-items:baseline; gap:1rem; margin-bottom:.4rem; }
+  .hero-card-top h2{ font-size:1rem; font-weight:700; letter-spacing:-.02em; }
+  .hero-card-top span{ font-family:var(--mono); font-size:.72rem; color:var(--ink-faint); letter-spacing:.06em; }
+  .growth{ width:100%; height:auto; display:block; margin-top:.4rem; }
+  .hero-card-foot{ display:flex; gap:.5rem; flex-wrap:wrap; margin-top:.5rem;
+    border-top:1px solid var(--line-soft); padding-top:.95rem; }
 
-  * { box-sizing:border-box; }
-  html { scroll-behavior:smooth; }
-  @media (prefers-reduced-motion: reduce) { html { scroll-behavior:auto; } }
+  /* ---------------- about ---------------- */
+  .about-grid{ display:grid; grid-template-columns:1fr; gap:2.5rem; }
+  @media (min-width:64rem){ .about-grid{ grid-template-columns:1.25fr .75fr; gap:4rem; } }
+  .about-copy p{ font-size:1.08rem; }
 
-  body {
-    margin:0;
-    background:var(--bg);
-    color:var(--ink);
-    font-family:var(--body);
-    font-size:1.0625rem;
-    line-height:1.6;
-    -webkit-font-smoothing:antialiased;
-    text-rendering:optimizeLegibility;
-  }
+  /* ---------------- tool cards ---------------- */
+  .tool-grid{ display:grid; grid-template-columns:1fr; gap:1.5rem; }
+  @media (min-width:60rem){ .tool-grid{ grid-template-columns:repeat(3,1fr); } }
+  .tool-card{ display:flex; flex-direction:column; background:var(--paper);
+    border:1px solid var(--line); border-radius:var(--r-lg); padding:1.75rem;
+    box-shadow:var(--shadow-sm); position:relative; overflow:hidden;
+    transition:transform .35s var(--ease), box-shadow .35s var(--ease), border-color .35s var(--ease); }
+  .tool-card::before{ content:""; position:absolute; inset:0 0 auto 0; height:3px; background:var(--accent-c); }
+  .tool-card:hover{ transform:translateY(-5px); box-shadow:var(--shadow-lg); border-color:var(--line-strong); }
+  .tone-brand{ --accent-c:var(--brand); --accent-t:var(--brand-tint); }
+  .tone-gold{ --accent-c:var(--gold); --accent-t:var(--gold-tint); }
+  .tone-coral{ --accent-c:var(--coral); --accent-t:var(--coral-tint); }
+  .tool-card-head{ display:flex; align-items:center; justify-content:space-between; margin-bottom:1.15rem; }
+  .tool-icon{ width:3rem; height:3rem; border-radius:var(--r); background:var(--accent-t);
+    color:var(--accent-c); display:grid; place-items:center; }
+  .tool-icon svg{ width:1.85rem; height:1.85rem; }
+  .tool-n{ font-family:var(--mono); font-size:.7rem; letter-spacing:.14em; text-transform:uppercase; color:var(--ink-faint); }
+  .tool-card h3{ margin-bottom:.75rem; }
+  .tool-lede{ font-size:.93rem; color:var(--ink-soft); line-height:1.6; margin-bottom:1.3rem; }
+  .t-stats{ display:grid; gap:.1rem; margin-bottom:1.3rem; border-top:1px solid var(--line-soft); }
+  .t-stat{ display:flex; align-items:baseline; gap:.7rem; padding:.62rem 0; border-bottom:1px solid var(--line-soft); }
+  .t-stat b{ font-family:var(--display); font-weight:800; font-size:1.02rem; color:var(--ink);
+    letter-spacing:-.02em; min-width:5.4rem; }
+  .t-stat span{ font-size:.8rem; color:var(--ink-soft); line-height:1.35; }
+  .tool-card .tag-row{ margin-bottom:1.5rem; }
+  .tool-cta{ margin-top:auto; align-self:flex-start; }
 
-  /* Skip link */
-  .skip {
-    position:absolute; left:-999px; top:0;
-    background:var(--ink); color:#fff; padding:.6rem 1rem; z-index:100;
-    border-radius:0 0 .4rem 0;
-  }
-  .skip:focus { left:0; }
+  /* ---------------- experience ---------------- */
+  .job{ padding:1.9rem 0; border-top:1px solid var(--line); display:grid; grid-template-columns:1fr; gap:1rem; }
+  @media (min-width:60rem){ .job{ grid-template-columns:minmax(11rem,17rem) 1fr; gap:3rem; } }
+  .job:first-of-type{ border-top:0; padding-top:0; }
+  .job .role{ font-size:1.12rem; font-weight:700; letter-spacing:-.024em; line-height:1.3; margin-bottom:.4rem; }
+  .job .meta{ font-family:var(--mono); font-size:.76rem; color:var(--ink-soft); line-height:1.6; margin:0; }
+  .job .meta .co{ color:var(--brand); font-weight:500; display:block; }
+  .job ul{ margin:0; padding-left:1.1rem; display:grid; gap:.7rem; }
+  .job li{ font-size:.96rem; color:var(--ink-body); line-height:1.6; }
+  .job li::marker{ color:var(--gold); }
+  .job b{ color:var(--ink); font-weight:700; }
 
-  a { color:var(--accent); text-decoration:underline; text-underline-offset:3px; text-decoration-thickness:1px; }
-  a:hover { text-decoration-thickness:2px; }
-  :focus-visible { outline:3px solid var(--accent); outline-offset:3px; border-radius:2px; }
+  /* ---------------- skills ---------------- */
+  .skills-cols{ display:grid; grid-template-columns:1fr; gap:2rem; }
+  @media (min-width:44rem){ .skills-cols{ grid-template-columns:1fr 1fr; } }
+  @media (min-width:72rem){ .skills-cols{ grid-template-columns:repeat(4,1fr); gap:2.5rem; } }
+  .skillgroup h3{ font-family:var(--mono); font-size:.72rem; font-weight:500; letter-spacing:.14em;
+    text-transform:uppercase; color:var(--brand); margin-bottom:1rem; padding-bottom:.7rem;
+    border-bottom:1px solid var(--line); }
+  .chips{ list-style:none; margin:0; padding:0; display:flex; flex-wrap:wrap; gap:.45rem; }
+  .chips li{ background:var(--paper); border:1px solid var(--line); padding:.38rem .8rem;
+    border-radius:2rem; font-size:.84rem; color:var(--ink-body); }
 
-  .wrap { max-width:var(--maxw); margin:0 auto; padding:0 1.25rem; }
+  /* ---------------- contact ---------------- */
+  .contact-card{ background:var(--ink); color:#fff; border-radius:var(--r-xl);
+    padding:clamp(2.2rem,5vw,4rem); position:relative; overflow:hidden; }
+  .contact-card h2{ color:#fff; margin-bottom:1rem; }
+  .contact-card .ital{ color:var(--gold); }
+  .contact-card p{ color:#B9C4DB; max-width:46ch; }
+  .contact-card .btn-ghost{ background:transparent; border-color:rgba(255,255,255,.25); color:#fff; }
+  .contact-card .btn-ghost:hover{ border-color:var(--gold); color:var(--gold); }
+  .contact-glow{ position:absolute; width:30rem; height:30rem; border-radius:50%;
+    background:radial-gradient(circle,rgba(27,68,200,.55),transparent 68%); right:-9rem; top:-12rem; pointer-events:none; }
+  .contact-fallback{ font-size:.85rem; color:#8E9BB8 !important; margin-top:1.6rem; }
+  .contact-fallback a{ color:#CBD5EC; }
 
-  /* Navigation Bar */
-  .nav-bar {
-    position:sticky; top:0; z-index:90;
-    background:rgba(253, 252, 251, 0.94);
-    backdrop-filter:blur(8px);
-    border-bottom:1px solid var(--line);
-    padding:.75rem 0;
-  }
-  .nav-inner {
-    display:flex; align-items:center; justify-content:space-between; gap:1rem;
-  }
-  .nav-logo {
-    font-family:var(--display); font-weight:700; font-size:1.1rem;
-    color:var(--ink); text-decoration:none; display:flex; align-items:center; gap:.5rem;
-  }
-  .nav-logo span { color:var(--accent); }
-  .nav-links {
-    display:flex; align-items:center; gap:1.25rem; list-style:none; margin:0; padding:0;
-  }
-  .nav-links a {
-    font-family:var(--display); font-size:.9rem; font-weight:500;
-    color:var(--ink-soft); text-decoration:none;
-    transition:color .15s ease;
-  }
-  .nav-links a:hover { color:var(--accent); }
-  .nav-links .badge-new {
-    background:var(--accent-weak); color:var(--accent); font-size:.7rem;
-    padding:.15rem .45rem; border-radius:1rem; font-weight:600; text-transform:uppercase;
-  }
-  .nav-cv-btn {
-    font-size:.85rem !important; padding:.4rem .85rem !important;
-  }
+  /* ---------------- footer ---------------- */
+  .foot{ border-top:1px solid var(--line); padding-block:2.5rem; }
+  .foot-inner{ display:flex; flex-wrap:wrap; gap:1rem; justify-content:space-between;
+    align-items:center; font-size:.84rem; color:var(--ink-soft); }
 
-  /* Section rhythm */
-  section { padding:3.5rem 0; }
-  section + section { border-top:1px solid var(--line); }
-  .eyebrow {
-    font-family:var(--display);
-    font-size:.78rem; letter-spacing:.16em; text-transform:uppercase;
-    color:var(--accent); margin:0 0 1.1rem; font-weight:600;
-  }
-  h2 {
-    font-family:var(--display); font-weight:600;
-    font-size:clamp(1.5rem, 5vw, 2.15rem); line-height:1.15;
-    margin:0 0 1.2rem; letter-spacing:-.015em;
-  }
-  .section-intro {
-    color:var(--ink-soft); max-width:62ch; margin:0 0 2.2rem; font-size:1.1rem;
-  }
+  /* ------------- MPOWER project sections, restyled ------------- */
+  .ai-project-card{ background:var(--paper); border:1px solid var(--line); border-radius:var(--r-xl);
+    padding:clamp(1.5rem,3vw,2.6rem); margin-bottom:2rem; box-shadow:var(--shadow-sm); }
+  .ai-project-card:last-child{ margin-bottom:0; }
+  .project-header{ display:flex; flex-wrap:wrap; justify-content:space-between;
+    align-items:flex-start; gap:1.2rem; margin-bottom:1.6rem;
+    padding-bottom:1.5rem; border-bottom:1px solid var(--line-soft); }
+  .project-title-area{ max-width:44rem; }
+  .project-title{ font-family:var(--display); font-size:clamp(1.3rem,2.5vw,1.85rem); font-weight:800;
+    margin:0 0 .45rem; line-height:1.18; letter-spacing:-.03em; color:var(--ink); }
+  .project-subtitle{ font-size:1rem; color:var(--ink-soft); margin:0; line-height:1.5; }
+  .project-tag-list{ display:flex; flex-wrap:wrap; gap:.4rem; list-style:none; padding:0; margin:1rem 0 0; }
+  .project-tag{ background:var(--paper); border:1px solid var(--line); padding:.32rem .75rem;
+    border-radius:2rem; font-size:.78rem; font-weight:500; color:var(--ink-soft); }
+  .project-tag.highlight{ background:var(--brand-tint); border-color:#C9D6FF; color:var(--brand-deep); font-weight:600; }
+  .project-actions{ display:flex; gap:.5rem; flex-wrap:wrap; }
+  .project-body p{ max-width:66ch; margin:0 0 1.05rem; font-size:1rem; color:var(--ink-body); }
+  .project-body h4{ font-family:var(--display); font-weight:700; letter-spacing:-.022em;
+    font-size:1.08rem; color:var(--ink); margin:2rem 0 .4rem; }
+  .project-body h5{ font-family:var(--display); font-weight:700; font-size:.95rem; color:var(--ink); margin:0; }
 
-  /* HERO */
-  .hero { padding:3.5rem 0 3rem; }
-  .hero .eyebrow { margin-bottom:.9rem; }
-  .hero h1 {
-    font-family:var(--display); font-weight:700;
-    font-size:clamp(2.3rem, 10vw, 4.2rem);
-    line-height:1.03; letter-spacing:-.025em;
-    margin:0 0 1.1rem;
-  }
-  .hero h1 .accent { color:var(--accent); }
-  .lede {
-    font-size:clamp(1.05rem, 3.4vw, 1.28rem);
-    color:var(--ink-soft); max-width:36ch; margin:0 0 2rem;
-  }
-  .hero-cta { display:flex; flex-wrap:wrap; gap:.7rem; margin-bottom:2.6rem; }
-  .btn {
-    font-family:var(--display); font-weight:500; font-size:.95rem;
-    text-decoration:none; padding:.7rem 1.25rem; border-radius:.55rem;
-    display:inline-flex; align-items:center; justify-content:center; gap:.4rem;
-    cursor:pointer; transition:all .15s ease;
-  }
-  .btn-primary { background:var(--ink); color:#fff; border:1px solid var(--ink); }
-  .btn-primary:hover { background:#0d1830; border-color:#0d1830; }
-  .btn-ghost { border:1px solid var(--line); color:var(--ink); background:transparent; }
-  .btn-ghost:hover { border-color:var(--accent); color:var(--accent); }
-  .btn-accent { background:var(--accent); color:#fff; border:1px solid var(--accent); }
-  .btn-accent:hover { background:#823f20; border-color:#823f20; }
-  .btn-sm { font-size:.82rem; padding:.45rem .85rem; border-radius:.45rem; }
+  .metrics-ribbon{ display:grid; grid-template-columns:repeat(auto-fit,minmax(10rem,1fr)); gap:1px;
+    background:var(--line); border:1px solid var(--line); border-radius:var(--r);
+    overflow:hidden; margin:1.4rem 0 1.7rem; }
+  .metric-box{ background:var(--paper); padding:1.1rem 1.05rem; text-align:left; }
+  .metric-box .num{ font-family:var(--display); font-weight:800; font-size:1.4rem; color:var(--ink);
+    letter-spacing:-.04em; line-height:1.08; display:block; margin-bottom:.32rem; }
+  .metric-box .label{ font-size:.78rem; color:var(--ink-soft); line-height:1.38; display:block; }
 
-  /* Deltas */
-  .deltas {
-    display:grid; grid-template-columns:1fr; gap:.9rem;
-    list-style:none; padding:0; margin:0;
-  }
-  .delta {
-    border-left:3px solid var(--accent);
-    padding:.55rem 0 .55rem 1rem;
-  }
-  .delta .pair {
-    font-family:var(--display); font-weight:600;
-    font-size:clamp(1.3rem, 6vw, 1.7rem); line-height:1.1;
-    letter-spacing:-.01em; display:flex; align-items:baseline; gap:.5rem; flex-wrap:wrap;
-  }
-  .delta .from { color:var(--ink-soft); font-weight:400; }
-  .delta .arrow { color:var(--accent); font-weight:400; }
-  .delta .to { color:var(--ink); }
-  .delta .label { display:block; font-size:.92rem; color:var(--ink-soft); margin-top:.15rem; }
+  .arch-steps{ display:grid; grid-template-columns:1fr; gap:.8rem; margin:1.3rem 0; }
+  @media (min-width:48rem){ .arch-steps{ grid-template-columns:1fr 1fr; } }
+  .arch-step{ background:var(--paper-cool); border:1px solid var(--line-soft); border-radius:var(--r);
+    padding:1rem 1.2rem; display:flex; gap:.9rem; align-items:flex-start; }
+  .arch-num{ background:var(--paper); border:1px solid var(--line); color:var(--brand);
+    font-family:var(--mono); font-weight:500; font-size:.78rem; width:1.75rem; height:1.75rem;
+    border-radius:50%; display:grid; place-items:center; flex:none; margin-top:.1rem; }
+  .arch-content h6{ font-family:var(--display); font-size:.94rem; font-weight:700; margin:0 0 .25rem; color:var(--ink); }
+  .arch-content p{ font-size:.86rem; color:var(--ink-soft); margin:0; line-height:1.5; }
 
-  /* ABOUT */
-  .about p { max-width:62ch; margin:0 0 1rem; font-size:1.08rem; }
-  .about p:last-child { margin-bottom:0; }
+  /* live dashboard widget */
+  .dashboard-widget{ background:var(--paper-cool); border:1px solid var(--line);
+    border-radius:var(--r-lg); padding:clamp(1.1rem,2.2vw,1.6rem); margin:1.6rem 0; }
+  .dash-top{ display:flex; justify-content:space-between; align-items:center;
+    border-bottom:1px solid var(--line); padding-bottom:.9rem; margin-bottom:1.15rem; flex-wrap:wrap; gap:.6rem; }
+  .dash-title-group h4{ font-family:var(--display); font-size:1.05rem; font-weight:800;
+    letter-spacing:-.025em; color:var(--ink); margin:0 0 .2rem; }
+  .dash-title-group p{ font-size:.82rem; color:var(--ink-soft); margin:0; }
+  .dash-status-badge{ display:inline-flex; align-items:center; gap:.45rem; background:var(--mint-tint);
+    color:var(--mint-deep); padding:.32rem .8rem; border-radius:2rem; font-size:.76rem; font-weight:600; }
+  .dash-status-dot{ width:7px; height:7px; border-radius:50%; background:var(--mint); animation:pulse 2s infinite; }
+  @keyframes pulse{ 0%,100%{ opacity:1; } 50%{ opacity:.35; } }
+  .dash-form-grid{ display:grid; grid-template-columns:1fr; gap:.85rem; margin-bottom:1.15rem; }
+  @media (min-width:48rem){ .dash-form-grid{ grid-template-columns:1fr 1.6fr; } }
+  .dash-field label{ display:block; font-family:var(--mono); font-size:.68rem; font-weight:500;
+    color:var(--ink-soft); letter-spacing:.1em; text-transform:uppercase; margin-bottom:.4rem; }
+  .dash-input{ width:100%; padding:.6rem .8rem; border:1px solid var(--line-strong);
+    border-radius:var(--r-sm); font-family:var(--body); font-size:.88rem; color:var(--ink); background:var(--paper); }
+  .dash-input a{ color:var(--brand); word-break:break-all; }
+  .dash-btn-row{ display:flex; align-items:center; gap:.6rem; flex-wrap:wrap; margin-top:.4rem; }
+  .dash-callout{ background:var(--gold-tint); border:1px solid #FFDFA3; border-radius:var(--r-sm);
+    padding:.8rem .95rem; font-size:.82rem; color:#6B4400; margin-bottom:1.3rem; }
+  .dash-pipeline-stages{ margin:1.3rem 0; }
+  .pipeline-label{ font-family:var(--display); font-size:.82rem; font-weight:700; color:var(--ink);
+    margin-bottom:.65rem; display:flex; justify-content:space-between; gap:.6rem; flex-wrap:wrap; }
+  .stages-pill-grid{ display:grid; grid-template-columns:repeat(auto-fit,minmax(135px,1fr)); gap:.45rem; }
+  .stage-pill{ background:var(--paper); border:1px solid var(--line); border-radius:var(--r-sm);
+    padding:.48rem .65rem; font-size:.78rem; color:var(--ink-body); display:flex; align-items:center;
+    gap:.4rem; font-weight:500; transition:all .25s var(--ease); }
+  .stage-pill.active{ background:var(--brand-tint); border-color:#C9D6FF; color:var(--brand-deep); font-weight:600; }
+  .stage-pill.done{ background:var(--mint-tint); border-color:#A5E9CF; color:var(--mint-deep); font-weight:600; }
+  .stage-icon{ font-size:.85rem; }
+  .dash-tables{ display:grid; grid-template-columns:1fr; gap:1.25rem; margin-top:1.3rem; }
+  @media (min-width:56rem){ .dash-tables{ grid-template-columns:1.2fr 1fr; } }
+  .dash-table-wrap{ border:1px solid var(--line); border-radius:var(--r); overflow:hidden; background:var(--paper); }
+  .dash-table-head{ background:var(--paper-cool); padding:.65rem .9rem; border-bottom:1px solid var(--line);
+    display:flex; justify-content:space-between; align-items:center; gap:.6rem; }
+  .dash-table-head h5{ margin:0; font-family:var(--display); font-size:.84rem; font-weight:700; color:var(--ink); }
+  .dash-table-head a{ font-size:.76rem; color:var(--brand); }
+  .dash-table{ width:100%; border-collapse:collapse; font-size:.82rem; text-align:left; }
+  .dash-table th{ background:var(--paper-warm); color:var(--ink-soft); font-family:var(--mono); font-weight:500;
+    padding:.55rem .8rem; border-bottom:1px solid var(--line); font-size:.66rem;
+    text-transform:uppercase; letter-spacing:.09em; }
+  .dash-table td{ padding:.6rem .8rem; border-bottom:1px solid var(--line-soft); color:var(--ink-body); vertical-align:middle; }
+  .dash-table tr:last-child td{ border-bottom:none; }
+  .score-badge{ display:inline-block; background:var(--gold-tint); color:var(--gold-deep); font-weight:700;
+    padding:.18rem .5rem; border-radius:2rem; font-size:.75rem; font-family:var(--mono); }
+  .winner-tag{ display:inline-block; background:var(--mint-tint); color:var(--mint-deep); font-weight:700;
+    padding:.18rem .5rem; border-radius:2rem; font-size:.75rem; }
 
-  /* AI AUTOMATION SECTION */
-  .ai-project-card {
-    background:var(--card);
-    border:1px solid var(--card-border);
-    border-radius:.9rem;
-    padding:1.75rem;
-    margin-bottom:2.5rem;
-    box-shadow:0 2px 8px rgba(22, 36, 61, 0.03);
-  }
-  .ai-project-card:last-child { margin-bottom:0; }
-  .project-header {
-    display:flex; flex-wrap:wrap; justify-content:space-between; align-items:flex-start; gap:1rem;
-    margin-bottom:1.25rem;
-  }
-  .project-title-area { max-width:42rem; }
-  .project-title {
-    font-family:var(--display); font-size:1.45rem; font-weight:700;
-    margin:0 0 .4rem; line-height:1.2; color:var(--ink);
-  }
-  .project-subtitle {
-    font-size:1.02rem; color:var(--ink-soft); margin:0;
-  }
-  .project-tag-list {
-    display:flex; flex-wrap:wrap; gap:.4rem; list-style:none; padding:0; margin:.75rem 0 0;
-  }
-  .project-tag {
-    background:#fff; border:1px solid var(--line);
-    padding:.25rem .6rem; border-radius:.4rem; font-size:.78rem;
-    font-family:var(--display); font-weight:500; color:var(--ink-soft);
-  }
-  .project-tag.highlight {
-    background:var(--accent-weak); border-color:var(--accent-weak); color:var(--accent); font-weight:600;
-  }
+  /* code inspector */
+  .code-inspector{ background:#0C1730; border-radius:var(--r-lg); overflow:hidden;
+    margin:1.5rem 0; border:1px solid #1C2A4D; }
+  .code-nav{ display:flex; justify-content:space-between; align-items:center; background:#08101F;
+    padding:.55rem .9rem; border-bottom:1px solid #1C2A4D; flex-wrap:wrap; gap:.5rem; }
+  .code-tabs{ display:flex; gap:.3rem; }
+  .code-tab{ background:transparent; border:none; color:#8FA0C4; font-family:var(--mono); font-size:.76rem;
+    padding:.38rem .75rem; border-radius:2rem; cursor:pointer; transition:all .2s var(--ease); }
+  .code-tab:hover{ color:#fff; }
+  .code-tab.active{ background:#1C2A4D; color:#fff; font-weight:500; }
+  .copy-btn{ background:#1C2A4D; color:#D6DFF2; border:none; border-radius:2rem; font-family:var(--mono);
+    font-size:.72rem; padding:.38rem .8rem; cursor:pointer; display:inline-flex; align-items:center; gap:.35rem; }
+  .copy-btn:hover{ background:#2A3D6B; color:#fff; }
+  .code-content{ padding:1.1rem; margin:0; overflow-x:auto; max-height:24rem; font-family:var(--mono);
+    font-size:.78rem; line-height:1.6; color:#CFDAF2; white-space:pre-wrap; }
 
-  .metrics-ribbon {
-    display:grid; grid-template-columns:repeat(auto-fit, minmax(130px, 1fr));
-    gap:.75rem; margin:1.25rem 0 1.5rem;
-  }
-  .metric-box {
-    background:#fff; border:1px solid var(--line); border-radius:.55rem;
-    padding:.85rem; text-align:left;
-  }
-  .metric-box .num {
-    font-family:var(--display); font-weight:700; font-size:1.35rem;
-    color:var(--accent); line-height:1.1; display:block; margin-bottom:.2rem;
-  }
-  .metric-box .label {
-    font-size:.8rem; color:var(--ink-soft); line-height:1.25; display:block;
-  }
+  /* carousel */
+  .carousel-section-wrap{ display:grid; grid-template-columns:1fr; gap:1.9rem; align-items:start; }
+  @media (min-width:56rem){ .carousel-section-wrap{ grid-template-columns:1fr 1.15fr; gap:2.75rem; align-items:center; } }
+  .carousel-container{ background:var(--ink); border-radius:var(--r-lg); padding:.75rem .75rem 1rem;
+    color:#fff; box-shadow:var(--shadow-lg); position:relative; overflow:hidden; }
+  .carousel-slide-view{ position:relative; aspect-ratio:4/5; }
+  .carousel-slide{ display:none; animation:fadeIn .3s ease forwards; }
+  .carousel-slide.active{ display:block; }
+  .carousel-slide img{ width:100%; height:auto; display:block; border-radius:var(--r); background:var(--ink); }
+  @keyframes fadeIn{ from{ opacity:.35; } to{ opacity:1; } }
+  .carousel-controls{ display:flex; justify-content:space-between; align-items:center;
+    margin-top:1rem; padding-top:.85rem; border-top:1px solid rgba(255,255,255,.14); }
+  .carousel-dots{ display:flex; gap:.4rem; }
+  .carousel-dot{ width:26px; height:5px; border-radius:3px; background:rgba(255,255,255,.26);
+    border:none; cursor:pointer; padding:0; transition:all .25s var(--ease); }
+  .carousel-dot.active{ background:var(--gold); width:38px; }
+  .carousel-nav-btn{ background:rgba(255,255,255,.12); color:#fff; border:none; border-radius:50%;
+    width:34px; height:34px; cursor:pointer; display:grid; place-items:center; font-size:1.05rem;
+    transition:background .2s; }
+  .carousel-nav-btn:hover{ background:rgba(255,255,255,.26); }
 
-  .project-body p {
-    max-width:64ch; margin:0 0 1rem; font-size:1rem; color:var(--ink);
-  }
-
-  /* Dashboard Widget Replica */
-  .dashboard-widget {
-    background:#fff;
-    border:1px solid #D8E0EB;
-    border-radius:.75rem;
-    padding:1.4rem;
-    margin:1.4rem 0;
-    box-shadow:0 4px 16px rgba(15, 42, 74, 0.05);
-  }
-  .dash-top {
-    display:flex; justify-content:space-between; align-items:center;
-    border-bottom:1px solid #E2E8F0; padding-bottom:.85rem; margin-bottom:1.1rem;
-    flex-wrap:wrap; gap:.6rem;
-  }
-  .dash-title-group h4 {
-    font-family:var(--display); font-size:1.1rem; font-weight:700;
-    color:var(--navy-deep); margin:0 0 .2rem;
-  }
-  .dash-title-group p {
-    font-size:.82rem; color:var(--ink-soft); margin:0;
-  }
-  .dash-status-badge {
-    display:inline-flex; align-items:center; gap:.4rem;
-    background:var(--green-light); color:var(--green-text);
-    padding:.3rem .7rem; border-radius:1rem; font-size:.78rem; font-weight:600;
-  }
-  .dash-status-dot {
-    width:7px; height:7px; border-radius:50%; background:var(--green-text);
-    animation:pulse 2s infinite;
-  }
-  @keyframes pulse {
-    0%, 100% { opacity: 1; }
-    50% { opacity: 0.4; }
-  }
-
-  .dash-form-grid {
-    display:grid; grid-template-columns:1fr; gap:.85rem; margin-bottom:1.1rem;
-  }
-  .dash-field label {
-    display:block; font-size:.74rem; font-family:var(--display); font-weight:700;
-    color:var(--ink-soft); letter-spacing:.05em; text-transform:uppercase; margin-bottom:.3rem;
-  }
-  .dash-input {
-    width:100%; padding:.55rem .75rem; border:1px solid #CBD5E1; border-radius:.45rem;
-    font-family:var(--body); font-size:.9rem; color:var(--ink); background:#F8FAFC;
-  }
-  .dash-input a { color:#0284C7; word-break:break-all; }
-  .dash-btn-row {
-    display:flex; align-items:center; gap:.6rem; flex-wrap:wrap; margin-top:.4rem;
-  }
-
-  .dash-callout {
-    background:#FFFBEB; border:1px solid #FDE68A; border-radius:.45rem;
-    padding:.75rem .9rem; font-size:.82rem; color:#92400E; margin-bottom:1.25rem;
-  }
-
-  .dash-pipeline-stages {
-    margin:1.25rem 0;
-  }
-  .pipeline-label {
-    font-size:.82rem; font-family:var(--display); font-weight:700;
-    color:var(--ink); margin-bottom:.6rem; display:flex; justify-content:space-between;
-  }
-  .stages-pill-grid {
-    display:grid; grid-template-columns:repeat(auto-fit, minmax(135px, 1fr));
-    gap:.45rem;
-  }
-  .stage-pill {
-    background:#F1F5F9; border:1px solid #CBD5E1; border-radius:.4rem;
-    padding:.45rem .6rem; font-size:.78rem; color:var(--ink);
-    display:flex; align-items:center; gap:.4rem; font-weight:500;
-    transition:all .2s ease;
-  }
-  .stage-pill.active {
-    background:#E0F2FE; border-color:#38BDF8; color:#0369A1; font-weight:600;
-  }
-  .stage-pill.done {
-    background:#DCFCE7; border-color:#86EFAC; color:#15803D; font-weight:600;
-  }
-  .stage-icon { font-size:.85rem; }
-
-  .dash-tables {
-    display:grid; grid-template-columns:1fr; gap:1.25rem; margin-top:1.2rem;
-  }
-  .dash-table-wrap {
-    border:1px solid #E2E8F0; border-radius:.5rem; overflow:hidden;
-  }
-  .dash-table-head {
-    background:#F8FAFC; padding:.6rem .85rem; border-bottom:1px solid #E2E8F0;
-    display:flex; justify-content:space-between; align-items:center;
-  }
-  .dash-table-head h5 {
-    margin:0; font-family:var(--display); font-size:.86rem; font-weight:700; color:var(--navy-deep);
-  }
-  .dash-table-head a {
-    font-size:.78rem; color:#0284C7; text-decoration:none;
-  }
-  .dash-table-head a:hover { text-decoration:underline; }
-  .dash-table {
-    width:100%; border-collapse:collapse; font-size:.82rem; text-align:left;
-  }
-  .dash-table th {
-    background:#F1F5F9; color:var(--ink-soft); font-weight:600; padding:.5rem .75rem;
-    border-bottom:1px solid #E2E8F0; font-size:.75rem; text-transform:uppercase; letter-spacing:.03em;
-  }
-  .dash-table td {
-    padding:.55rem .75rem; border-bottom:1px solid #F1F5F9; color:var(--ink); vertical-align:middle;
-  }
-  .dash-table tr:last-child td { border-bottom:none; }
-  .score-badge {
-    display:inline-block; background:#FEF3C7; color:#B45309; font-weight:700;
-    padding:.15rem .45rem; border-radius:.3rem; font-size:.76rem;
-  }
-  .winner-tag {
-    display:inline-block; background:#DCFCE7; color:#15803D; font-weight:700;
-    padding:.15rem .45rem; border-radius:.3rem; font-size:.76rem;
-  }
-
-  /* Code Inspector */
-  .code-inspector {
-    background:#1E293B; border-radius:.65rem; overflow:hidden;
-    margin:1.4rem 0; border:1px solid #334155;
-  }
-  .code-nav {
-    display:flex; justify-content:space-between; align-items:center;
-    background:#0F172A; padding:.5rem .85rem; border-bottom:1px solid #334155;
-    flex-wrap:wrap; gap:.5rem;
-  }
-  .code-tabs {
-    display:flex; gap:.35rem;
-  }
-  .code-tab {
-    background:transparent; border:none; color:#94A3B8; font-family:var(--display);
-    font-size:.8rem; padding:.35rem .7rem; border-radius:.35rem; cursor:pointer;
-    transition:all .15s ease;
-  }
-  .code-tab.active {
-    background:#334155; color:#F8FAFC; font-weight:600;
-  }
-  .copy-btn {
-    background:#334155; color:#E2E8F0; border:none; border-radius:.35rem;
-    font-family:var(--display); font-size:.75rem; padding:.35rem .65rem;
-    cursor:pointer; display:inline-flex; align-items:center; gap:.3rem;
-  }
-  .copy-btn:hover { background:#475569; color:#fff; }
-  .code-content {
-    padding:1rem; margin:0; overflow-x:auto; max-height:24rem;
-    font-family:var(--mono); font-size:.82rem; line-height:1.55; color:#E2E8F0;
-    white-space:pre-wrap;
-  }
-
-  /* Carousel Component */
-  .carousel-section-wrap {
-    display:grid; grid-template-columns:1fr; gap:1.75rem; align-items:start;
-  }
-  .carousel-container {
-    background:#0B2341;
-    border-radius:1rem;
-    padding:.75rem .75rem 1rem;
-    color:#fff;
-    box-shadow:0 8px 24px rgba(11, 35, 65, 0.15);
-    position:relative;
-    overflow:hidden;
-  }
-  .carousel-slide-view {
-    position:relative;
-    /* The slides are real 1080x1350 exports, so the image sets the height
-       instead of a hard-coded min-height that would letterbox them. */
-    aspect-ratio: 4 / 5;
-  }
-  .carousel-slide {
-    display:none; flex-direction:column; justify-content:space-between;
-    animation:fadeIn .3s ease forwards;
-  }
-  .carousel-slide.active {
-    display:block;
-  }
-  .carousel-slide img {
-    width:100%; height:auto; display:block;
-    border-radius:.6rem; background:#0B2341;
-  }
-  @keyframes fadeIn {
-    from { opacity:0.3; transform:translateY(4px); }
-    to { opacity:1; transform:translateY(0); }
-  }
-
-  /* Slide Designs */
-  .slide-header-badge {
-    display:inline-block; background:var(--gold); color:#0B2341;
-    font-family:var(--display); font-weight:700; font-size:.74rem;
-    text-transform:uppercase; letter-spacing:.08em;
-    padding:.35rem .85rem; border-radius:1rem; margin-bottom:.9rem;
-    align-self:flex-start;
-  }
-  .slide-tag-text {
-    color:var(--gold); font-family:var(--display); font-weight:600;
-    font-size:.86rem; margin-bottom:.5rem;
-  }
-  .slide-title {
-    font-family:var(--display); font-size:1.65rem; font-weight:700;
-    line-height:1.18; color:#fff; margin:0 0 .75rem; letter-spacing:-.01em;
-  }
-  .slide-title .highlight-gold { color:var(--gold); }
-  .slide-desc {
-    font-size:.95rem; color:#CBD5E1; line-height:1.5; margin:0 0 1.2rem;
-  }
-  .slide-bullets {
-    list-style:none; padding:0; margin:0 0 1.25rem;
-  }
-  .slide-bullets li {
-    font-size:.9rem; color:#E2E8F0; margin-bottom:.65rem;
-    display:flex; align-items:flex-start; gap:.5rem; line-height:1.4;
-  }
-  .slide-bullets li span.check { color:var(--gold); font-weight:700; }
-
-  .slide-visual-box {
-    background:rgba(255,255,255,0.06); border:1px solid rgba(255,255,255,0.12);
-    border-radius:.65rem; padding:.85rem 1rem; margin:auto 0 1rem;
-    display:flex; align-items:center; gap:.85rem;
-  }
-  .visual-avatar-mock {
-    width:52px; height:52px; border-radius:50%; background:linear-gradient(135deg, #F5A623, #EA580C);
-    display:flex; align-items:center; justify-content:center; font-size:1.5rem; flex-shrink:0;
-  }
-  .visual-text-mock h6 { margin:0 0 .2rem; font-size:.85rem; font-weight:700; color:#fff; }
-  .visual-text-mock p { margin:0; font-size:.76rem; color:#94A3B8; }
-
-  .slide-cta-banner {
-    margin-top:auto; display:flex; justify-content:space-between; align-items:center;
-    border-top:1px solid rgba(255,255,255,0.12); padding-top:.9rem; flex-wrap:wrap; gap:.5rem;
-  }
-  .slide-cta-btn {
-    background:var(--gold); color:#0B2341; font-family:var(--display); font-weight:700;
-    font-size:.82rem; padding:.55rem 1.15rem; border-radius:1.5rem; text-decoration:none;
-    display:inline-flex; align-items:center; gap:.3rem;
-  }
-  .mpower-logo-text {
-    font-family:var(--display); font-weight:800; font-size:.88rem;
-    letter-spacing:.1em; color:#fff; text-transform:uppercase; display:flex; align-items:center; gap:.35rem;
-  }
-  .mpower-logo-text svg { width:16px; height:16px; fill:var(--gold); }
-
-  /* Carousel Controls */
-  .carousel-controls {
-    display:flex; justify-content:space-between; align-items:center;
-    margin-top:1.1rem; padding-top:.85rem; border-top:1px solid rgba(255,255,255,0.15);
-  }
-  .carousel-dots { display:flex; gap:.4rem; }
-  .carousel-dot {
-    width:28px; height:5px; border-radius:3px; background:rgba(255,255,255,0.25);
-    border:none; cursor:pointer; padding:0; transition:all .2s ease;
-  }
-  .carousel-dot.active { background:var(--gold); width:40px; }
-  .carousel-nav-btn {
-    background:rgba(255,255,255,0.12); color:#fff; border:none; border-radius:50%;
-    width:36px; height:36px; cursor:pointer; display:flex; align-items:center; justify-content:center;
-    font-size:1.1rem; transition:background .15s ease;
-  }
-  .carousel-nav-btn:hover { background:rgba(255,255,255,0.24); }
-
-  /* Architecture Steps */
-  .arch-steps {
-    display:grid; grid-template-columns:1fr; gap:.75rem; margin:1.2rem 0;
-  }
-  .arch-step {
-    background:#fff; border:1px solid var(--line); border-radius:.55rem;
-    padding:.9rem 1.1rem; display:flex; gap:.9rem; align-items:flex-start;
-  }
-  .arch-num {
-    background:var(--card); border:1px solid var(--line); color:var(--accent);
-    font-family:var(--display); font-weight:700; font-size:.9rem;
-    width:28px; height:28px; border-radius:50%; display:flex; align-items:center; justify-content:center;
-    flex-shrink:0; margin-top:.15rem;
-  }
-  .arch-content h6 {
-    font-family:var(--display); font-size:.95rem; font-weight:700;
-    margin:0 0 .2rem; color:var(--ink);
-  }
-  .arch-content p {
-    font-size:.85rem; color:var(--ink-soft); margin:0; line-height:1.45;
-  }
-
-  /* EXPERIENCE */
-  .job { padding:1.6rem 0; border-bottom:1px solid var(--line); }
-  .job:last-of-type { border-bottom:0; padding-bottom:0; }
-  .job-head { margin-bottom:.7rem; }
-  .job .role {
-    font-family:var(--display); font-weight:600; font-size:1.2rem;
-    margin:0; line-height:1.25;
-  }
-  .job .meta {
-    color:var(--ink-soft); font-size:.95rem; margin:.2rem 0 0;
-    font-family:var(--display); letter-spacing:.01em;
-  }
-  .job .meta .co { color:var(--ink); font-weight:500; }
-  .job ul { margin:.5rem 0 0; padding-left:1.1rem; }
-  .job li { margin:.45rem 0; max-width:64ch; }
-  .job li b { color:var(--ink); font-weight:600; }
-
-  /* SKILLS */
-  .skillgroup { margin-bottom:1.4rem; }
-  .skillgroup:last-child { margin-bottom:0; }
-  .skillgroup h3 {
-    font-family:var(--display); font-size:.82rem; letter-spacing:.1em;
-    text-transform:uppercase; color:var(--ink-soft); margin:0 0 .6rem; font-weight:600;
-  }
-  .chips { display:flex; flex-wrap:wrap; gap:.5rem; list-style:none; padding:0; margin:0; }
-  .chips li {
-    background:var(--card); border:1px solid var(--line);
-    padding:.35rem .75rem; border-radius:.5rem; font-size:.92rem;
-  }
-
-  /* CONTACT */
-  .contact-line { color:var(--ink-soft); margin:0 0 1.4rem; font-size:1.05rem; }
-  .contact-actions { display:flex; flex-wrap:wrap; gap:.7rem; }
-  .contact-actions .btn { min-height:44px; }
-
-  /* ===== Independent projects ===== */
-  .tool-card {
-    background:var(--card); border:1px solid var(--card-border);
-    border-radius:.9rem; padding:1.5rem; margin-bottom:1.25rem;
-    box-shadow:0 2px 8px rgba(22,36,61,.03);
-  }
-  .tool-card:last-child { margin-bottom:0; }
-  .tool-card-top {
-    display:flex; justify-content:space-between; align-items:baseline;
-    gap:.75rem; flex-wrap:wrap; margin-bottom:.5rem;
-  }
-  .tool-card h3 {
-    font-family:var(--display); font-size:1.15rem; font-weight:700;
-    margin:0; letter-spacing:-.01em;
-  }
-  .tool-card .idx {
-    font-family:var(--mono); font-size:.72rem; color:var(--accent);
-    letter-spacing:.1em; text-transform:uppercase;
-  }
-  .tool-card .problem {
-    color:var(--ink-soft); font-size:.95rem; margin:0 0 1rem; max-width:62ch;
-  }
-  .tool-metrics {
-    display:grid; grid-template-columns:repeat(auto-fit,minmax(150px,1fr));
-    gap:.6rem; margin-bottom:1rem;
-  }
-  .tool-metric { background:#fff; border:1px solid var(--line); border-radius:.5rem; padding:.7rem .8rem; }
-  .tool-metric b {
-    display:block; font-family:var(--display); font-weight:700;
-    font-size:1.1rem; color:var(--accent); line-height:1.15; margin-bottom:.15rem;
-  }
-  .tool-metric span { font-size:.76rem; color:var(--ink-soft); line-height:1.3; display:block; }
-  .tool-card .chips { margin-bottom:1rem; }
-  .tool-card .chips li { font-size:.78rem; padding:.25rem .6rem; }
-  .tool-note {
-    font-size:.82rem; color:var(--ink-soft); margin:.9rem 0 0;
-    padding-top:.9rem; border-top:1px solid var(--line);
-  }
-  .contact-fallback { margin:1.1rem 0 0; color:var(--ink-soft); font-size:.95rem; word-break:break-word; }
-
-  footer { padding:2rem 0 3rem; color:var(--ink-soft); font-size:.85rem; border-top:1px solid var(--line); }
-
-  /* Responsive layout */
-  @media (min-width:48rem) {
-    section { padding:4.75rem 0; }
-    .hero { padding:5.2rem 0 4rem; }
-    .deltas { grid-template-columns:1fr 1fr; gap:1.4rem 2rem; }
-    .hero-grid { display:grid; grid-template-columns:1.1fr .9fr; gap:3rem; align-items:start; }
-    .skills-cols { display:grid; grid-template-columns:1fr 1fr; gap:1.6rem 2.5rem; }
-    .dash-form-grid { grid-template-columns:1fr 1.6fr; }
-    .dash-tables { grid-template-columns:1.2fr 1fr; }
-    .carousel-section-wrap { grid-template-columns:1fr 1.15fr; gap:2.5rem; align-items:center; }
-    .arch-steps { grid-template-columns:1fr 1fr; }
-  }
 </style>
 </head>
 <body>
 
 <a class="skip" href="#main">Skip to content</a>
 
-<!-- Navigation Bar -->
-<nav class="nav-bar" aria-label="Main Navigation">
+<nav class="nav" id="nav" aria-label="Main">
   <div class="wrap nav-inner">
-    <a class="nav-logo" href="#main">Priyanshu Goyal <span>&middot; Growth &amp; AI</span></a>
+    <a class="brandmark" href="#main"><span class="dot"></span>Priyanshu Goyal</a>
     <ul class="nav-links">
       <li><a href="#about">About</a></li>
-      <li><a href="#ai-automation">AI Work <span class="badge-new">New</span></a></li>
-      <li><a href="#independent-projects">Projects</a></li>
+      <li><a href="#ai-automation">AI work</a></li>
+      <li><a href="#independent-projects">Tools</a></li>
       <li><a href="#experience">Experience</a></li>
       <li><a href="#skills">Skills</a></li>
-      <li><a href="#contact">Contact</a></li>
-      <li><a class="btn btn-primary btn-sm nav-cv-btn" href="data:application/pdf;base64,JVBERi0xLjQKJZOMi54gUmVwb3J0TGFiIEdlbmVyYXRlZCBQREYgZG9jdW1lbnQgaHR0cDovL3d3dy5yZXBvcnRsYWIuY29tCjEgMCBvYmoKPDwKL0YxIDIgMCBSIC9GMiAzIDAgUiAvRjMgNCAwIFIgL0Y0IDUgMCBSIC9GNSA3IDAgUgo+PgplbmRvYmoKMiAwIG9iago8PAovQmFzZUZvbnQgL0hlbHZldGljYSAvRW5jb2RpbmcgL1dpbkFuc2lFbmNvZGluZyAvTmFtZSAvRjEgL1N1YnR5cGUgL1R5cGUxIC9UeXBlIC9Gb250Cj4+CmVuZG9iagozIDAgb2JqCjw8Ci9CYXNlRm9udCAvSGVsdmV0aWNhLUJvbGQgL0VuY29kaW5nIC9XaW5BbnNpRW5jb2RpbmcgL05hbWUgL0YyIC9TdWJ0eXBlIC9UeXBlMSAvVHlwZSAvRm9udAo+PgplbmRvYmoKNCAwIG9iago8PAovQmFzZUZvbnQgL1phcGZEaW5nYmF0cyAvTmFtZSAvRjMgL1N1YnR5cGUgL1R5cGUxIC9UeXBlIC9Gb250Cj4+CmVuZG9iago1IDAgb2JqCjw8Ci9CYXNlRm9udCAvSGVsdmV0aWNhLUJvbGRPYmxpcXVlIC9FbmNvZGluZyAvV2luQW5zaUVuY29kaW5nIC9OYW1lIC9GNCAvU3VidHlwZSAvVHlwZTEgL1R5cGUgL0ZvbnQKPj4KZW5kb2JqCjYgMCBvYmoKPDwKL0NvbnRlbnRzIDEyIDAgUiAvTWVkaWFCb3ggWyAwIDAgNjEyIDc5MiBdIC9QYXJlbnQgMTEgMCBSIC9SZXNvdXJjZXMgPDwKL0ZvbnQgMSAwIFIgL1Byb2NTZXQgWyAvUERGIC9UZXh0IC9JbWFnZUIgL0ltYWdlQyAvSW1hZ2VJIF0KPj4gL1JvdGF0ZSAwIC9UcmFucyA8PAoKPj4gCiAgL1R5cGUgL1BhZ2UKPj4KZW5kb2JqCjcgMCBvYmoKPDwKL0Jhc2VGb250IC9IZWx2ZXRpY2EtT2JsaXF1ZSAvRW5jb2RpbmcgL1dpbkFuc2lFbmNvZGluZyAvTmFtZSAvRjUgL1N1YnR5cGUgL1R5cGUxIC9UeXBlIC9Gb250Cj4+CmVuZG9iago4IDAgb2JqCjw8Ci9Db250ZW50cyAxMyAwIFIgL01lZGlhQm94IFsgMCAwIDYxMiA3OTIgXSAvUGFyZW50IDExIDAgUiAvUmVzb3VyY2VzIDw8Ci9Gb250IDEgMCBSIC9Qcm9jU2V0IFsgL1BERiAvVGV4dCAvSW1hZ2VCIC9JbWFnZUMgL0ltYWdlSSBdCj4+IC9Sb3RhdGUgMCAvVHJhbnMgPDwKCj4+IAogIC9UeXBlIC9QYWdlCj4+CmVuZG9iago5IDAgb2JqCjw8Ci9QYWdlTW9kZSAvVXNlTm9uZSAvUGFnZXMgMTEgMCBSIC9UeXBlIC9DYXRhbG9nCj4+CmVuZG9iagoxMCAwIG9iago8PAovQXV0aG9yIChcKGFub255bW91c1wpKSAvQ3JlYXRpb25EYXRlIChEOjIwMjYwODE1MTA0OTU2KzAwJzAwJykgL0NyZWF0b3IgKFwodW5zcGVjaWZpZWRcKSkgL0tleXdvcmRzICgpIC9Nb2REYXRlIChEOjIwMjYwODE1MTA0OTU2KzAwJzAwJykgL1Byb2R1Y2VyIChSZXBvcnRMYWIgUERGIExpYnJhcnkgLSB3d3cucmVwb3J0bGFiLmNvbSkgCiAgL1N1YmplY3QgKFwodW5zcGVjaWZpZWRcKSkgL1RpdGxlIChcKGFub255bW91c1wpKSAvVHJhcHBlZCAvRmFsc2UKPj4KZW5kb2JqCjExIDAgb2JqCjw8Ci9Db3VudCAyIC9LaWRzIFsgNiAwIFIgOCAwIFIgXSAvVHlwZSAvUGFnZXMKPj4KZW5kb2JqCjEyIDAgb2JqCjw8Ci9GaWx0ZXIgWyAvQVNDSUk4NURlY29kZSAvRmxhdGVEZWNvZGUgXSAvTGVuZ3RoIDM3NjEKPj4Kc3RyZWFtCkdiISNePWBgPWUmcTlTWVIiczw/WT1UISI2JzBtIlYnVDtXLCIyalwsalFxbiUpRilJLmhEZ0NPSz9yNElmIlJXSzdhQ3NCNi8lRC90M1AvOCwicmpJLC0kJmclYW1zcys6YmptcTsiYks+U1txYydIVEQvPEEmWWZrQypFby4tXlVsKypuSW5NKG0sL0I7bzxeO0RNUkVJKikjPVdRRGNmZmkmMFlIWCplWGM6amg9UCUsRVlMaTBqV19WSGw0PExiPiRbLVxQKTFOUVI1UTFAJV09UnF0XVJKJTlzJ2k9TFoxY0hrI2tBKXNtS3FwOTBgK1hPZjgrWiI4JD9rLElCc3VvSCMzXGo4TUo/WHFuQ2ZwUUtORyZtWFNJPkovIVojbS1IMyE6WUQybW5EbGxHMTBXWEBgKWUta3MoM0FEMFBsNltVSV4nPikiclxpVyRvbkxHbEwnITFELV9BMXVLUD48TFJkSGRBV0JmQltZKWwoWFRjYDFvbURPNVwuTFlwSCIpVj4/cT9GX3RzIT9rVz5TXmY8YCVgWT9SXCI/OjY6YmsiNEU9aihLU3JQXjU6KCUsOFVJXjIoPkVUIz9KNWsjJl84WGoqQHQiNHVmOTZkIVhVOlkuQUknOG0qXU4lYlo0NSk9b09YP15YSkFUVjZRQ1RsNUQla0lVJixcVFRdREVNKFYwYUtjKiQzLl9mQWI/NmtGRCJYSGNITzBSIVRDOSllWjI1OmdUW2hSNV9qMCVcO0IsO3JfJEhKIUA9S2kmRkMlJzBdQ2FzVVpsbEpxdS0jUTluMGdkKSw8QVxnLEEzWWY1QipVP0Aob2kka1QlWmZcYlhqRydYVVE4WT1WWWxJbD5iZUoiX2lhXGpFKCpYLzhZYiJPJ0MnLnBYPCc0KCRuVzNLa01rYGBxXGgwODNnbjBEUlthaSdOSixaOCJSUTVaTjA2IyJTOikuZEAnNEJldEM+ZmhxWzBGWUExSy5PRl9WOl0wYDdYSGFbZVNQckJaKC50dGpobzoiSkwpTDphZUR0MT02a1R1N3I1P1giJ1sqZV9uUEJsWVk7PD80U3NsaFRDb3QnUG5zQXUvVkMxOTdjWT5TazskOzBGWUwrRl9oKCJxJ1QoImNjYWNfXC08N3VuKSU1ZDgxYSleVkZEXWQ8cXFCMWE2NT0tUixDY0VbMkwxXDNHLUwqSTMiQ0xMIVE/Mm8mKFhXQCRMSHUpQD9dSSknUiU3OC8yZV49MTZOLjA1RjdLOjArZz0xKG4/R0k2Olpxc2FvbzQjQE9WcmRaNFhIdCUlbXIuJl0mTiIkRz1WTzciVm1rQTNEMHVMWjo5ZztqZF0hW10oR2BjXzMySVxuVk5SJmFKQ2hIK0Y3ImRvcDQ5NzNXZ2ZoRWpAb2xzYjMqO0M+cT1MTklucF8jR25nNCVRTDY8cFZfaFdVQz0pUilaX0xWNSpgNVxBR1FWWVo6SiwyPVNdO0ldSzUpRFJqNT81OGtYIXA8Jl5CUlttYT46LkIncmg+JGhtOHRsK1RrJiohcEk9RXNtOW9sOi1tRlZqTG9RNC09cUU/KnRWZXMtOjhKN24tYjQ6Xk49LEgjSilxRzhkRzpnaCNUOlt0ZFIyM0VwRWo3Yjovb2kwbGhJOVBZWFszbSQtXkUkS1xbWy1JWiNzPE1QPzxgS1BkV1UmP0Z0TiRaJmVDZz8nQ2I+JkhTZl9LXFtSMGNyU15BVUgtKVxySWZDSyJgRGdWPCZvdTldMmtpdSU7Ol9RMFs7I0FBUmpTPkMkdUtcPTc9ZFRfZSJZT2ovPiwiQHMwKkZQY3AmRFY1SSwuQzRmTVpfOjJaKSU+UE4rVEFfLkw8Wm49M250U2BSZzc/YUk8SE1HLEo5YGxbLTBRXFBUQWtmcTksVT9SVUgjXkgxUnJFSkRKPHFhU1VwN3RsVD8uc0ciaiQ0USljaCwlSVlAKGhIY1x1U0kpU0lmWnUkbT1HSClJQyktJkJpJEFxXEw4WmohVkIsKV5CU1NtQFxxcjQkTT8nJjBBLVsiYUMxIiZmRycsX0cyQEskWWk6NiJDN1BrUSc7Vis0MjxjVVxiSmlILWFKcG9NUF9SKVYmKTR1XDlrRztJaUhIdUtCZV4sUCJWYFlZQiRsJTk8SWxAN0VIKGM8SDwoKkxXImo7TWlUTmEjQS9PQ2lXPzlGQXNLL2U2RVBbaW1nVlk/OFJccGQjRmxGTk5OM0UxLTxeS1UuPFpcbjNAVEFYPUZkOmdCXE5pdFdRajU5MzpQaytaRzZfRlM0ImVGODdacUwqc2BAOXVaYDJTKl1mNDJlUWYjTmk5PlM+ZnVubVJjQFAzPWdWIVBLKWApcScjJ1YiZ2duSThcOU44R0pHLzRVK0I8WF0oT2YnOiNjUDg+W2syTTk5TD1KNVtAZTteLC0nPFtNaEhhY25RaWRwSDpzXHRiLCxsaFchSWRJPEloPUMrJS07aC5FUzUhWUlVbW4oIU0iLSw4O15mSS50Ii1lbkdHNGw/OlhAUyhTOi8nayJAKSxNPmkiLiNuVytgPllVKyk9PmdbQTdnUDpUJWJnZGJAQ2A+LjpPVjhSNmEqWi5hbjNtSjolYF9Ra044XVBFTE1AUTNJP0FQbVVYRzdqNFxRWkhPWmZBdU4yRExRIUxrOFBbWDBZVTJjX0NDMlddLzNsbydUYzsvNGNkMWZzLG8xImYoY0JdK0ZCQixvLm1kIWQxWzpabSg+J0UjVSEtVik7YydxNGFQRT43J2FYcnE3Y00pOU0xV11NXy4/bD9XUTY7dGNDXDw/U1gyTDgyOSJaXk4vW0ZlWyhNLGlXY2lXMykzS1tYMmksVDJQZ189LDRNKTgucElbMyhGXHNoKS8nZ1dROjUhT0ZkSm9HViw0U2lXbydmcD9TQ0spP2ExamptYjZfMCRBc1AocTQ/JEU7LHJKIzVwYkRWZl9kXD9XKmVecmNwR2tONTlwNDA1Pz4hW0dyKDhnXFI+azkvaGBNaG8sLmFHMW8/XzxmYEA4V3BfXnFqNkRaWiJeY3I1a3RlVWpTJUlGSU9vKDVOT1JWTSFtVG06VzQwTW9JQ2FwWC4mcEBFQlVnJE1jO28iP1o3UzB0ajlsUmFwcXNxU1cyWTJCMVVXKSYrWy5wZF0oX2shYUQyc1FlXTNXayQjOyRUPCo0VGE+Q2xQTSFxT3RfPFxrUzBYOj4mPCNOSmZhYmUhSlA2ViF1XkElYzZnQyIwW0dkL2p0WERWVFtcTChpYSlgPGJvQS9pNyg4ITsmSSptQW1TK1JfZi9odSE0THJCJVREUFtDZEMoUy4rRjwoSWBIRydMTmw4Wl5Va0dLT1tIaGVUTFUuXD4sOTJdaG0nUWphWj1uYWlkbU9aN0ghMnA3NzdePUQzTG4sSSlPPFArZ0tDQFlTXkBmTkA1VytENGcqSmQ2P3BpciUoLFg0bSpFK1VpY2gxJ1QvZGtHMjk0N0MndFQzWz5eL3VtLk80ZmVsTzAkV1RsV0YwZjhyWlI0LW5nRVBFJWtKaztpVjFmJyFjTyIvQDQ2PGRXRGdtNyhXUSI6QE0mKEZBZT89IjxFTDozTWE8QFlqczN1LGpeOHQ7JlBtOjM1JUI9X05oZSRVTj1QVW1vUTUhb1NmW19aVlthQC5UQVcpPnFdaSFiSkxTa3BCa0dUTHIpZG9sOzA8aDpwWmcjRWg7VitBR0QxdSRpbDw3IlxpRkdJIUJlVihBRkt1SiRbIjVfKkNhPFBmMlRxS2xnIz9kNXNoPjp0dSQ9KTEpVygrU1dFNGliaFJjYTQkOVc9bFgnb11hMDlFQSNGbUleRChGNmRhOldgdT1DQmJHMyo/b19HWjI1SklNMHElXD0uPjc4LklGa1xccC9sM2RpQVRhdGYvXks7cUo1RTRaSGpubV9HX0EjaV1YI1s8Y3UmdC0hZSc0W2UhaW9VPCU2SE1gWTg9WVlsTDc6Xmh0b2tMOjg2Si5mKTkoPiQ3Ol90Ny1gSS4uLl5iPmZhWD1QNGZNLyw9OzNQPG9Oa1RhbjZWWzlrInUlQiYpRik4cGtCXm4kZCdAbz0mJjNvIkQpJlFmVGJXSGtaSmUyaG8wTnJFZlJgJmwjI0BzbzVGcUc2XSIkPSxcYC0iKlljUSpFWHU7SSs8amM6KVdyaUxvbHBFay41KU0yTCYmXFxyWz4saCFxR2J1RmlGJyspK25LNj03LG11TjVIYSQ2K0RKJVpxR1RmK1hFamhtXDptTEBQQSk+UTJbVXM7ZlcvZm83XjVSKEl1JVsiWmgkJ2opQERUVyRtVEpYb0piKmtpIkRBQzRBNm5hSnRxTUwjLi9oWUFWSFYpOSptQDtJWmxRNT1OPXNnb1NpXlVBTldBTDg6N0w9bzVRWWMoIV0sSzcyX0xyI0g2R3VuYFtOWl8ybEVJLmZKcTRsaEpyXksyJVxlZkJDM2A/UEVvW0VLSVBqM2RPQyFgLmRMITk+cjhERXJnWl5bLFJGPy46cy9YQGhbakRAXyQ/T0hQZGhHPjhiLEcydEg9VHRRXjswXE1qJk88W1AlTiYqNVlsR2BRUWkoWmwnUzpCNi1PSFlYY3FudWZPSU0lRT1OSGA6XSgqU1wsOVBCMiItXlhlWidcQWQkLSZ0a29YWzc8Uy0zWzI9ViZbXj9sYT5wWHNiWjgiTjdtaGRWMTYtPEtMYWU2SDtyW1I+TWI0a2sqNlsxbSgpVmgtZysuZlMuRW1FKENNUk5UO21TRF0rTjNhVS9gPyNzI0FVcWs6Kk8mRkplSXEyN3BCYCtlNEMqSmEiMlRNalplb141O04wNGNyOEZoKVZtbDQ+OSwsJzw4PHIvUFIrL0ZySUxrWExdLmlsTFBrbz9ELG9wZ2hzLVMnJFA5cForSTJdJFFmZVVPXWgkTCsjIi1wYmBwIms4VVhGYzFdS2g4IzdWWTRfNjUiRDZcb1xObTNHNyZFckM7MmJDV2FKcExSalUyXVM6akBMN0hoQUpfbXNiOX4+ZW5kc3RyZWFtCmVuZG9iagoxMyAwIG9iago8PAovRmlsdGVyIFsgL0FTQ0lJODVEZWNvZGUgL0ZsYXRlRGVjb2RlIF0gL0xlbmd0aCA2NzYKPj4Kc3RyZWFtCkdhdTErPyNRMmQnU2MpUCglOSsiLHVbPE5vM25yOlVlUm4zVUtMTyhoO2xRYCVhXWYxLjhjbz5xVWw/TVpfamslVzw5c0trNG5eMyVpLGpJVEBEXjYnZWk3IUhxJEM+T3NSJ3FxRkVlW1MyYl4mbTRzKG8qZ2dMJGxIdVFWaDgjISwzQkY+OVdzY3QtVTYrbUZtWFBdaWlwNWYsYiFYQ3UqRyZrYSNbIW00TS8tRGNFQ0dxKS5yJF1KNlkxUiNXQmBUS0dDN0NxOXFEUTQuQTtCVV9JWzxvXXJXJUhTOmtRMm9aIWU5OlBRdSVIQVFqNU5ESEc3UVA4dT83cmo3Q14kNSg1b3Q6b0ZlPylMND1IYmFMNGlIVm8jQkMpNHE/NCQ4RU4rTkUhKFU3IlhvVSttJjRXQFImYj8oTW5rTi5mI19lLEhEaThlaDklNk1QNkFcQjo7Uk1uZC1CaV0yNUplZGZULDBebk5HWlZMRmdaUmAxV0MjZkwscTcvYylrZGlRMElHVyQ3NDFnY01QcXJtUEU+NG1VTlBSWilWQmgiMFBGRWpFbUdYSzxNVDQqaTVgQGM8VGYncElVNWBlITE+QyNZI1plIWRyV24zSW9MWXB1RigmKFRGW1w3M2NbUVkjZFlgVTN1SFdLTXUlOWBBOEUmPG9aYExnUG5UYTlpblA7MltTPFE/b04jPj5YbVNha2E6ckBAUTwhWVZVOGBoQiE4IlM8MG8mSk0vam1zPmAwcGQ0N0NBYnFmcFwvM3BnaEFzKjFLcC1IZCtIXSJzRy07NVFnJ1JuTEVBLT1VTFtdbCVtQkVoU15LWiMmXDReTFU5VDBBOiFAW1hqOzdOVWI8XzlKNVUoJ2w/Z0sjSiMwZjQtVjdCX1lGWFA/VFM4fj5lbmRzdHJlYW0KZW5kb2JqCnhyZWYKMCAxNAowMDAwMDAwMDAwIDY1NTM1IGYgCjAwMDAwMDAwNzMgMDAwMDAgbiAKMDAwMDAwMDE0NCAwMDAwMCBuIAowMDAwMDAwMjUxIDAwMDAwIG4gCjAwMDAwMDAzNjMgMDAwMDAgbiAKMDAwMDAwMDQ0NiAwMDAwMCBuIAowMDAwMDAwNTY1IDAwMDAwIG4gCjAwMDAwMDA3NjAgMDAwMDAgbiAKMDAwMDAwMDg3NSAwMDAwMCBuIAowMDAwMDAxMDcwIDAwMDAwIG4gCjAwMDAwMDExMzkgMDAwMDAgbiAKMDAwMDAwMTQyMyAwMDAwMCBuIAowMDAwMDAxNDg5IDAwMDAwIG4gCjAwMDAwMDUzNDIgMDAwMDAgbiAKdHJhaWxlcgo8PAovSUQgCls8NzU4ZGI0M2U2NmEyZTFkOWJhOWYyZDhhZjRjN2JiNjU+PDc1OGRiNDNlNjZhMmUxZDliYTlmMmQ4YWY0YzdiYjY1Pl0KJSBSZXBvcnRMYWIgZ2VuZXJhdGVkIFBERiBkb2N1bWVudCAtLSBkaWdlc3QgKGh0dHA6Ly93d3cucmVwb3J0bGFiLmNvbSkKCi9JbmZvIDEwIDAgUgovUm9vdCA5IDAgUgovU2l6ZSAxNAo+PgpzdGFydHhyZWYKNjEwOQolJUVPRgo=" download="Priyanshu_Goyal_CV.pdf">CV &darr;</a></li>
     </ul>
+    <a class="btn btn-primary btn-sm" href="#contact">Get in touch</a>
   </div>
 </nav>
 
 <main id="main">
 
-  <!-- ===== HERO ===== -->
-  <header class="hero">
-    <div class="wrap">
-      <div class="hero-grid">
-        <div>
-          <p class="eyebrow">Growth Marketing &amp; AI Automation &middot; 4.5+ years</p>
-          <h1>Zero&nbsp;to&nbsp;scale, <span class="accent">measured&nbsp;in&nbsp;revenue.</span></h1>
-          <p class="lede">I build ambassador programs, paid funnels, and AI automation systems for fintech - then prove it in the numbers.</p>
-          <div class="hero-cta">
-            <a class="btn btn-primary" href="#ai-automation">Explore AI Automation</a>
-            <a class="btn btn-ghost" href="#experience">See the work</a>
-            <a class="btn btn-ghost" href="#contact">Get in touch</a>
+  <!-- ============================ HERO ============================ -->
+  <section class="hero">
+    <div class="wash"><i class="w1"></i><i class="w2"></i><i class="w3"></i></div>
+    <div class="wrap above hero-grid">
+      <div class="hero-copy">
+        <p class="eyebrow">Growth marketing &amp; AI &middot; 5 years</p>
+        <h1 class="display-xl">Zero to scale,<br><span class="ital">measured in revenue.</span></h1>
+        <p class="lede measure-tight">I build ambassador programmes, paid funnels and AI automation for fintech &mdash; then prove it in the numbers.</p>
+        <div class="btn-row">
+          <a class="btn btn-brand" href="#independent-projects">See the tools I built <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg></a>
+          <a class="btn btn-ghost" href="#ai-automation">AI automation work</a>
+        </div>
+        <div class="hero-trust">
+          <span><b>20</b> countries</span>
+          <span><b>400+</b> ambassadors</span>
+          <span><b>$407M</b> pipeline built</span>
+        </div>
+      </div>
+
+      <div class="hero-visual reveal">
+        <div class="hero-card">
+          <div class="hero-card-top">
+            <h2>Disbursed loan revenue</h2>
+            <span>MPOWER &middot; 2023&ndash;25</span>
+          </div>
+          
+      <svg class="growth" viewBox="0 0 520 360" role="img" aria-label="Disbursed loan revenue growing from 5 million dollars in 2023 to 40 million dollars in 2025">
+        <defs>
+          <linearGradient id="areaFill" x1="0" y1="0" x2="0" y2="1">
+            <stop offset="0%" stop-color="#1B44C8" stop-opacity=".26"/>
+            <stop offset="100%" stop-color="#1B44C8" stop-opacity="0"/>
+          </linearGradient>
+          <filter id="dotGlow" x="-60%" y="-60%" width="220%" height="220%">
+            <feGaussianBlur stdDeviation="7" result="b"/>
+            <feMerge><feMergeNode in="b"/><feMergeNode in="SourceGraphic"/></feMerge>
+          </filter>
+        </defs>
+
+        <g stroke="#E3E8F3" stroke-width="1">
+          <line x1="52" y1="300" x2="486" y2="300"/>
+          <line x1="52" y1="231" x2="486" y2="231"/>
+          <line x1="52" y1="161" x2="486" y2="161"/>
+          <line x1="52" y1="92"  x2="486" y2="92"/>
+        </g>
+
+        <path d="M60 274 C150 252 186 182 260 143 S402 106 460 91 L460 300 L60 300 Z" fill="url(#areaFill)"/>
+        <path d="M60 274 C150 252 186 182 260 143 S402 106 460 91"
+              fill="none" stroke="#1B44C8" stroke-width="3.25" stroke-linecap="round"/>
+
+        <circle cx="60"  cy="274" r="5.5" fill="#fff" stroke="#1B44C8" stroke-width="3"/>
+        <circle cx="260" cy="143" r="5.5" fill="#fff" stroke="#1B44C8" stroke-width="3"/>
+        <circle cx="460" cy="91"  r="9" fill="#FFB020" filter="url(#dotGlow)"/>
+        <circle cx="460" cy="91"  r="4" fill="#fff"/>
+
+        <g font-family="JetBrains Mono, monospace" font-size="13" fill="#98A2B8">
+          <text x="60"  y="330" text-anchor="middle">2023</text>
+          <text x="260" y="330" text-anchor="middle">2024</text>
+          <text x="460" y="330" text-anchor="middle">2025</text>
+        </g>
+
+        <g font-family="Plus Jakarta Sans, sans-serif" font-weight="800">
+          <text x="60"  y="256" text-anchor="middle" font-size="17" fill="#66718C">$5M</text>
+          <text x="448" y="62"  text-anchor="end"    font-size="26" fill="#0F1E3D">$40M</text>
+        </g>
+
+        <g transform="translate(52,24)">
+          <rect width="62" height="30" rx="15" fill="#FFF4DE"/>
+          <text x="31" y="20" text-anchor="middle" font-family="Plus Jakarta Sans, sans-serif"
+                font-weight="800" font-size="14" fill="#B77400">8&#215; up</text>
+        </g>
+      </svg>
+          <div class="hero-card-foot">
+            <span class="tag">Ambassador channel 20% &rarr; 50%</span>
+            <span class="tag">Approval rate 40% &rarr; 56%</span>
           </div>
         </div>
-
-        <ul class="deltas" aria-label="Headline results">
-          <li class="delta">
-            <span class="pair"><span class="from">$5M</span><span class="arrow" aria-hidden="true">&rarr;</span><span class="to">$40M</span></span>
-            <span class="label">Loan book scaled in 2 years (8x)</span>
-          </li>
-          <li class="delta">
-            <span class="pair"><span class="from">20%</span><span class="arrow" aria-hidden="true">&rarr;</span><span class="to">50%</span></span>
-            <span class="label">Ambassador channel revenue share</span>
-          </li>
-          <li class="delta">
-            <span class="pair"><span class="from">weeks</span><span class="arrow" aria-hidden="true">&rarr;</span><span class="to">days</span></span>
-            <span class="label">Scholarship cycle via Claude AI automation (~95% less manual effort)</span>
-          </li>
-          <li class="delta">
-            <span class="pair"><span class="from">5-7 days</span><span class="arrow" aria-hidden="true">&rarr;</span><span class="to">~1 day</span></span>
-            <span class="label">Social ad creative turnaround via ChatGPT Codex + Canva API</span>
-          </li>
-        </ul>
       </div>
-    </div>
-  </header>
-
-  <!-- ===== ABOUT ===== -->
-  <section id="about" class="about" aria-labelledby="about-h">
-    <div class="wrap">
-      <p class="eyebrow">About</p>
-      <h2 id="about-h">I work where there's no playbook.</h2>
-      <p>Over 4.5 years I've taken loan products into 20 countries, built a 400+ brand-ambassador network from zero across Africa and Southeast Asia, and scaled a disbursed loan book 8x. My focus now is layering AI automation on top of growth: cutting manual workflows, shipping analytics that drive real-time decisions, and building self-serve tools that lift operational load without adding headcount.</p>
-      <p>I sit at the intersection of international growth marketing, data analytics, and AI-driven automation - and I judge the work by what it moves, not how busy it looks.</p>
     </div>
   </section>
 
-  <!-- ===== FEATURED AI AUTOMATION WORK ===== -->
-  <section id="ai-automation" aria-labelledby="ai-h">
+  <!-- ============================ ABOUT ============================ -->
+  <section class="section section--warm section--line" id="about" aria-labelledby="about-h">
     <div class="wrap">
-      <p class="eyebrow">Featured AI Automation Projects</p>
-      <h2 id="ai-h">Production AI Systems Built for Commercial Scale</h2>
-      <p class="section-intro">
-        Connecting Large Language Models (Claude, ChatGPT Codex) directly to operational tools (Google Workspace, Canva API, Slack, Tableau) to eliminate bottlenecks, compress cycle times, and unlock quantifiable commercial velocity.
-      </p>
+      <div class="sec-head">
+        <p class="sec-index">01 &mdash; About</p>
+        <div class="sec-title">
+          <h2 class="display-lg" id="about-h">I work where there is <span class="ital">no playbook.</span></h2>
+        </div>
+      </div>
+      <div class="about-grid">
+        <div class="about-copy reveal">
+          <p>Over five years I have taken loan products into 20 countries, built a 400+ brand-ambassador network from nothing across Africa and Southeast Asia, and scaled a disbursed loan book eight times over.</p>
+          <p>My focus now is putting AI underneath the growth work: cutting the manual jobs nobody enjoys, shipping analytics people actually act on, and building self-serve tools that take load off a team without adding headcount.</p>
+          <p class="measure" style="margin-bottom:0">I judge the work by what it moves, not by how busy it looks.</p>
+        </div>
+        <div class="reveal reveal-d2">
+          <ul class="delta-list">
+            <li class="delta"><span class="pair"><span class="from">$5M</span><span class="arrow">&rarr;</span><span class="to">$40M</span></span><span class="label">Loan book scaled in 2 years</span></li>
+            <li class="delta"><span class="pair"><span class="from">20%</span><span class="arrow">&rarr;</span><span class="to">50%</span></span><span class="label">Ambassador channel revenue share</span></li>
+            <li class="delta"><span class="pair"><span class="from">weeks</span><span class="arrow">&rarr;</span><span class="to">days</span></span><span class="label">Scholarship cycle, ~95% less manual effort</span></li>
+            <li class="delta"><span class="pair"><span class="from">5&ndash;7d</span><span class="arrow">&rarr;</span><span class="to">~1d</span></span><span class="label">Social ad creative turnaround</span></li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </section>
 
-      <!-- Case Study 1: Scholarship Journey Automation -->
+  <!-- ====================== AI AUTOMATION (ported) ====================== -->
+  <section class="section" id="ai-automation" aria-labelledby="ai-h">
+    <div class="wrap">
+      <div class="sec-head">
+        <p class="sec-index">02 &mdash; AI work</p>
+        <div class="sec-title">
+          <h2 class="display-lg" id="ai-h">Production systems, <span class="ital">built for real scale.</span></h2>
+          <p class="measure">Connecting large language models directly to the tools a marketing team already lives in &mdash; Google Workspace, Canva, Slack, Tableau &mdash; to remove the bottlenecks that quietly eat a week.</p>
+        </div>
+      </div>
       <article class="ai-project-card" id="project-scholarship">
         <div class="project-header">
           <div class="project-title-area">
@@ -1083,87 +780,69 @@ Pipeline Architecture:
     </div>
   </section>
 
-
-  <!-- ===== INDEPENDENT PROJECTS ===== -->
-  <section id="independent-projects" aria-labelledby="ip-h">
+  <!-- ====================== INDEPENDENT PROJECTS ====================== -->
+  <section class="section section--cool section--line" id="independent-projects" aria-labelledby="ip-h">
     <div class="wrap">
-      <p class="eyebrow">Independent Projects</p>
-      <h2 id="ip-h">Three things I built on my own time</h2>
-      <p class="section-intro">Every marketing team has these problems. Nobody owns them, so they never get fixed &mdash; they just quietly cost money in the background. Each of these runs entirely in your browser: no sign-up, no demo video, no call with sales. Open one and put your own numbers in.</p>
-      <p class="section-intro" style="margin-top:-1.4rem">They also share a rule I set myself: <strong>be honest about what you do not know.</strong> Each one shows its working, explains its limits in plain English, and refuses to hand you a confident answer when the data does not support one. That turned out to be the hardest part to build, and the part I would most want someone to notice.</p>
-      <article class="tool-card">
-        <div class="tool-card-top">
-          <h3>Why your campaign report doesn't add up</h3>
-          <span class="idx">Build 01</span>
+      <div class="sec-head">
+        <p class="sec-index">03 &mdash; Tools</p>
+        <div class="sec-title">
+          <h2 class="display-lg" id="ip-h">Three things I built <span class="ital">on my own time.</span></h2>
+          <p class="measure">Every marketing team has these problems. Nobody owns them, so they never get fixed &mdash; they just quietly cost money. Each one runs entirely in your browser: no sign-up, no demo video, no call with sales. Open one and put your own numbers in.</p>
         </div>
-        <p class="problem">Five people share one campaign link. One types &ldquo;Facebook&rdquo;, one types &ldquo;fb&rdquo;, one leaves a space. Your analytics now shows four campaigns instead of one, with the budget split between them &mdash; and every decision made before someone notices is based on numbers that were never real.</p>
-        <div class="tool-metrics">
-          <div class="tool-metric"><b>71%</b><span>of links had at least one problem</span></div>
-          <div class="tool-metric"><b>9 &rarr; 6</b><span>duplicate campaigns that were really just one</span></div>
-          <div class="tool-metric"><b>$18,250</b><span>of budget found hiding in the wrong rows</span></div>
-          <div class="tool-metric"><b>14 / 20</b><span>of the broken links fixed themselves</span></div>
+      </div>
+      <div class="tool-grid">
+      <article class="tool-card reveal tone-brand">
+        <div class="tool-card-head">
+          <span class="tool-icon"><svg viewBox="0 0 56 56" aria-hidden="true"><g fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"><circle cx="11" cy="11" r="5"/><circle cx="11" cy="28" r="5"/><circle cx="11" cy="45" r="5"/><path d="M17 12.5 32 25M17 28h13M17 43.5 32 31"/></g><circle cx="43" cy="28" r="9" fill="currentColor" opacity=".18"/><circle cx="43" cy="28" r="4.5" fill="currentColor"/></svg></span>
+          <span class="tool-n">Build 01</span>
         </div>
-        <ul class="chips">
-          <li>Spots typos</li>
-          <li>Checks your naming rules</li>
-          <li>Fixes links for you</li>
-          <li>Writes the team rulebook</li>
-          <li>No sign-up</li>
-        </ul>
-        <a class="btn btn-accent btn-sm" href="tools/utm-governance.html">Have a go &rarr;</a>
-        <p class="tool-note">The careful bit: two campaign names can look almost identical and still be completely different campaigns. <code>in_</code> and <code>ph_</code> are India and the Philippines. It only treats names as the same when one whole word is a likely typo &mdash; never when a country or a date is involved.</p>
+        <h3 class="display-sm">Why your campaign report doesn't add up</h3>
+        <p class="tool-lede">Five people share one campaign link. One types &ldquo;Facebook&rdquo;, one types &ldquo;fb&rdquo;, one leaves a space. Your analytics now shows four campaigns instead of one, with the budget split between them.</p>
+        <div class="t-stats"><div class="t-stat"><b>71%</b><span>of links had a problem</span></div><div class="t-stat"><b>9 &rarr; 6</b><span>duplicates that were really one</span></div><div class="t-stat"><b>$18,250</b><span>of budget in the wrong rows</span></div></div>
+        <ul class="tag-row"><li class="tag">Spots typos</li><li class="tag">Checks naming rules</li><li class="tag">Fixes links for you</li><li class="tag">Writes the team rulebook</li></ul>
+        <a class="btn btn-ghost btn-sm tool-cta" href="tools/utm-governance.html">Have a go <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg></a>
       </article>
-      <article class="tool-card">
-        <div class="tool-card-top">
-          <h3>Which ad worked &mdash; and why?</h3>
-          <span class="idx">Build 02</span>
+      <article class="tool-card reveal tone-gold">
+        <div class="tool-card-head">
+          <span class="tool-icon"><svg viewBox="0 0 56 56" aria-hidden="true"><g fill="currentColor" opacity=".18"><rect x="5" y="7" width="13" height="13" rx="3.5"/><rect x="38" y="7" width="13" height="13" rx="3.5"/><rect x="5" y="36" width="13" height="13" rx="3.5"/><rect x="21.5" y="36" width="13" height="13" rx="3.5"/><rect x="38" y="36" width="13" height="13" rx="3.5"/><rect x="5" y="21.5" width="13" height="13" rx="3.5"/><rect x="38" y="21.5" width="13" height="13" rx="3.5"/></g><rect x="21.5" y="7" width="13" height="13" rx="3.5" fill="currentColor"/><rect x="21.5" y="21.5" width="13" height="13" rx="3.5" fill="currentColor"/></svg></span>
+          <span class="tool-n">Build 02</span>
         </div>
-        <p class="problem">Your ad platform says ad number 17 did best. It cannot tell you whether that was the price, the photo, or the promise about no paperwork. So next month you make 38 more ads and find out all over again &mdash; and probably crown a winner that only had four lucky sales behind it.</p>
-        <div class="tool-metrics">
-          <div class="tool-metric"><b>38 &rarr; 6</b><span>ads boiled down to a handful of ideas</span></div>
-          <div class="tool-metric"><b>4 / 6</b><span>ideas with enough evidence to act on</span></div>
-          <div class="tool-metric"><b>$18,916</b><span>spent on ideas genuinely losing money</span></div>
-          <div class="tool-metric"><b>17 / 36</b><span>combinations ever actually tried</span></div>
-        </div>
-        <ul class="chips">
-          <li>Sorts ads by idea</li>
-          <li>Separates real results from luck</li>
-          <li>Budget what-if</li>
-          <li>Colour-blind safe charts</li>
-        </ul>
-        <a class="btn btn-accent btn-sm" href="tools/creative-angle-miner.html">Have a go &rarr;</a>
-        <p class="tool-note">It would have looked smarter to rank all six ideas one to six. But two of them do not have enough behind them to trust, and a chart that hides that is how real budgets get moved on the strength of a coin toss. Saying &ldquo;not enough data yet&rdquo; out loud is the whole point.</p>
+        <h3 class="display-sm">Which ad worked &mdash; and why?</h3>
+        <p class="tool-lede">Your ad platform says ad 17 did best. It cannot tell you whether that was the price, the photo, or the promise. So next month you guess again &mdash; and probably crown a winner that had four lucky sales behind it.</p>
+        <div class="t-stats"><div class="t-stat"><b>38 &rarr; 6</b><span>ads reduced to ideas</span></div><div class="t-stat"><b>4 / 6</b><span>ideas solid enough to act on</span></div><div class="t-stat"><b>$18,916</b><span>spent on ideas losing money</span></div></div>
+        <ul class="tag-row"><li class="tag">Sorts ads by idea</li><li class="tag">Separates results from luck</li><li class="tag">Budget what-if</li><li class="tag">Colour-blind safe charts</li></ul>
+        <a class="btn btn-ghost btn-sm tool-cta" href="tools/creative-angle-miner.html">Have a go <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg></a>
       </article>
-      <article class="tool-card">
-        <div class="tool-card-top">
-          <h3>One message, four places, nothing broken</h3>
-          <span class="idx">Build 03</span>
+      <article class="tool-card reveal tone-coral">
+        <div class="tool-card-head">
+          <span class="tool-icon"><svg viewBox="0 0 56 56" aria-hidden="true"><rect x="4" y="20" width="16" height="16" rx="4.5" fill="currentColor"/><g fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" opacity=".55"><path d="M21 25.5 33 11M21 28h11M21 30.5 33 45M21 28c7 0 6-11 12-11"/></g><g fill="currentColor" opacity=".3"><circle cx="45" cy="9" r="6"/><circle cx="45" cy="19" r="6"/><circle cx="45" cy="37" r="6"/><circle cx="45" cy="47" r="6"/></g></svg></span>
+          <span class="tool-n">Build 03</span>
         </div>
-        <p class="problem">One campaign has to become an email, a text, a WhatsApp message and a phone notification, for every type of customer. Each has its own rules nobody remembers. So copy gets written, uploaded, rejected, and rewritten &mdash; and an afternoon disappears counting characters by hand.</p>
-        <div class="tool-metrics">
-          <div class="tool-metric"><b>1 &rarr; 12</b><span>one brief, twelve finished messages</span></div>
-          <div class="tool-metric"><b>12 / 12</b><span>pass every rule first time</span></div>
-          <div class="tool-metric"><b>$300</b><span>of needless text-message cost caught</span></div>
-          <div class="tool-metric"><b>4 &times; 3</b><span>places to send &times; types of customer</span></div>
-        </div>
-        <ul class="chips">
-          <li>Real text-message maths</li>
-          <li>WhatsApp's fussy rules</li>
-          <li>Checks as you type</li>
-          <li>Ready to upload</li>
-        </ul>
-        <a class="btn btn-accent btn-sm" href="tools/lifecycle-multiplier.html">Have a go &rarr;</a>
-        <p class="tool-note">One curly apostrophe pasted from Word can double what a text campaign costs to send &mdash; the limit drops from 160 characters to 70 and nothing anywhere warns you. This catches it, names the exact character, and prices it.</p>
+        <h3 class="display-sm">One message, four places, nothing broken</h3>
+        <p class="tool-lede">One campaign has to become an email, a text, a WhatsApp message and a notification, for every type of customer. Each has rules nobody remembers, so copy gets written, uploaded, rejected and rewritten.</p>
+        <div class="t-stats"><div class="t-stat"><b>1 &rarr; 12</b><span>brief to finished messages</span></div><div class="t-stat"><b>12 / 12</b><span>pass every rule first time</span></div><div class="t-stat"><b>$300</b><span>of needless texting cost caught</span></div></div>
+        <ul class="tag-row"><li class="tag">Real text-message maths</li><li class="tag">WhatsApp's fussy rules</li><li class="tag">Checks as you type</li><li class="tag">Ready to upload</li></ul>
+        <a class="btn btn-ghost btn-sm tool-cta" href="tools/lifecycle-multiplier.html">Have a go <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg></a>
       </article>
+      </div>
+      <div class="note note-info reveal" style="margin-top:2rem">
+        <strong>They share a rule I set myself: be honest about what you do not know.</strong>
+        Each one shows its working, explains its limits in plain English, and refuses to hand you a
+        confident answer when the data does not support one. That turned out to be the hardest part to
+        build, and the part I would most want someone to notice.
+      </div>
     </div>
   </section>
 
-  <!-- ===== EXPERIENCE ===== -->
-  <section id="experience" aria-labelledby="exp-h">
+  <!-- ============================ EXPERIENCE ============================ -->
+  <section class="section" id="experience" aria-labelledby="exp-h">
     <div class="wrap">
-      <p class="eyebrow">Experience</p>
-      <h2 id="exp-h">Where the numbers came from</h2>
-
+      <div class="sec-head">
+        <p class="sec-index">04 &mdash; Experience</p>
+        <div class="sec-title">
+          <h2 class="display-lg" id="exp-h">Where the numbers <span class="ital">came from.</span></h2>
+        </div>
+      </div>
       <article class="job">
         <div class="job-head">
           <h3 class="role">Senior Digital Marketing Analyst, Ambassador &amp; Affiliate Growth</h3>
@@ -1175,9 +854,7 @@ Pipeline Architecture:
           <li>Shipped an automated daily analytics digest (Tableau KPIs + trend/anomaly detection emailed to leadership), <b>removing ~5 hours of manual reporting a week</b>.</li>
           <li>Launched a self-serve gamified referral dashboard that <b>2x'd referral volume and cut support queries 40%</b>; trained 50 employees and cut referral query SLA from 15 days to 4.</li>
         </ul>
-      </article>
-
-      <article class="job">
+      </article><article class="job">
         <div class="job-head">
           <h3 class="role">Digital Marketing Analyst, Ambassador &amp; Affiliate Growth</h3>
           <p class="meta"><span class="co">MPOWER Financing</span> &middot; Jul 2023 - May 2025</p>
@@ -1187,9 +864,7 @@ Pipeline Architecture:
           <li>Grew ambassador channel revenue share from <b>20% to 50%</b> with monthly gamification and tiered incentives; lifted loan approval rates from <b>40% to 56%</b> via a dedicated affiliate priority queue.</li>
           <li>Scaled disbursed loan revenue <b>8x ($5M &rarr; $40M)</b> across 2 years; built 10 live Tableau/GA dashboards and 100+ Salesforce reports as the team's single source of truth.</li>
         </ul>
-      </article>
-
-      <article class="job">
+      </article><article class="job">
         <div class="job-head">
           <h3 class="role">Assistant Program Manager, Performance Marketing</h3>
           <p class="meta"><span class="co">Phablecare</span> &middot; Chronic-disease management platform &middot; Dec 2021 - Feb 2023</p>
@@ -1199,9 +874,7 @@ Pipeline Architecture:
           <li>Prevented <b>&#8377;4Cr in campaign losses</b> by auditing 14+ affiliate accounts and catching spend anomalies before exposure materialized.</li>
           <li>Lifted upselling 8% and cross-selling 10% via cohort analysis and segment-tailored retargeting.</li>
         </ul>
-      </article>
-
-      <article class="job">
+      </article><article class="job">
         <div class="job-head">
           <h3 class="role">Young Leader, Business Development &amp; Digital Campaigns</h3>
           <p class="meta"><span class="co">Collegedunia</span> &middot; EdTech / admissions &middot; Apr 2021 - Nov 2021</p>
@@ -1214,11 +887,15 @@ Pipeline Architecture:
     </div>
   </section>
 
-  <!-- ===== SKILLS ===== -->
-  <section id="skills" aria-labelledby="skills-h">
+  <!-- ============================ SKILLS ============================ -->
+  <section class="section section--warm section--line" id="skills" aria-labelledby="skills-h">
     <div class="wrap">
-      <p class="eyebrow">Skills &amp; Tools</p>
-      <h2 id="skills-h">What I work with</h2>
+      <div class="sec-head">
+        <p class="sec-index">05 &mdash; Toolkit</p>
+        <div class="sec-title">
+          <h2 class="display-lg" id="skills-h">What I <span class="ital">work with.</span></h2>
+        </div>
+      </div>
       <div class="skills-cols">
         <div class="skillgroup">
           <h3>Strategy</h3>
@@ -1250,34 +927,41 @@ Pipeline Architecture:
           </ul>
         </div>
       </div>
+      </div>
     </div>
   </section>
 
-  <!-- ===== CONTACT ===== -->
-  <section id="contact" aria-labelledby="contact-h">
+  <!-- ============================ CONTACT ============================ -->
+  <section class="section" id="contact" aria-labelledby="contact-h">
     <div class="wrap">
-      <p class="eyebrow">Contact</p>
-      <h2 id="contact-h">Let's talk growth &amp; automation.</h2>
-      <p class="contact-line">Based in Bengaluru, India. Quickest ways to reach me:</p>
-      <div class="contact-actions">
-        <a class="btn btn-primary" href="mailto:priyanshu.mba19217@iimkashipur.ac.in">Email me</a>
-        <a class="btn btn-ghost" href="tel:+918010862026">Call +91 80108 62026</a>
-        <a class="btn btn-ghost" href="https://www.linkedin.com/in/priyanshu-goyal-343a3b123/" target="_blank" rel="noopener noreferrer">LinkedIn</a>
-        <a class="btn btn-accent" href="data:application/pdf;base64,JVBERi0xLjQKJZOMi54gUmVwb3J0TGFiIEdlbmVyYXRlZCBQREYgZG9jdW1lbnQgaHR0cDovL3d3dy5yZXBvcnRsYWIuY29tCjEgMCBvYmoKPDwKL0YxIDIgMCBSIC9GMiAzIDAgUiAvRjMgNCAwIFIgL0Y0IDUgMCBSIC9GNSA3IDAgUgo+PgplbmRvYmoKMiAwIG9iago8PAovQmFzZUZvbnQgL0hlbHZldGljYSAvRW5jb2RpbmcgL1dpbkFuc2lFbmNvZGluZyAvTmFtZSAvRjEgL1N1YnR5cGUgL1R5cGUxIC9UeXBlIC9Gb250Cj4+CmVuZG9iagozIDAgb2JqCjw8Ci9CYXNlRm9udCAvSGVsdmV0aWNhLUJvbGQgL0VuY29kaW5nIC9XaW5BbnNpRW5jb2RpbmcgL05hbWUgL0YyIC9TdWJ0eXBlIC9UeXBlMSAvVHlwZSAvRm9udAo+PgplbmRvYmoKNCAwIG9iago8PAovQmFzZUZvbnQgL1phcGZEaW5nYmF0cyAvTmFtZSAvRjMgL1N1YnR5cGUgL1R5cGUxIC9UeXBlIC9Gb250Cj4+CmVuZG9iago1IDAgb2JqCjw8Ci9CYXNlRm9udCAvSGVsdmV0aWNhLUJvbGRPYmxpcXVlIC9FbmNvZGluZyAvV2luQW5zaUVuY29kaW5nIC9OYW1lIC9GNCAvU3VidHlwZSAvVHlwZTEgL1R5cGUgL0ZvbnQKPj4KZW5kb2JqCjYgMCBvYmoKPDwKL0NvbnRlbnRzIDEyIDAgUiAvTWVkaWFCb3ggWyAwIDAgNjEyIDc5MiBdIC9QYXJlbnQgMTEgMCBSIC9SZXNvdXJjZXMgPDwKL0ZvbnQgMSAwIFIgL1Byb2NTZXQgWyAvUERGIC9UZXh0IC9JbWFnZUIgL0ltYWdlQyAvSW1hZ2VJIF0KPj4gL1JvdGF0ZSAwIC9UcmFucyA8PAoKPj4gCiAgL1R5cGUgL1BhZ2UKPj4KZW5kb2JqCjcgMCBvYmoKPDwKL0Jhc2VGb250IC9IZWx2ZXRpY2EtT2JsaXF1ZSAvRW5jb2RpbmcgL1dpbkFuc2lFbmNvZGluZyAvTmFtZSAvRjUgL1N1YnR5cGUgL1R5cGUxIC9UeXBlIC9Gb250Cj4+CmVuZG9iago4IDAgb2JqCjw8Ci9Db250ZW50cyAxMyAwIFIgL01lZGlhQm94IFsgMCAwIDYxMiA3OTIgXSAvUGFyZW50IDExIDAgUiAvUmVzb3VyY2VzIDw8Ci9Gb250IDEgMCBSIC9Qcm9jU2V0IFsgL1BERiAvVGV4dCAvSW1hZ2VCIC9JbWFnZUMgL0ltYWdlSSBdCj4+IC9Sb3RhdGUgMCAvVHJhbnMgPDwKCj4+IAogIC9UeXBlIC9QYWdlCj4+CmVuZG9iago5IDAgb2JqCjw8Ci9QYWdlTW9kZSAvVXNlTm9uZSAvUGFnZXMgMTEgMCBSIC9UeXBlIC9DYXRhbG9nCj4+CmVuZG9iagoxMCAwIG9iago8PAovQXV0aG9yIChcKGFub255bW91c1wpKSAvQ3JlYXRpb25EYXRlIChEOjIwMjYwODE1MTA0OTU2KzAwJzAwJykgL0NyZWF0b3IgKFwodW5zcGVjaWZpZWRcKSkgL0tleXdvcmRzICgpIC9Nb2REYXRlIChEOjIwMjYwODE1MTA0OTU2KzAwJzAwJykgL1Byb2R1Y2VyIChSZXBvcnRMYWIgUERGIExpYnJhcnkgLSB3d3cucmVwb3J0bGFiLmNvbSkgCiAgL1N1YmplY3QgKFwodW5zcGVjaWZpZWRcKSkgL1RpdGxlIChcKGFub255bW91c1wpKSAvVHJhcHBlZCAvRmFsc2UKPj4KZW5kb2JqCjExIDAgb2JqCjw8Ci9Db3VudCAyIC9LaWRzIFsgNiAwIFIgOCAwIFIgXSAvVHlwZSAvUGFnZXMKPj4KZW5kb2JqCjEyIDAgb2JqCjw8Ci9GaWx0ZXIgWyAvQVNDSUk4NURlY29kZSAvRmxhdGVEZWNvZGUgXSAvTGVuZ3RoIDM3NjEKPj4Kc3RyZWFtCkdiISNePWBgPWUmcTlTWVIiczw/WT1UISI2JzBtIlYnVDtXLCIyalwsalFxbiUpRilJLmhEZ0NPSz9yNElmIlJXSzdhQ3NCNi8lRC90M1AvOCwicmpJLC0kJmclYW1zcys6YmptcTsiYks+U1txYydIVEQvPEEmWWZrQypFby4tXlVsKypuSW5NKG0sL0I7bzxeO0RNUkVJKikjPVdRRGNmZmkmMFlIWCplWGM6amg9UCUsRVlMaTBqV19WSGw0PExiPiRbLVxQKTFOUVI1UTFAJV09UnF0XVJKJTlzJ2k9TFoxY0hrI2tBKXNtS3FwOTBgK1hPZjgrWiI4JD9rLElCc3VvSCMzXGo4TUo/WHFuQ2ZwUUtORyZtWFNJPkovIVojbS1IMyE6WUQybW5EbGxHMTBXWEBgKWUta3MoM0FEMFBsNltVSV4nPikiclxpVyRvbkxHbEwnITFELV9BMXVLUD48TFJkSGRBV0JmQltZKWwoWFRjYDFvbURPNVwuTFlwSCIpVj4/cT9GX3RzIT9rVz5TXmY8YCVgWT9SXCI/OjY6YmsiNEU9aihLU3JQXjU6KCUsOFVJXjIoPkVUIz9KNWsjJl84WGoqQHQiNHVmOTZkIVhVOlkuQUknOG0qXU4lYlo0NSk9b09YP15YSkFUVjZRQ1RsNUQla0lVJixcVFRdREVNKFYwYUtjKiQzLl9mQWI/NmtGRCJYSGNITzBSIVRDOSllWjI1OmdUW2hSNV9qMCVcO0IsO3JfJEhKIUA9S2kmRkMlJzBdQ2FzVVpsbEpxdS0jUTluMGdkKSw8QVxnLEEzWWY1QipVP0Aob2kka1QlWmZcYlhqRydYVVE4WT1WWWxJbD5iZUoiX2lhXGpFKCpYLzhZYiJPJ0MnLnBYPCc0KCRuVzNLa01rYGBxXGgwODNnbjBEUlthaSdOSixaOCJSUTVaTjA2IyJTOikuZEAnNEJldEM+ZmhxWzBGWUExSy5PRl9WOl0wYDdYSGFbZVNQckJaKC50dGpobzoiSkwpTDphZUR0MT02a1R1N3I1P1giJ1sqZV9uUEJsWVk7PD80U3NsaFRDb3QnUG5zQXUvVkMxOTdjWT5TazskOzBGWUwrRl9oKCJxJ1QoImNjYWNfXC08N3VuKSU1ZDgxYSleVkZEXWQ8cXFCMWE2NT0tUixDY0VbMkwxXDNHLUwqSTMiQ0xMIVE/Mm8mKFhXQCRMSHUpQD9dSSknUiU3OC8yZV49MTZOLjA1RjdLOjArZz0xKG4/R0k2Olpxc2FvbzQjQE9WcmRaNFhIdCUlbXIuJl0mTiIkRz1WTzciVm1rQTNEMHVMWjo5ZztqZF0hW10oR2BjXzMySVxuVk5SJmFKQ2hIK0Y3ImRvcDQ5NzNXZ2ZoRWpAb2xzYjMqO0M+cT1MTklucF8jR25nNCVRTDY8cFZfaFdVQz0pUilaX0xWNSpgNVxBR1FWWVo6SiwyPVNdO0ldSzUpRFJqNT81OGtYIXA8Jl5CUlttYT46LkIncmg+JGhtOHRsK1RrJiohcEk9RXNtOW9sOi1tRlZqTG9RNC09cUU/KnRWZXMtOjhKN24tYjQ6Xk49LEgjSilxRzhkRzpnaCNUOlt0ZFIyM0VwRWo3Yjovb2kwbGhJOVBZWFszbSQtXkUkS1xbWy1JWiNzPE1QPzxgS1BkV1UmP0Z0TiRaJmVDZz8nQ2I+JkhTZl9LXFtSMGNyU15BVUgtKVxySWZDSyJgRGdWPCZvdTldMmtpdSU7Ol9RMFs7I0FBUmpTPkMkdUtcPTc9ZFRfZSJZT2ovPiwiQHMwKkZQY3AmRFY1SSwuQzRmTVpfOjJaKSU+UE4rVEFfLkw8Wm49M250U2BSZzc/YUk8SE1HLEo5YGxbLTBRXFBUQWtmcTksVT9SVUgjXkgxUnJFSkRKPHFhU1VwN3RsVD8uc0ciaiQ0USljaCwlSVlAKGhIY1x1U0kpU0lmWnUkbT1HSClJQyktJkJpJEFxXEw4WmohVkIsKV5CU1NtQFxxcjQkTT8nJjBBLVsiYUMxIiZmRycsX0cyQEskWWk6NiJDN1BrUSc7Vis0MjxjVVxiSmlILWFKcG9NUF9SKVYmKTR1XDlrRztJaUhIdUtCZV4sUCJWYFlZQiRsJTk8SWxAN0VIKGM8SDwoKkxXImo7TWlUTmEjQS9PQ2lXPzlGQXNLL2U2RVBbaW1nVlk/OFJccGQjRmxGTk5OM0UxLTxeS1UuPFpcbjNAVEFYPUZkOmdCXE5pdFdRajU5MzpQaytaRzZfRlM0ImVGODdacUwqc2BAOXVaYDJTKl1mNDJlUWYjTmk5PlM+ZnVubVJjQFAzPWdWIVBLKWApcScjJ1YiZ2duSThcOU44R0pHLzRVK0I8WF0oT2YnOiNjUDg+W2syTTk5TD1KNVtAZTteLC0nPFtNaEhhY25RaWRwSDpzXHRiLCxsaFchSWRJPEloPUMrJS07aC5FUzUhWUlVbW4oIU0iLSw4O15mSS50Ii1lbkdHNGw/OlhAUyhTOi8nayJAKSxNPmkiLiNuVytgPllVKyk9PmdbQTdnUDpUJWJnZGJAQ2A+LjpPVjhSNmEqWi5hbjNtSjolYF9Ra044XVBFTE1AUTNJP0FQbVVYRzdqNFxRWkhPWmZBdU4yRExRIUxrOFBbWDBZVTJjX0NDMlddLzNsbydUYzsvNGNkMWZzLG8xImYoY0JdK0ZCQixvLm1kIWQxWzpabSg+J0UjVSEtVik7YydxNGFQRT43J2FYcnE3Y00pOU0xV11NXy4/bD9XUTY7dGNDXDw/U1gyTDgyOSJaXk4vW0ZlWyhNLGlXY2lXMykzS1tYMmksVDJQZ189LDRNKTgucElbMyhGXHNoKS8nZ1dROjUhT0ZkSm9HViw0U2lXbydmcD9TQ0spP2ExamptYjZfMCRBc1AocTQ/JEU7LHJKIzVwYkRWZl9kXD9XKmVecmNwR2tONTlwNDA1Pz4hW0dyKDhnXFI+azkvaGBNaG8sLmFHMW8/XzxmYEA4V3BfXnFqNkRaWiJeY3I1a3RlVWpTJUlGSU9vKDVOT1JWTSFtVG06VzQwTW9JQ2FwWC4mcEBFQlVnJE1jO28iP1o3UzB0ajlsUmFwcXNxU1cyWTJCMVVXKSYrWy5wZF0oX2shYUQyc1FlXTNXayQjOyRUPCo0VGE+Q2xQTSFxT3RfPFxrUzBYOj4mPCNOSmZhYmUhSlA2ViF1XkElYzZnQyIwW0dkL2p0WERWVFtcTChpYSlgPGJvQS9pNyg4ITsmSSptQW1TK1JfZi9odSE0THJCJVREUFtDZEMoUy4rRjwoSWBIRydMTmw4Wl5Va0dLT1tIaGVUTFUuXD4sOTJdaG0nUWphWj1uYWlkbU9aN0ghMnA3NzdePUQzTG4sSSlPPFArZ0tDQFlTXkBmTkA1VytENGcqSmQ2P3BpciUoLFg0bSpFK1VpY2gxJ1QvZGtHMjk0N0MndFQzWz5eL3VtLk80ZmVsTzAkV1RsV0YwZjhyWlI0LW5nRVBFJWtKaztpVjFmJyFjTyIvQDQ2PGRXRGdtNyhXUSI6QE0mKEZBZT89IjxFTDozTWE8QFlqczN1LGpeOHQ7JlBtOjM1JUI9X05oZSRVTj1QVW1vUTUhb1NmW19aVlthQC5UQVcpPnFdaSFiSkxTa3BCa0dUTHIpZG9sOzA8aDpwWmcjRWg7VitBR0QxdSRpbDw3IlxpRkdJIUJlVihBRkt1SiRbIjVfKkNhPFBmMlRxS2xnIz9kNXNoPjp0dSQ9KTEpVygrU1dFNGliaFJjYTQkOVc9bFgnb11hMDlFQSNGbUleRChGNmRhOldgdT1DQmJHMyo/b19HWjI1SklNMHElXD0uPjc4LklGa1xccC9sM2RpQVRhdGYvXks7cUo1RTRaSGpubV9HX0EjaV1YI1s8Y3UmdC0hZSc0W2UhaW9VPCU2SE1gWTg9WVlsTDc6Xmh0b2tMOjg2Si5mKTkoPiQ3Ol90Ny1gSS4uLl5iPmZhWD1QNGZNLyw9OzNQPG9Oa1RhbjZWWzlrInUlQiYpRik4cGtCXm4kZCdAbz0mJjNvIkQpJlFmVGJXSGtaSmUyaG8wTnJFZlJgJmwjI0BzbzVGcUc2XSIkPSxcYC0iKlljUSpFWHU7SSs8amM6KVdyaUxvbHBFay41KU0yTCYmXFxyWz4saCFxR2J1RmlGJyspK25LNj03LG11TjVIYSQ2K0RKJVpxR1RmK1hFamhtXDptTEBQQSk+UTJbVXM7ZlcvZm83XjVSKEl1JVsiWmgkJ2opQERUVyRtVEpYb0piKmtpIkRBQzRBNm5hSnRxTUwjLi9oWUFWSFYpOSptQDtJWmxRNT1OPXNnb1NpXlVBTldBTDg6N0w9bzVRWWMoIV0sSzcyX0xyI0g2R3VuYFtOWl8ybEVJLmZKcTRsaEpyXksyJVxlZkJDM2A/UEVvW0VLSVBqM2RPQyFgLmRMITk+cjhERXJnWl5bLFJGPy46cy9YQGhbakRAXyQ/T0hQZGhHPjhiLEcydEg9VHRRXjswXE1qJk88W1AlTiYqNVlsR2BRUWkoWmwnUzpCNi1PSFlYY3FudWZPSU0lRT1OSGA6XSgqU1wsOVBCMiItXlhlWidcQWQkLSZ0a29YWzc8Uy0zWzI9ViZbXj9sYT5wWHNiWjgiTjdtaGRWMTYtPEtMYWU2SDtyW1I+TWI0a2sqNlsxbSgpVmgtZysuZlMuRW1FKENNUk5UO21TRF0rTjNhVS9gPyNzI0FVcWs6Kk8mRkplSXEyN3BCYCtlNEMqSmEiMlRNalplb141O04wNGNyOEZoKVZtbDQ+OSwsJzw4PHIvUFIrL0ZySUxrWExdLmlsTFBrbz9ELG9wZ2hzLVMnJFA5cForSTJdJFFmZVVPXWgkTCsjIi1wYmBwIms4VVhGYzFdS2g4IzdWWTRfNjUiRDZcb1xObTNHNyZFckM7MmJDV2FKcExSalUyXVM6akBMN0hoQUpfbXNiOX4+ZW5kc3RyZWFtCmVuZG9iagoxMyAwIG9iago8PAovRmlsdGVyIFsgL0FTQ0lJODVEZWNvZGUgL0ZsYXRlRGVjb2RlIF0gL0xlbmd0aCA2NzYKPj4Kc3RyZWFtCkdhdTErPyNRMmQnU2MpUCglOSsiLHVbPE5vM25yOlVlUm4zVUtMTyhoO2xRYCVhXWYxLjhjbz5xVWw/TVpfamslVzw5c0trNG5eMyVpLGpJVEBEXjYnZWk3IUhxJEM+T3NSJ3FxRkVlW1MyYl4mbTRzKG8qZ2dMJGxIdVFWaDgjISwzQkY+OVdzY3QtVTYrbUZtWFBdaWlwNWYsYiFYQ3UqRyZrYSNbIW00TS8tRGNFQ0dxKS5yJF1KNlkxUiNXQmBUS0dDN0NxOXFEUTQuQTtCVV9JWzxvXXJXJUhTOmtRMm9aIWU5OlBRdSVIQVFqNU5ESEc3UVA4dT83cmo3Q14kNSg1b3Q6b0ZlPylMND1IYmFMNGlIVm8jQkMpNHE/NCQ4RU4rTkUhKFU3IlhvVSttJjRXQFImYj8oTW5rTi5mI19lLEhEaThlaDklNk1QNkFcQjo7Uk1uZC1CaV0yNUplZGZULDBebk5HWlZMRmdaUmAxV0MjZkwscTcvYylrZGlRMElHVyQ3NDFnY01QcXJtUEU+NG1VTlBSWilWQmgiMFBGRWpFbUdYSzxNVDQqaTVgQGM8VGYncElVNWBlITE+QyNZI1plIWRyV24zSW9MWXB1RigmKFRGW1w3M2NbUVkjZFlgVTN1SFdLTXUlOWBBOEUmPG9aYExnUG5UYTlpblA7MltTPFE/b04jPj5YbVNha2E6ckBAUTwhWVZVOGBoQiE4IlM8MG8mSk0vam1zPmAwcGQ0N0NBYnFmcFwvM3BnaEFzKjFLcC1IZCtIXSJzRy07NVFnJ1JuTEVBLT1VTFtdbCVtQkVoU15LWiMmXDReTFU5VDBBOiFAW1hqOzdOVWI8XzlKNVUoJ2w/Z0sjSiMwZjQtVjdCX1lGWFA/VFM4fj5lbmRzdHJlYW0KZW5kb2JqCnhyZWYKMCAxNAowMDAwMDAwMDAwIDY1NTM1IGYgCjAwMDAwMDAwNzMgMDAwMDAgbiAKMDAwMDAwMDE0NCAwMDAwMCBuIAowMDAwMDAwMjUxIDAwMDAwIG4gCjAwMDAwMDAzNjMgMDAwMDAgbiAKMDAwMDAwMDQ0NiAwMDAwMCBuIAowMDAwMDAwNTY1IDAwMDAwIG4gCjAwMDAwMDA3NjAgMDAwMDAgbiAKMDAwMDAwMDg3NSAwMDAwMCBuIAowMDAwMDAxMDcwIDAwMDAwIG4gCjAwMDAwMDExMzkgMDAwMDAgbiAKMDAwMDAwMTQyMyAwMDAwMCBuIAowMDAwMDAxNDg5IDAwMDAwIG4gCjAwMDAwMDUzNDIgMDAwMDAgbiAKdHJhaWxlcgo8PAovSUQgCls8NzU4ZGI0M2U2NmEyZTFkOWJhOWYyZDhhZjRjN2JiNjU+PDc1OGRiNDNlNjZhMmUxZDliYTlmMmQ4YWY0YzdiYjY1Pl0KJSBSZXBvcnRMYWIgZ2VuZXJhdGVkIFBERiBkb2N1bWVudCAtLSBkaWdlc3QgKGh0dHA6Ly93d3cucmVwb3J0bGFiLmNvbSkKCi9JbmZvIDEwIDAgUgovUm9vdCA5IDAgUgovU2l6ZSAxNAo+PgpzdGFydHhyZWYKNjEwOQolJUVPRgo=" download="Priyanshu_Goyal_CV.pdf">Download my CV</a>
+      <div class="contact-card reveal">
+        <span class="contact-glow" aria-hidden="true"></span>
+        <div class="above">
+          <h2 class="display-lg" id="contact-h">Let's talk growth <span class="ital">&amp; automation.</span></h2>
+          <p>Based in Bengaluru, India, and happy to talk to teams anywhere. The quickest ways to reach me:</p>
+          <div class="btn-row" style="margin-top:2rem">
+            <a class="btn btn-gold" href="mailto:priyanshugoyal97@gmail.com">Email me <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg></a>
+            <a class="btn btn-ghost" href="tel:+918010862026">+91 80108 62026</a>
+            <a class="btn btn-ghost" href="https://www.linkedin.com/in/priyanshu-goyal-343a3b123/" target="_blank" rel="noopener noreferrer">LinkedIn</a>
+            <a class="btn btn-ghost" href="data:application/pdf;base64,JVBERi0xLjQKJZOMi54gUmVwb3J0TGFiIEdlbmVyYXRlZCBQREYgZG9jdW1lbnQgaHR0cDovL3d3dy5yZXBvcnRsYWIuY29tCjEgMCBvYmoKPDwKL0YxIDIgMCBSIC9GMiAzIDAgUiAvRjMgNCAwIFIgL0Y0IDUgMCBSIC9GNSA3IDAgUgo+PgplbmRvYmoKMiAwIG9iago8PAovQmFzZUZvbnQgL0hlbHZldGljYSAvRW5jb2RpbmcgL1dpbkFuc2lFbmNvZGluZyAvTmFtZSAvRjEgL1N1YnR5cGUgL1R5cGUxIC9UeXBlIC9Gb250Cj4+CmVuZG9iagozIDAgb2JqCjw8Ci9CYXNlRm9udCAvSGVsdmV0aWNhLUJvbGQgL0VuY29kaW5nIC9XaW5BbnNpRW5jb2RpbmcgL05hbWUgL0YyIC9TdWJ0eXBlIC9UeXBlMSAvVHlwZSAvRm9udAo+PgplbmRvYmoKNCAwIG9iago8PAovQmFzZUZvbnQgL1phcGZEaW5nYmF0cyAvTmFtZSAvRjMgL1N1YnR5cGUgL1R5cGUxIC9UeXBlIC9Gb250Cj4+CmVuZG9iago1IDAgb2JqCjw8Ci9CYXNlRm9udCAvSGVsdmV0aWNhLUJvbGRPYmxpcXVlIC9FbmNvZGluZyAvV2luQW5zaUVuY29kaW5nIC9OYW1lIC9GNCAvU3VidHlwZSAvVHlwZTEgL1R5cGUgL0ZvbnQKPj4KZW5kb2JqCjYgMCBvYmoKPDwKL0NvbnRlbnRzIDEyIDAgUiAvTWVkaWFCb3ggWyAwIDAgNjEyIDc5MiBdIC9QYXJlbnQgMTEgMCBSIC9SZXNvdXJjZXMgPDwKL0ZvbnQgMSAwIFIgL1Byb2NTZXQgWyAvUERGIC9UZXh0IC9JbWFnZUIgL0ltYWdlQyAvSW1hZ2VJIF0KPj4gL1JvdGF0ZSAwIC9UcmFucyA8PAoKPj4gCiAgL1R5cGUgL1BhZ2UKPj4KZW5kb2JqCjcgMCBvYmoKPDwKL0Jhc2VGb250IC9IZWx2ZXRpY2EtT2JsaXF1ZSAvRW5jb2RpbmcgL1dpbkFuc2lFbmNvZGluZyAvTmFtZSAvRjUgL1N1YnR5cGUgL1R5cGUxIC9UeXBlIC9Gb250Cj4+CmVuZG9iago4IDAgb2JqCjw8Ci9Db250ZW50cyAxMyAwIFIgL01lZGlhQm94IFsgMCAwIDYxMiA3OTIgXSAvUGFyZW50IDExIDAgUiAvUmVzb3VyY2VzIDw8Ci9Gb250IDEgMCBSIC9Qcm9jU2V0IFsgL1BERiAvVGV4dCAvSW1hZ2VCIC9JbWFnZUMgL0ltYWdlSSBdCj4+IC9Sb3RhdGUgMCAvVHJhbnMgPDwKCj4+IAogIC9UeXBlIC9QYWdlCj4+CmVuZG9iago5IDAgb2JqCjw8Ci9QYWdlTW9kZSAvVXNlTm9uZSAvUGFnZXMgMTEgMCBSIC9UeXBlIC9DYXRhbG9nCj4+CmVuZG9iagoxMCAwIG9iago8PAovQXV0aG9yIChcKGFub255bW91c1wpKSAvQ3JlYXRpb25EYXRlIChEOjIwMjYwODE1MTA0OTU2KzAwJzAwJykgL0NyZWF0b3IgKFwodW5zcGVjaWZpZWRcKSkgL0tleXdvcmRzICgpIC9Nb2REYXRlIChEOjIwMjYwODE1MTA0OTU2KzAwJzAwJykgL1Byb2R1Y2VyIChSZXBvcnRMYWIgUERGIExpYnJhcnkgLSB3d3cucmVwb3J0bGFiLmNvbSkgCiAgL1N1YmplY3QgKFwodW5zcGVjaWZpZWRcKSkgL1RpdGxlIChcKGFub255bW91c1wpKSAvVHJhcHBlZCAvRmFsc2UKPj4KZW5kb2JqCjExIDAgb2JqCjw8Ci9Db3VudCAyIC9LaWRzIFsgNiAwIFIgOCAwIFIgXSAvVHlwZSAvUGFnZXMKPj4KZW5kb2JqCjEyIDAgb2JqCjw8Ci9GaWx0ZXIgWyAvQVNDSUk4NURlY29kZSAvRmxhdGVEZWNvZGUgXSAvTGVuZ3RoIDM3NjEKPj4Kc3RyZWFtCkdiISNePWBgPWUmcTlTWVIiczw/WT1UISI2JzBtIlYnVDtXLCIyalwsalFxbiUpRilJLmhEZ0NPSz9yNElmIlJXSzdhQ3NCNi8lRC90M1AvOCwicmpJLC0kJmclYW1zcys6YmptcTsiYks+U1txYydIVEQvPEEmWWZrQypFby4tXlVsKypuSW5NKG0sL0I7bzxeO0RNUkVJKikjPVdRRGNmZmkmMFlIWCplWGM6amg9UCUsRVlMaTBqV19WSGw0PExiPiRbLVxQKTFOUVI1UTFAJV09UnF0XVJKJTlzJ2k9TFoxY0hrI2tBKXNtS3FwOTBgK1hPZjgrWiI4JD9rLElCc3VvSCMzXGo4TUo/WHFuQ2ZwUUtORyZtWFNJPkovIVojbS1IMyE6WUQybW5EbGxHMTBXWEBgKWUta3MoM0FEMFBsNltVSV4nPikiclxpVyRvbkxHbEwnITFELV9BMXVLUD48TFJkSGRBV0JmQltZKWwoWFRjYDFvbURPNVwuTFlwSCIpVj4/cT9GX3RzIT9rVz5TXmY8YCVgWT9SXCI/OjY6YmsiNEU9aihLU3JQXjU6KCUsOFVJXjIoPkVUIz9KNWsjJl84WGoqQHQiNHVmOTZkIVhVOlkuQUknOG0qXU4lYlo0NSk9b09YP15YSkFUVjZRQ1RsNUQla0lVJixcVFRdREVNKFYwYUtjKiQzLl9mQWI/NmtGRCJYSGNITzBSIVRDOSllWjI1OmdUW2hSNV9qMCVcO0IsO3JfJEhKIUA9S2kmRkMlJzBdQ2FzVVpsbEpxdS0jUTluMGdkKSw8QVxnLEEzWWY1QipVP0Aob2kka1QlWmZcYlhqRydYVVE4WT1WWWxJbD5iZUoiX2lhXGpFKCpYLzhZYiJPJ0MnLnBYPCc0KCRuVzNLa01rYGBxXGgwODNnbjBEUlthaSdOSixaOCJSUTVaTjA2IyJTOikuZEAnNEJldEM+ZmhxWzBGWUExSy5PRl9WOl0wYDdYSGFbZVNQckJaKC50dGpobzoiSkwpTDphZUR0MT02a1R1N3I1P1giJ1sqZV9uUEJsWVk7PD80U3NsaFRDb3QnUG5zQXUvVkMxOTdjWT5TazskOzBGWUwrRl9oKCJxJ1QoImNjYWNfXC08N3VuKSU1ZDgxYSleVkZEXWQ8cXFCMWE2NT0tUixDY0VbMkwxXDNHLUwqSTMiQ0xMIVE/Mm8mKFhXQCRMSHUpQD9dSSknUiU3OC8yZV49MTZOLjA1RjdLOjArZz0xKG4/R0k2Olpxc2FvbzQjQE9WcmRaNFhIdCUlbXIuJl0mTiIkRz1WTzciVm1rQTNEMHVMWjo5ZztqZF0hW10oR2BjXzMySVxuVk5SJmFKQ2hIK0Y3ImRvcDQ5NzNXZ2ZoRWpAb2xzYjMqO0M+cT1MTklucF8jR25nNCVRTDY8cFZfaFdVQz0pUilaX0xWNSpgNVxBR1FWWVo6SiwyPVNdO0ldSzUpRFJqNT81OGtYIXA8Jl5CUlttYT46LkIncmg+JGhtOHRsK1RrJiohcEk9RXNtOW9sOi1tRlZqTG9RNC09cUU/KnRWZXMtOjhKN24tYjQ6Xk49LEgjSilxRzhkRzpnaCNUOlt0ZFIyM0VwRWo3Yjovb2kwbGhJOVBZWFszbSQtXkUkS1xbWy1JWiNzPE1QPzxgS1BkV1UmP0Z0TiRaJmVDZz8nQ2I+JkhTZl9LXFtSMGNyU15BVUgtKVxySWZDSyJgRGdWPCZvdTldMmtpdSU7Ol9RMFs7I0FBUmpTPkMkdUtcPTc9ZFRfZSJZT2ovPiwiQHMwKkZQY3AmRFY1SSwuQzRmTVpfOjJaKSU+UE4rVEFfLkw8Wm49M250U2BSZzc/YUk8SE1HLEo5YGxbLTBRXFBUQWtmcTksVT9SVUgjXkgxUnJFSkRKPHFhU1VwN3RsVD8uc0ciaiQ0USljaCwlSVlAKGhIY1x1U0kpU0lmWnUkbT1HSClJQyktJkJpJEFxXEw4WmohVkIsKV5CU1NtQFxxcjQkTT8nJjBBLVsiYUMxIiZmRycsX0cyQEskWWk6NiJDN1BrUSc7Vis0MjxjVVxiSmlILWFKcG9NUF9SKVYmKTR1XDlrRztJaUhIdUtCZV4sUCJWYFlZQiRsJTk8SWxAN0VIKGM8SDwoKkxXImo7TWlUTmEjQS9PQ2lXPzlGQXNLL2U2RVBbaW1nVlk/OFJccGQjRmxGTk5OM0UxLTxeS1UuPFpcbjNAVEFYPUZkOmdCXE5pdFdRajU5MzpQaytaRzZfRlM0ImVGODdacUwqc2BAOXVaYDJTKl1mNDJlUWYjTmk5PlM+ZnVubVJjQFAzPWdWIVBLKWApcScjJ1YiZ2duSThcOU44R0pHLzRVK0I8WF0oT2YnOiNjUDg+W2syTTk5TD1KNVtAZTteLC0nPFtNaEhhY25RaWRwSDpzXHRiLCxsaFchSWRJPEloPUMrJS07aC5FUzUhWUlVbW4oIU0iLSw4O15mSS50Ii1lbkdHNGw/OlhAUyhTOi8nayJAKSxNPmkiLiNuVytgPllVKyk9PmdbQTdnUDpUJWJnZGJAQ2A+LjpPVjhSNmEqWi5hbjNtSjolYF9Ra044XVBFTE1AUTNJP0FQbVVYRzdqNFxRWkhPWmZBdU4yRExRIUxrOFBbWDBZVTJjX0NDMlddLzNsbydUYzsvNGNkMWZzLG8xImYoY0JdK0ZCQixvLm1kIWQxWzpabSg+J0UjVSEtVik7YydxNGFQRT43J2FYcnE3Y00pOU0xV11NXy4/bD9XUTY7dGNDXDw/U1gyTDgyOSJaXk4vW0ZlWyhNLGlXY2lXMykzS1tYMmksVDJQZ189LDRNKTgucElbMyhGXHNoKS8nZ1dROjUhT0ZkSm9HViw0U2lXbydmcD9TQ0spP2ExamptYjZfMCRBc1AocTQ/JEU7LHJKIzVwYkRWZl9kXD9XKmVecmNwR2tONTlwNDA1Pz4hW0dyKDhnXFI+azkvaGBNaG8sLmFHMW8/XzxmYEA4V3BfXnFqNkRaWiJeY3I1a3RlVWpTJUlGSU9vKDVOT1JWTSFtVG06VzQwTW9JQ2FwWC4mcEBFQlVnJE1jO28iP1o3UzB0ajlsUmFwcXNxU1cyWTJCMVVXKSYrWy5wZF0oX2shYUQyc1FlXTNXayQjOyRUPCo0VGE+Q2xQTSFxT3RfPFxrUzBYOj4mPCNOSmZhYmUhSlA2ViF1XkElYzZnQyIwW0dkL2p0WERWVFtcTChpYSlgPGJvQS9pNyg4ITsmSSptQW1TK1JfZi9odSE0THJCJVREUFtDZEMoUy4rRjwoSWBIRydMTmw4Wl5Va0dLT1tIaGVUTFUuXD4sOTJdaG0nUWphWj1uYWlkbU9aN0ghMnA3NzdePUQzTG4sSSlPPFArZ0tDQFlTXkBmTkA1VytENGcqSmQ2P3BpciUoLFg0bSpFK1VpY2gxJ1QvZGtHMjk0N0MndFQzWz5eL3VtLk80ZmVsTzAkV1RsV0YwZjhyWlI0LW5nRVBFJWtKaztpVjFmJyFjTyIvQDQ2PGRXRGdtNyhXUSI6QE0mKEZBZT89IjxFTDozTWE8QFlqczN1LGpeOHQ7JlBtOjM1JUI9X05oZSRVTj1QVW1vUTUhb1NmW19aVlthQC5UQVcpPnFdaSFiSkxTa3BCa0dUTHIpZG9sOzA8aDpwWmcjRWg7VitBR0QxdSRpbDw3IlxpRkdJIUJlVihBRkt1SiRbIjVfKkNhPFBmMlRxS2xnIz9kNXNoPjp0dSQ9KTEpVygrU1dFNGliaFJjYTQkOVc9bFgnb11hMDlFQSNGbUleRChGNmRhOldgdT1DQmJHMyo/b19HWjI1SklNMHElXD0uPjc4LklGa1xccC9sM2RpQVRhdGYvXks7cUo1RTRaSGpubV9HX0EjaV1YI1s8Y3UmdC0hZSc0W2UhaW9VPCU2SE1gWTg9WVlsTDc6Xmh0b2tMOjg2Si5mKTkoPiQ3Ol90Ny1gSS4uLl5iPmZhWD1QNGZNLyw9OzNQPG9Oa1RhbjZWWzlrInUlQiYpRik4cGtCXm4kZCdAbz0mJjNvIkQpJlFmVGJXSGtaSmUyaG8wTnJFZlJgJmwjI0BzbzVGcUc2XSIkPSxcYC0iKlljUSpFWHU7SSs8amM6KVdyaUxvbHBFay41KU0yTCYmXFxyWz4saCFxR2J1RmlGJyspK25LNj03LG11TjVIYSQ2K0RKJVpxR1RmK1hFamhtXDptTEBQQSk+UTJbVXM7ZlcvZm83XjVSKEl1JVsiWmgkJ2opQERUVyRtVEpYb0piKmtpIkRBQzRBNm5hSnRxTUwjLi9oWUFWSFYpOSptQDtJWmxRNT1OPXNnb1NpXlVBTldBTDg6N0w9bzVRWWMoIV0sSzcyX0xyI0g2R3VuYFtOWl8ybEVJLmZKcTRsaEpyXksyJVxlZkJDM2A/UEVvW0VLSVBqM2RPQyFgLmRMITk+cjhERXJnWl5bLFJGPy46cy9YQGhbakRAXyQ/T0hQZGhHPjhiLEcydEg9VHRRXjswXE1qJk88W1AlTiYqNVlsR2BRUWkoWmwnUzpCNi1PSFlYY3FudWZPSU0lRT1OSGA6XSgqU1wsOVBCMiItXlhlWidcQWQkLSZ0a29YWzc8Uy0zWzI9ViZbXj9sYT5wWHNiWjgiTjdtaGRWMTYtPEtMYWU2SDtyW1I+TWI0a2sqNlsxbSgpVmgtZysuZlMuRW1FKENNUk5UO21TRF0rTjNhVS9gPyNzI0FVcWs6Kk8mRkplSXEyN3BCYCtlNEMqSmEiMlRNalplb141O04wNGNyOEZoKVZtbDQ+OSwsJzw4PHIvUFIrL0ZySUxrWExdLmlsTFBrbz9ELG9wZ2hzLVMnJFA5cForSTJdJFFmZVVPXWgkTCsjIi1wYmBwIms4VVhGYzFdS2g4IzdWWTRfNjUiRDZcb1xObTNHNyZFckM7MmJDV2FKcExSalUyXVM6akBMN0hoQUpfbXNiOX4+ZW5kc3RyZWFtCmVuZG9iagoxMyAwIG9iago8PAovRmlsdGVyIFsgL0FTQ0lJODVEZWNvZGUgL0ZsYXRlRGVjb2RlIF0gL0xlbmd0aCA2NzYKPj4Kc3RyZWFtCkdhdTErPyNRMmQnU2MpUCglOSsiLHVbPE5vM25yOlVlUm4zVUtMTyhoO2xRYCVhXWYxLjhjbz5xVWw/TVpfamslVzw5c0trNG5eMyVpLGpJVEBEXjYnZWk3IUhxJEM+T3NSJ3FxRkVlW1MyYl4mbTRzKG8qZ2dMJGxIdVFWaDgjISwzQkY+OVdzY3QtVTYrbUZtWFBdaWlwNWYsYiFYQ3UqRyZrYSNbIW00TS8tRGNFQ0dxKS5yJF1KNlkxUiNXQmBUS0dDN0NxOXFEUTQuQTtCVV9JWzxvXXJXJUhTOmtRMm9aIWU5OlBRdSVIQVFqNU5ESEc3UVA4dT83cmo3Q14kNSg1b3Q6b0ZlPylMND1IYmFMNGlIVm8jQkMpNHE/NCQ4RU4rTkUhKFU3IlhvVSttJjRXQFImYj8oTW5rTi5mI19lLEhEaThlaDklNk1QNkFcQjo7Uk1uZC1CaV0yNUplZGZULDBebk5HWlZMRmdaUmAxV0MjZkwscTcvYylrZGlRMElHVyQ3NDFnY01QcXJtUEU+NG1VTlBSWilWQmgiMFBGRWpFbUdYSzxNVDQqaTVgQGM8VGYncElVNWBlITE+QyNZI1plIWRyV24zSW9MWXB1RigmKFRGW1w3M2NbUVkjZFlgVTN1SFdLTXUlOWBBOEUmPG9aYExnUG5UYTlpblA7MltTPFE/b04jPj5YbVNha2E6ckBAUTwhWVZVOGBoQiE4IlM8MG8mSk0vam1zPmAwcGQ0N0NBYnFmcFwvM3BnaEFzKjFLcC1IZCtIXSJzRy07NVFnJ1JuTEVBLT1VTFtdbCVtQkVoU15LWiMmXDReTFU5VDBBOiFAW1hqOzdOVWI8XzlKNVUoJ2w/Z0sjSiMwZjQtVjdCX1lGWFA/VFM4fj5lbmRzdHJlYW0KZW5kb2JqCnhyZWYKMCAxNAowMDAwMDAwMDAwIDY1NTM1IGYgCjAwMDAwMDAwNzMgMDAwMDAgbiAKMDAwMDAwMDE0NCAwMDAwMCBuIAowMDAwMDAwMjUxIDAwMDAwIG4gCjAwMDAwMDAzNjMgMDAwMDAgbiAKMDAwMDAwMDQ0NiAwMDAwMCBuIAowMDAwMDAwNTY1IDAwMDAwIG4gCjAwMDAwMDA3NjAgMDAwMDAgbiAKMDAwMDAwMDg3NSAwMDAwMCBuIAowMDAwMDAxMDcwIDAwMDAwIG4gCjAwMDAwMDExMzkgMDAwMDAgbiAKMDAwMDAwMTQyMyAwMDAwMCBuIAowMDAwMDAxNDg5IDAwMDAwIG4gCjAwMDAwMDUzNDIgMDAwMDAgbiAKdHJhaWxlcgo8PAovSUQgCls8NzU4ZGI0M2U2NmEyZTFkOWJhOWYyZDhhZjRjN2JiNjU+PDc1OGRiNDNlNjZhMmUxZDliYTlmMmQ4YWY0YzdiYjY1Pl0KJSBSZXBvcnRMYWIgZ2VuZXJhdGVkIFBERiBkb2N1bWVudCAtLSBkaWdlc3QgKGh0dHA6Ly93d3cucmVwb3J0bGFiLmNvbSkKCi9JbmZvIDEwIDAgUgovUm9vdCA5IDAgUgovU2l6ZSAxNAo+PgpzdGFydHhyZWYKNjEwOQolJUVPRgo=" download="Priyanshu_Goyal_CV.pdf">Download CV</a>
+          </div>
+          <p class="contact-fallback">Or copy it directly: <a href="mailto:priyanshugoyal97@gmail.com">priyanshugoyal97@gmail.com</a></p>
+        </div>
       </div>
-      <p class="contact-fallback">Or copy it directly: <a href="mailto:priyanshu.mba19217@iimkashipur.ac.in">priyanshu.mba19217@iimkashipur.ac.in</a></p>
     </div>
   </section>
 
 </main>
 
-<footer>
-  <div class="wrap">
-    &copy; <span id="yr">2026</span> Priyanshu Goyal &middot; Growth Marketing &amp; AI Automation Portfolio.
+<footer class="foot">
+  <div class="wrap foot-inner">
+    <span>&copy; <span id="yr"></span> Priyanshu Goyal</span>
+    <span class="mono">Built by hand &middot; no page builder</span>
   </div>
 </footer>
 
 <script>
+
   // Set current year
   document.getElementById('yr').textContent = new Date().getFullYear();
 
@@ -1404,7 +1088,31 @@ Pipeline Architecture:
       alert('Copied to clipboard!');
     });
   }
-</script>
 
+  /* ---------- scroll reveals ---------- */
+  (function(){
+    var els = document.querySelectorAll('.reveal');
+    if (!('IntersectionObserver' in window) ||
+        window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+      els.forEach(function(e){ e.classList.add('in'); });
+    } else {
+      var io = new IntersectionObserver(function(entries){
+        entries.forEach(function(en){
+          if (en.isIntersecting) { en.target.classList.add('in'); io.unobserve(en.target); }
+        });
+      }, { rootMargin: '0px 0px -8% 0px', threshold: .08 });
+      els.forEach(function(e){ io.observe(e); });
+    }
+  })();
+
+  /* ---------- nav condenses once you start scrolling ---------- */
+  (function(){
+    var nav = document.getElementById('nav');
+    if (!nav) return;
+    var tick = function(){ nav.classList.toggle('is-stuck', window.scrollY > 12); };
+    tick();
+    window.addEventListener('scroll', tick, { passive: true });
+  })();
+</script>
 </body>
 </html>
