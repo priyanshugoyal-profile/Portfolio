@@ -1088,74 +1088,72 @@ Pipeline Architecture:
   <section id="independent-projects" aria-labelledby="ip-h">
     <div class="wrap">
       <p class="eyebrow">Independent Projects</p>
-      <h2 id="ip-h">Tools I built on my own time</h2>
-      <p class="section-intro">Three working tools for problems every marketing team has and nobody owns. Each one runs entirely in your browser — no backend, no sign-up, no sample video. Open them and put your own data in.</p>
-      <p class="section-intro" style="margin-top:-1.4rem">They share a deliberate design: <strong>the engine is deterministic, and AI is an optional layer on top</strong>. The taxonomy rules, the segment maths and the confidence intervals are real computation you can audit and reproduce. A model can improve the tagging and write the copy, but its output is validated by the same engine — it never gets to decide what counts as a result.</p>
+      <h2 id="ip-h">Three things I built on my own time</h2>
+      <p class="section-intro">Every marketing team has these problems. Nobody owns them, so they never get fixed &mdash; they just quietly cost money in the background. Each of these runs entirely in your browser: no sign-up, no demo video, no call with sales. Open one and put your own numbers in.</p>
+      <p class="section-intro" style="margin-top:-1.4rem">They also share a rule I set myself: <strong>be honest about what you do not know.</strong> Each one shows its working, explains its limits in plain English, and refuses to hand you a confident answer when the data does not support one. That turned out to be the hardest part to build, and the part I would most want someone to notice.</p>
       <article class="tool-card">
         <div class="tool-card-top">
-          <h3>Campaign UTM &amp; Taxonomy Governance Engine</h3>
+          <h3>Why your campaign report doesn't add up</h3>
           <span class="idx">Build 01</span>
         </div>
-        <p class="problem">Nobody governs UTM parameters, so one real campaign shows up in analytics as four rows with the spend split between them. Every optimisation decision made before the monthly cleanup is made on broken numbers.</p>
+        <p class="problem">Five people share one campaign link. One types &ldquo;Facebook&rdquo;, one types &ldquo;fb&rdquo;, one leaves a space. Your analytics now shows four campaigns instead of one, with the budget split between them &mdash; and every decision made before someone notices is based on numbers that were never real.</p>
         <div class="tool-metrics">
-          <div class="tool-metric"><b>71%</b><span>of tracking links carried at least one violation</span></div>
-          <div class="tool-metric"><b>9 &rarr; 6</b><span>phantom campaigns collapsed into real ones</span></div>
-          <div class="tool-metric"><b>$18,250</b><span>spend found sitting in mis-named duplicate rows</span></div>
-          <div class="tool-metric"><b>14 / 20</b><span>problem links fixed with no human involved</span></div>
+          <div class="tool-metric"><b>71%</b><span>of links had at least one problem</span></div>
+          <div class="tool-metric"><b>9 &rarr; 6</b><span>duplicate campaigns that were really just one</span></div>
+          <div class="tool-metric"><b>$18,250</b><span>of budget found hiding in the wrong rows</span></div>
+          <div class="tool-metric"><b>14 / 20</b><span>of the broken links fixed themselves</span></div>
         </div>
         <ul class="chips">
-          <li>Levenshtein clustering</li>
-          <li>Rule engine</li>
-          <li>Auto-fix</li>
-          <li>Taxonomy export</li>
-          <li>Zero dependencies</li>
+          <li>Spots typos</li>
+          <li>Checks your naming rules</li>
+          <li>Fixes links for you</li>
+          <li>Writes the team rulebook</li>
+          <li>No sign-up</li>
         </ul>
-        <a class="btn btn-accent btn-sm" href="tools/utm-governance.html">Open the live tool &rarr;</a>
-        <p class="tool-note">Clusters campaign names structurally rather than by raw edit distance — <code>in_</code> and <code>ph_</code> are two characters apart but are different countries, and merging them would be worse than the problem it solves.</p>
+        <a class="btn btn-accent btn-sm" href="tools/utm-governance.html">Have a go &rarr;</a>
+        <p class="tool-note">The careful bit: two campaign names can look almost identical and still be completely different campaigns. <code>in_</code> and <code>ph_</code> are India and the Philippines. It only treats names as the same when one whole word is a likely typo &mdash; never when a country or a date is involved.</p>
       </article>
       <article class="tool-card">
         <div class="tool-card-top">
-          <h3>Creative Performance Post-Mortem</h3>
+          <h3>Which ad worked &mdash; and why?</h3>
           <span class="idx">Build 02</span>
         </div>
-        <p class="problem">Ad platforms report performance per creative, never per angle — so teams relearn the same lesson every quarter, and usually scale a “winner” that was four conversions of noise.</p>
+        <p class="problem">Your ad platform says ad number 17 did best. It cannot tell you whether that was the price, the photo, or the promise about no paperwork. So next month you make 38 more ads and find out all over again &mdash; and probably crown a winner that only had four lucky sales behind it.</p>
         <div class="tool-metrics">
-          <div class="tool-metric"><b>38 &rarr; 6</b><span>creatives reduced to angle-level decisions</span></div>
-          <div class="tool-metric"><b>4 / 6</b><span>angles with a result the data can actually support</span></div>
-          <div class="tool-metric"><b>$18,916</b><span>spend in angles confidently below breakeven</span></div>
-          <div class="tool-metric"><b>17 / 36</b><span>hook &times; angle combinations ever tested</span></div>
+          <div class="tool-metric"><b>38 &rarr; 6</b><span>ads boiled down to a handful of ideas</span></div>
+          <div class="tool-metric"><b>4 / 6</b><span>ideas with enough evidence to act on</span></div>
+          <div class="tool-metric"><b>$18,916</b><span>spent on ideas genuinely losing money</span></div>
+          <div class="tool-metric"><b>17 / 36</b><span>combinations ever actually tried</span></div>
         </div>
         <ul class="chips">
-          <li>Confidence gating</li>
-          <li>Auto-tagging</li>
-          <li>Reallocation model</li>
-          <li>CVD-safe charts</li>
-          <li>Hand-rolled SVG</li>
+          <li>Sorts ads by idea</li>
+          <li>Separates real results from luck</li>
+          <li>Budget what-if</li>
+          <li>Colour-blind safe charts</li>
         </ul>
-        <a class="btn btn-accent btn-sm" href="tools/creative-angle-miner.html">Open the live tool &rarr;</a>
-        <p class="tool-note">Every result carries a 95% interval, and any group whose interval straddles the blended average is labelled <em>not a finding</em>. A dashboard shows you numbers; this shows you which ones you are allowed to believe.</p>
+        <a class="btn btn-accent btn-sm" href="tools/creative-angle-miner.html">Have a go &rarr;</a>
+        <p class="tool-note">It would have looked smarter to rank all six ideas one to six. But two of them do not have enough behind them to trust, and a chart that hides that is how real budgets get moved on the strength of a coin toss. Saying &ldquo;not enough data yet&rdquo; out loud is the whole point.</p>
       </article>
       <article class="tool-card">
         <div class="tool-card-top">
-          <h3>Lifecycle Campaign Multiplier</h3>
+          <h3>One message, four places, nothing broken</h3>
           <span class="idx">Build 03</span>
         </div>
-        <p class="problem">One brief has to become Email, SMS, WhatsApp and Push copy for every lifecycle segment, each with hard limits nobody remembers. Copy goes to upload, bounces back, and someone spends an afternoon counting characters.</p>
+        <p class="problem">One campaign has to become an email, a text, a WhatsApp message and a phone notification, for every type of customer. Each has its own rules nobody remembers. So copy gets written, uploaded, rejected, and rewritten &mdash; and an afternoon disappears counting characters by hand.</p>
         <div class="tool-metrics">
-          <div class="tool-metric"><b>1 &rarr; 12</b><span>brief to channel-ready, validated variants</span></div>
-          <div class="tool-metric"><b>12 / 12</b><span>pass every channel rule on first generation</span></div>
-          <div class="tool-metric"><b>$300</b><span>hidden SMS cost exposed by a single curly quote</span></div>
-          <div class="tool-metric"><b>4 &times; 3</b><span>channels &times; lifecycle segments covered</span></div>
+          <div class="tool-metric"><b>1 &rarr; 12</b><span>one brief, twelve finished messages</span></div>
+          <div class="tool-metric"><b>12 / 12</b><span>pass every rule first time</span></div>
+          <div class="tool-metric"><b>$300</b><span>of needless text-message cost caught</span></div>
+          <div class="tool-metric"><b>4 &times; 3</b><span>places to send &times; types of customer</span></div>
         </div>
         <ul class="chips">
-          <li>GSM-7 / UCS-2 maths</li>
-          <li>WhatsApp template rules</li>
-          <li>Live validation</li>
-          <li>Sequence planner</li>
-          <li>ESP-ready export</li>
+          <li>Real text-message maths</li>
+          <li>WhatsApp's fussy rules</li>
+          <li>Checks as you type</li>
+          <li>Ready to upload</li>
         </ul>
-        <a class="btn btn-accent btn-sm" href="tools/lifecycle-multiplier.html">Open the live tool &rarr;</a>
-        <p class="tool-note">Implements real GSM 03.38 encoding detection. One smart quote pasted from a doc drops the SMS limit from 160 to 70 and doubles the send cost — the tool catches it, names the character, and prices it.</p>
+        <a class="btn btn-accent btn-sm" href="tools/lifecycle-multiplier.html">Have a go &rarr;</a>
+        <p class="tool-note">One curly apostrophe pasted from Word can double what a text campaign costs to send &mdash; the limit drops from 160 characters to 70 and nothing anywhere warns you. This catches it, names the exact character, and prices it.</p>
       </article>
     </div>
   </section>
