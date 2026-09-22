@@ -7,32 +7,32 @@
 <meta name="description" content="Your ad platform tells you which ad won. It never tells you which idea won. This works that out, and is honest about which results are real and which are luck.">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="tool-kit.css">
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=Instrument+Serif:ital@1&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../assets/site.css">
 <style>
-  .chart-wrap { background:#fff; border:1px solid var(--line); border-radius:.55rem; padding:1rem; overflow:visible; }
-  .chart-title { font-family:var(--display); font-size:.9rem; font-weight:700; margin:0 0 .15rem; }
+  .chart-wrap { background:var(--paper); border:1px solid var(--line); border-radius:var(--r); padding:1.15rem; overflow:visible; }
+  .chart-title { font-family:var(--display); font-size:1rem; font-weight:700; letter-spacing:-.02em; margin:0 0 .2rem; color:var(--ink); }
   .chart-sub { font-size:.78rem; color:var(--ink-soft); margin:0 0 .9rem; }
   svg.chart { display:block; width:100%; height:auto; overflow:visible; }
   .legend { display:flex; flex-wrap:wrap; gap:.6rem .9rem; margin-top:.75rem; font-size:.78rem; color:var(--ink-soft); }
   .legend span.sw { width:11px; height:11px; border-radius:2px; display:inline-block; margin-right:.35rem; vertical-align:-1px; }
   .tip {
-    position:fixed; pointer-events:none; z-index:200; background:var(--ink); color:#fff;
+    position:fixed; pointer-events:none; z-index:300; background:var(--ink); color:#fff;
     font-size:.76rem; line-height:1.45; padding:.5rem .65rem; border-radius:.4rem;
     max-width:17rem; opacity:0; transition:opacity .1s ease; box-shadow:0 4px 14px rgba(0,0,0,.18);
   }
   .tip b { font-family:var(--display); }
   .slider-row { display:flex; align-items:center; gap:.9rem; flex-wrap:wrap; }
-  .slider-row input[type=range] { flex:1; min-width:12rem; accent-color:var(--accent); }
+  .slider-row input[type=range] { flex:1; min-width:12rem; accent-color:var(--brand); }
   .sim-grid { display:grid; grid-template-columns:1fr; gap:.75rem; margin-top:1rem; }
   @media (min-width:720px){ .sim-grid { grid-template-columns:repeat(3,1fr); } }
-  .sim-box { background:#fff; border:1px solid var(--line); border-radius:.5rem; padding:.85rem; }
+  .sim-box { background:var(--paper); border:1px solid var(--line); border-radius:var(--r); padding:1rem 1.1rem; }
   .sim-box .k { font-size:.72rem; text-transform:uppercase; letter-spacing:.07em; color:var(--ink-soft); display:block; margin-bottom:.3rem; }
   .sim-box .v { font-family:var(--display); font-weight:700; font-size:1.35rem; display:block; line-height:1.15; }
   .sim-box .d { font-size:.78rem; margin-top:.2rem; display:block; color:var(--ink-soft); }
-  .up { color:var(--green-text); } .down { color:var(--red-text); }
+  .up { color:var(--mint-deep); } .down { color:var(--coral-deep); }
   details.kw { margin-top:.9rem; }
-  details.kw summary { cursor:pointer; font-size:.82rem; color:var(--accent); font-family:var(--display); font-weight:500; }
+  
   details.kw .kwbody { margin-top:.7rem; font-size:.8rem; color:var(--ink-soft); }
   details.kw code { background:var(--card); padding:.1rem .3rem; border-radius:.25rem; font-size:.75rem; }
 </style>
@@ -41,12 +41,14 @@
 
 <div class="tool-bar">
   <div class="wrap tool-bar-inner">
-    <a class="back-link" href="../index.html">&larr; Priyanshu Goyal</a>
+    <a class="back-link" href="../index.html"><svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M19 12H5M11 18l-6-6 6-6"/></svg>Priyanshu Goyal</a>
     <span class="tool-bar-tag">Independent build &middot; 02</span>
   </div>
 </div>
 
-<header class="wrap tool-header">
+<header class="tool-header">
+  <div class="wash"><i class="w1"></i><i class="w2"></i></div>
+  <div class="wrap above">
   <p class="eyebrow">A story about guessing</p>
   <h1>Which ad worked &mdash; and more to the point, <em>why</em>?</h1>
   <p class="tool-sub">Your ad platform can tell you that ad number 17 did well. It cannot tell you whether that was the price, the photo, or the line about not needing a cosigner. So next month, you guess again.</p>
@@ -59,6 +61,7 @@
   </div>
 
   <div class="metrics-ribbon" id="metrics"></div>
+  </div>
 </header>
 
 <main class="wrap">
@@ -329,8 +332,8 @@ LM-004,Last day for 30% off the starter set.,story,UK,3306,435686,4899,116,7575`
    surface (worst deutan pair ΔE 8.7, worst normal-vision pair ΔE 15.8).
    Fixed order, never cycled - a 7th category folds into neutral OTHER rather
    than getting a generated hue, because six is the honest limit on this surface. */
-const CAT = ["#994733","#2E6CA3","#9B8D36","#652EA3","#D5156F","#BD32D2"];
-const OTHER = "#5B6472";
+const CAT = ["#1B44C8","#883B30","#9B8D36","#4686BE","#763F92","#C83C74"];
+const OTHER = "#66718C";
 const catColor = i => (i >= 0 && i < CAT.length) ? CAT[i] : OTHER;
 
 /* Stable colour identity: alphabetical by angle name, with "other" always
@@ -343,9 +346,9 @@ function colorIndex(names){
   return m;
 }
 /* Validated single-hue sequential ramp (light -> dark) */
-const SEQ = ["#CFA285","#BB8461","#A46543","#8B4B2C","#70351B"];
-const INK="#16243D", INKSOFT="#4A566B", LINE="#E4E0DA", SURFACE="#FDFCFB";
-const GOOD="#15803D", BAD="#B91C1C";
+const SEQ = ["#9FB4EA","#7591DB","#4E6CC6","#2F4CA6","#182E78"];
+const INK="#0F1E3D", INKSOFT="#66718C", LINE="#E3E8F3", SURFACE="#FFFFFF";
+const GOOD="#07805A", BAD="#C43A20";
 
 /* ===================== CLASSIFIER ===================== */
 const ANGLE_KW = {

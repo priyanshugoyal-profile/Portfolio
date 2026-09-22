@@ -7,38 +7,39 @@
 <meta name="description" content="Write your campaign once and get the email, text, WhatsApp and notification versions, each checked against the rules that get copy rejected or quietly double your bill.">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="tool-kit.css">
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=Instrument+Serif:ital@1&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../assets/site.css">
 <style>
-  .variant { background:#fff; border:1px solid var(--line); border-radius:.6rem; padding:1rem; margin-bottom:.9rem; }
-  .variant.bad { border-color:#FCA5A5; }
+  .variant { background:var(--paper); border:1px solid var(--line); border-radius:var(--r); padding:1.15rem; margin-bottom:1rem; box-shadow:var(--shadow-sm); transition:border-color .25s, box-shadow .25s; }
+  .variant:hover { border-color:var(--line-strong); box-shadow:var(--shadow); }
+  .variant.bad { border-color:#FFC4B8; }
   .variant-head { display:flex; justify-content:space-between; align-items:center; gap:.6rem; flex-wrap:wrap; margin-bottom:.7rem; }
   .variant-head h5 { font-family:var(--display); font-size:.86rem; margin:0; font-weight:700; }
   .vfield { margin-bottom:.6rem; }
   .vfield label { display:block; font-size:.68rem; text-transform:uppercase; letter-spacing:.07em; color:var(--ink-soft); margin-bottom:.25rem; font-family:var(--display); font-weight:600; }
   .vfield textarea {
-    width:100%; font-family:var(--body); font-size:.86rem; line-height:1.5; color:var(--ink);
-    background:var(--card); border:1px solid var(--line); border-radius:.4rem;
-    padding:.5rem .6rem; resize:vertical;
+    width:100%; font-family:var(--body); font-size:.88rem; line-height:1.55; color:var(--ink);
+    background:var(--paper-cool); border:1.5px solid var(--line); border-radius:var(--r-sm);
+    padding:.6rem .75rem; resize:vertical; transition:border-color .2s, background .2s, box-shadow .2s;
   }
-  .vfield textarea:focus { outline:none; border-color:var(--accent); background:#fff; }
+  .vfield textarea:focus { outline:none; border-color:var(--brand); background:var(--paper); box-shadow:0 0 0 4px var(--brand-tint); }
   .counter { display:flex; justify-content:space-between; gap:.5rem; font-size:.72rem; margin-top:.25rem; font-family:var(--mono); color:var(--ink-soft); }
-  .counter .over { color:var(--red-text); font-weight:700; }
-  .counter .warn { color:var(--amber-text); }
+  .counter .over { color:var(--coral-deep); font-weight:700; }
+  .counter .warn { color:var(--gold-deep); }
   .meter { height:3px; background:var(--line); border-radius:2px; overflow:hidden; margin-top:.3rem; }
-  .meter i { display:block; height:100%; background:var(--accent); transition:width .12s linear; }
-  .meter i.over { background:var(--red-text); }
+  .meter i { display:block; height:100%; background:var(--brand); transition:width .15s linear; }
+  .meter i.over { background:var(--coral); }
   .meter i.warn { background:var(--gold); }
-  .preview { border:1px solid var(--line); border-radius:.5rem; padding:.7rem .8rem; background:var(--card); font-size:.82rem; margin-top:.5rem; }
+  .preview { border:1px solid var(--line); border-radius:var(--r-sm); padding:.8rem .9rem; background:var(--paper-warm); font-size:.84rem; margin-top:.6rem; }
   .preview .p-from { font-weight:700; font-family:var(--display); font-size:.8rem; }
   .preview .p-sub { color:var(--ink); }
   .preview .p-pre { color:var(--ink-soft); }
-  .phone-push { background:var(--navy-deep); color:#fff; border-radius:.6rem; padding:.7rem .85rem; font-size:.8rem; }
+  .phone-push { background:var(--ink); color:#fff; border-radius:var(--r); padding:.85rem 1rem; font-size:.82rem; box-shadow:var(--shadow); }
   .phone-push .t { font-weight:700; font-family:var(--display); margin-bottom:.15rem; }
-  .phone-push .b { color:#CBD5E1; line-height:1.4; }
+  .phone-push .b { color:#B9C4DB; line-height:1.45; }
   .seq { display:grid; grid-template-columns:1fr; gap:.6rem; }
-  .seq-step { display:flex; gap:.8rem; align-items:flex-start; background:#fff; border:1px solid var(--line); border-radius:.5rem; padding:.75rem .9rem; }
-  .seq-day { font-family:var(--display); font-weight:700; font-size:.78rem; color:var(--accent); min-width:3.4rem; }
+  .seq-step { display:flex; gap:1rem; align-items:flex-start; background:var(--paper); border:1px solid var(--line); border-radius:var(--r); padding:.9rem 1.1rem; }
+  .seq-day { font-family:var(--mono); font-weight:500; font-size:.76rem; color:var(--brand); min-width:3.6rem; padding-top:.1rem; }
   .seq-body { flex:1; }
   .seq-body strong { font-family:var(--display); font-size:.88rem; }
   .seq-body p { margin:.15rem 0 0; font-size:.8rem; color:var(--ink-soft); }
@@ -50,12 +51,14 @@
 
 <div class="tool-bar">
   <div class="wrap tool-bar-inner">
-    <a class="back-link" href="../index.html">&larr; Priyanshu Goyal</a>
+    <a class="back-link" href="../index.html"><svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M19 12H5M11 18l-6-6 6-6"/></svg>Priyanshu Goyal</a>
     <span class="tool-bar-tag">Independent build &middot; 03</span>
   </div>
 </div>
 
-<header class="wrap tool-header">
+<header class="tool-header">
+  <div class="wash"><i class="w1"></i><i class="w2"></i></div>
+  <div class="wrap above">
   <p class="eyebrow">A story about an afternoon lost</p>
   <h1>One message, four places, nothing broken</h1>
   <p class="tool-sub">You have written the campaign. Now it has to become an email, a text, a WhatsApp message and a notification on someone's lock screen &mdash; each with its own fiddly rules that nobody keeps in their head.</p>
@@ -68,6 +71,7 @@
   </div>
 
   <div class="metrics-ribbon" id="metrics"></div>
+  </div>
 </header>
 
 <main class="wrap">
