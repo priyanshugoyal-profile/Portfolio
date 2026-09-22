@@ -3,8 +3,8 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Creative Performance Post-Mortem — Priyanshu Goyal</title>
-<meta name="description" content="Tags every ad creative by hook, angle and format, then reports performance by angle with explicit confidence gating and a ranked next-test plan.">
+<title>Which Ad Worked, And Why? — Priyanshu Goyal</title>
+<meta name="description" content="Your ad platform tells you which ad won. It never tells you which idea won. This works that out, and is honest about which results are real and which are luck.">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&display=swap" rel="stylesheet">
@@ -47,13 +47,15 @@
 </div>
 
 <header class="wrap tool-header">
-  <p class="eyebrow">Marketing Ops Automation</p>
-  <h1>Creative Performance Post-Mortem</h1>
-  <p class="tool-sub">Ad platforms tell you which <em>creative</em> won. They never tell you which <em>angle</em> won — so teams relearn the same lesson every quarter. This tags every creative and reports by angle, with an explicit line between signal and noise.</p>
+  <p class="eyebrow">A story about guessing</p>
+  <h1>Which ad worked &mdash; and more to the point, <em>why</em>?</h1>
+  <p class="tool-sub">Your ad platform can tell you that ad number 17 did well. It cannot tell you whether that was the price, the photo, or the line about not needing a cosigner. So next month, you guess again.</p>
 
   <div class="problem-box">
-    <h2>The problem</h2>
-    <p>After a campaign, someone exports the creative report and spends a day in a spreadsheet hand-labelling each ad — was it the discount hook or the social proof? — trying to work out what to make next. It's slow, it's inconsistent between analysts, and it usually ends with a confident conclusion drawn from four conversions. The expensive mistake isn't the lost day. It's scaling a "winner" that was noise.</p>
+    <h2>The report that doesn't help</h2>
+    <p>You ran 38 ads last month. The platform ranks them neatly and shows you the winners. Useful, for about five minutes.</p>
+    <p style="margin-top:.7rem">Because the question you actually have is <em>what do I make next week?</em> And for that, &ldquo;ad 17 won&rdquo; tells you nothing. Was it the discount? The face in the picture? The promise about no paperwork? You cannot tell from the report, so you make 38 more ads and find out all over again.</p>
+    <p style="margin-top:.7rem">There is a second trap underneath the first. The ad at the top of your list might have had four sales. <strong>Four sales is not proof of anything.</strong> Most reports will happily let you pour next quarter's budget into a coin toss.</p>
   </div>
 
   <div class="metrics-ribbon" id="metrics"></div>
@@ -63,12 +65,12 @@
 
   <!-- ===================== INPUT ===================== -->
   <section class="tool-section" style="border-top:none">
-    <h2>1. Load creative performance</h2>
-    <p class="section-intro">Paste or upload the creative-level export from your ad platform. Required columns: <code>headline</code>, <code>spend</code>, <code>conversions</code>, <code>revenue</code>. Optional: <code>creative</code>, <code>format</code>, <code>geo</code>, <code>impressions</code>, <code>clicks</code>.</p>
+    <h2>Step 1 &middot; Bring me last month's ads</h2>
+    <p class="section-intro">This is the export your ad platform gives you &mdash; one row per ad, with what you spent and what came back. Two example sets are already loaded so you can just read along. To use your own, you need the headline, the spend, the number of sales, and the revenue. Anything else is a bonus.</p>
 
     <div class="panel">
       <div class="panel-head">
-        <h3>Input</h3>
+        <h3>Your ads</h3>
         <div class="seg" role="group" aria-label="Choose dataset">
           <button type="button" data-ds="fintech" aria-pressed="true">Fintech / lending</button>
           <button type="button" data-ds="consumer" aria-pressed="false">Consumer D2C</button>
@@ -76,17 +78,17 @@
       </div>
 
       <div class="field">
-        <label for="csv">Creative export (CSV)</label>
+                  <label for="csv">One row per ad</label>
         <textarea id="csv" class="input" rows="7" spellcheck="false"></textarea>
       </div>
 
       <div class="grid-3">
         <div class="field">
-          <label for="breakeven">Breakeven ROAS</label>
+          <label for="breakeven">Where you break even</label>
           <input id="breakeven" class="input" type="number" step="0.1" min="0.1" value="2.0">
         </div>
         <div class="field">
-          <label for="minconv">Min conversions to call a result</label>
+          <label for="minconv">Sales needed before trusting a result</label>
           <input id="minconv" class="input" type="number" step="1" min="1" value="25">
         </div>
         <div class="field">
@@ -96,7 +98,7 @@
       </div>
 
       <div class="btn-row">
-        <button class="btn btn-primary" id="run">Analyse</button>
+        <button class="btn btn-primary" id="run">Work it out</button>
         <span id="msg" style="font-size:.82rem;color:var(--ink-soft)"></span>
       </div>
     </div>
@@ -104,28 +106,28 @@
 
   <!-- ===================== TAGGING ===================== -->
   <section class="tool-section" id="tagSection" hidden>
-    <h2>2. Automatic tagging</h2>
-    <p class="section-intro">Every creative is classified on three axes from its headline text. This runs offline with a transparent keyword classifier — you can read exactly why each tag was assigned, which matters more than accuracy you can't audit.</p>
+    <h2>Step 2 &middot; What was each ad actually saying?</h2>
+    <p class="section-intro">Before you can ask which idea won, something has to sort the ads by idea. That is what this does: it reads each headline and labels it twice &mdash; what the ad <strong>argues</strong> (price? speed? trust?) and how it <strong>opens</strong> (a question? a number? a promise?). You can see exactly why every label was given, which matters more than a clever label you cannot check.</p>
 
     <div class="panel">
       <div class="panel-head">
-        <h3>Tagged creatives</h3>
+        <h3>Your ads, sorted by idea</h3>
         <div class="btn-row">
           <span class="hint" id="tagStats"></span>
-          <button class="btn btn-ghost btn-sm" id="exportTags">Export tagged CSV</button>
+          <button class="btn btn-ghost btn-sm" id="exportTags">Download as spreadsheet</button>
         </div>
       </div>
       <div class="table-wrap" style="max-height:26rem">
         <table class="data" id="tagTable">
           <thead><tr>
-            <th>Creative</th><th>Headline</th><th>Angle</th><th>Hook</th><th>Format</th>
-            <th class="num-cell">Spend</th><th class="num-cell">Conv</th><th class="num-cell">ROAS</th>
+            <th>Ad</th><th>What it said</th><th>The idea</th><th>The opening</th><th>Format</th>
+            <th class="num-cell">Spent</th><th class="num-cell">Sales</th><th class="num-cell">Return</th>
           </tr></thead><tbody></tbody>
         </table>
       </div>
 
       <details class="kw">
-        <summary>How the classifier decides</summary>
+        <summary>How does it decide? (worth a peek)</summary>
         <div class="kwbody" id="kwBody"></div>
       </details>
     </div>
@@ -133,21 +135,26 @@
 
   <!-- ===================== ANGLE PERFORMANCE ===================== -->
   <section class="tool-section" id="angleSection" hidden>
-    <h2>3. Performance by angle</h2>
-    <p class="section-intro">This is the view the ad platform never gives you. Bars show ROAS per angle; the whisker is a 95% interval based on conversion volume. <strong>An angle whose interval crosses the blended average is not a finding</strong> — it's a coin flip with a colour.</p>
+    <h2>Step 3 &middot; So which idea actually won?</h2>
+    <p class="section-intro">This is the chart your ad platform will never show you. Not which <em>ad</em> won &mdash; which <em>idea</em> won, with every ad that used it added together.</p>
+    <div class="callout callout-info">
+      <strong>First, a quick word about luck.</strong> Flip a coin four times, get three heads, and you have not found a magic coin. You have found four coin flips.<br><br>
+      Ads are the same. An idea with four sales behind it might be genuinely brilliant, or it might be four lucky clicks. Most reports will not tell you which &mdash; they just sort by the biggest number and let you assume.<br><br>
+      This one draws the line out loud. Solid bars are results with enough behind them to act on. <strong>Striped, faded bars are results that could easily just be luck.</strong> The little line through each bar shows the range the true answer could sit in &mdash; if that line crosses your average, the idea is not really beating anything. You can still look. You just cannot accidentally bet the budget on a coin toss.
+    </div>
 
     <div class="panel">
       <div class="chart-wrap">
-        <p class="chart-title">ROAS by angle</p>
+        <p class="chart-title">Which idea paid off?</p>
         <p class="chart-sub" id="angleChartSub"></p>
         <div id="angleChart"></div>
       </div>
       <div class="table-wrap" style="margin-top:1rem">
         <table class="data" id="angleTable">
           <thead><tr>
-            <th>Angle</th><th class="num-cell">Creatives</th><th class="num-cell">Spend</th>
-            <th class="num-cell">Conv</th><th class="num-cell">ROAS</th><th class="num-cell">95% interval</th>
-            <th class="num-cell">CPA</th><th>Verdict</th>
+            <th>The idea</th><th class="num-cell">Ads</th><th class="num-cell">Spent</th>
+            <th class="num-cell">Sales</th><th class="num-cell">Return</th><th class="num-cell">Really somewhere between</th>
+            <th class="num-cell">Cost per sale</th><th>What we can say</th>
           </tr></thead><tbody></tbody>
         </table>
       </div>
@@ -156,8 +163,8 @@
 
     <div class="panel">
       <div class="chart-wrap">
-        <p class="chart-title">ROAS by hook type</p>
-        <p class="chart-sub">Same confidence rules. Hook is <em>how</em> the message opens; angle is <em>what</em> it argues.</p>
+        <p class="chart-title">And which way of opening?</p>
+        <p class="chart-sub">Same rules about luck apply. This is about <em>how</em> the ad starts, rather than what it argues.</p>
         <div id="hookChart"></div>
       </div>
     </div>
@@ -165,12 +172,12 @@
 
   <!-- ===================== SCATTER ===================== -->
   <section class="tool-section" id="scatterSection" hidden>
-    <h2>4. Where the money actually sits</h2>
-    <p class="section-intro">Each dot is one creative: spend on the x-axis, ROAS on the y-axis, dot size by conversions. The quadrant that matters is bottom-right — high spend, low return.</p>
+    <h2>Step 4 &middot; Where did the money actually go?</h2>
+    <p class="section-intro">Every dot is one ad. The further right, the more you spent on it. The lower down, the less came back. Bigger dots made more sales. The corner to worry about is the bottom right: expensive ads that are not paying for themselves.</p>
     <div class="panel">
       <div class="chart-wrap">
-        <p class="chart-title">Spend vs ROAS by creative</p>
-        <p class="chart-sub">Dots below the dashed line are losing money at your stated breakeven.</p>
+        <p class="chart-title">Every ad, spend against return</p>
+        <p class="chart-sub">Anything under the dotted line is costing you more than it brings back.</p>
         <div id="scatter"></div>
         <div class="legend" id="scatterLegend"></div>
       </div>
@@ -179,11 +186,11 @@
 
   <!-- ===================== MATRIX ===================== -->
   <section class="tool-section" id="matrixSection" hidden>
-    <h2>5. Coverage matrix</h2>
-    <p class="section-intro">Hook &times; angle. Shaded cells are combinations you've tested; blank cells are the ones you haven't. Most teams discover they've tested the same three boxes for a year.</p>
+    <h2>Step 5 &middot; What have you never even tried?</h2>
+    <p class="section-intro">Every idea, crossed with every way of opening. Filled-in squares are combinations you have actually run. Empty ones are the things you have never tested. Most teams find they have been circling the same three squares for a year without noticing.</p>
     <div class="panel">
       <div class="chart-wrap">
-        <p class="chart-title">ROAS by hook &times; angle</p>
+        <p class="chart-title">Everything you have and have not tried</p>
         <p class="chart-sub" id="matrixSub"></p>
         <div id="matrix"></div>
         <div class="legend" id="matrixLegend"></div>
@@ -193,22 +200,22 @@
 
   <!-- ===================== SIMULATOR ===================== -->
   <section class="tool-section" id="simSection" hidden>
-    <h2>6. Reallocation simulator</h2>
-    <p class="section-intro">Move budget out of angles that are <em>confidently</em> below breakeven and into the best-evidenced winner. Only angles the data can actually support are eligible to move.</p>
+    <h2>Step 6 &middot; What if you moved the money?</h2>
+    <p class="section-intro">Drag the slider to take budget away from the ideas that are genuinely losing money and put it behind the best one. Only ideas with solid evidence are allowed to move &mdash; the tool will not let you shuffle budget based on a hunch.</p>
     <div class="panel" id="simPanel"></div>
   </section>
 
   <!-- ===================== NEXT TEST ===================== -->
   <section class="tool-section" id="planSection" hidden>
-    <h2>7. What to do next</h2>
-    <p class="section-intro">Two lists: combinations worth testing, and creatives worth killing. Both are derived only from groups that cleared the confidence bar.</p>
+    <h2>Step 7 &middot; So what do you do on Monday?</h2>
+    <p class="section-intro">Two short lists. What to try next, and what to switch off. Both are built only from the results that were solid enough to trust &mdash; nothing here rests on a coin toss.</p>
     <div class="grid-2">
       <div class="panel">
-        <div class="panel-head"><h3>Test next</h3><span class="hint">Untested hook &times; angle</span></div>
+        <div class="panel-head"><h3>Try these next</h3><span class="hint">Combinations you have never run</span></div>
         <div id="testPlan"></div>
       </div>
       <div class="panel">
-        <div class="panel-head"><h3>Kill list</h3><span class="hint">Spending into a loss</span></div>
+        <div class="panel-head"><h3>Switch these off</h3><span class="hint">Money going out, not coming back</span></div>
         <div id="killList"></div>
       </div>
     </div>
@@ -216,40 +223,25 @@
 
   <!-- ===================== HOW ===================== -->
   <section class="tool-section">
-    <h2>How it works</h2>
-    <p class="section-intro">The arithmetic and the confidence gating are deterministic. The model, if you enable it, only improves the tagging step — and its tags go through exactly the same statistics afterwards.</p>
+    <h2>What this tool actually does</h2>
+    <p class="section-intro">Four steps, none of them mysterious. The only clever part is the bit that refuses to give you an answer when there is not enough evidence for one.</p>
     <div class="arch-steps">
       <div class="arch-step"><div class="arch-num">1</div><div class="arch-content">
-        <h6>Parse &amp; compute</h6><p>CSV in, then CTR, CVR, CPA and ROAS per creative. Rows missing required columns are reported, not silently dropped.</p></div></div>
+        <h6>Does the sums</h6><p>Works out, for every ad, what you spent, what came back, and what each sale cost you.</p></div></div>
       <div class="arch-step"><div class="arch-num">2</div><div class="arch-content">
-        <h6>Classify</h6><p>A word-boundary keyword classifier scores each headline across angles and hook types, and the highest score wins. The full keyword basis is visible in the page.</p></div></div>
+        <h6>Reads the headlines</h6><p>Labels each ad by the argument it makes and the way it opens, using a word list you can read in full on this page.</p></div></div>
       <div class="arch-step"><div class="arch-num">3</div><div class="arch-content">
-        <h6>Aggregate by tag</h6><p>Spend, conversions and revenue are pooled per angle and per hook — turning 38 noisy creative rows into 6 decisions.</p></div></div>
+        <h6>Groups them by idea</h6><p>Adds up every ad that made the same argument. Thirty-eight noisy rows become six clear choices.</p></div></div>
       <div class="arch-step"><div class="arch-num">4</div><div class="arch-content">
-        <h6>Gate on confidence</h6><p>Each group gets a 95% interval from its conversion count. Groups under the volume floor, or whose interval straddles the blended average, are labelled as such and excluded from recommendations.</p></div></div>
+        <h6>Checks whether it is real</h6><p>Asks how much is riding on each result. Anything that could plausibly be luck gets labelled as such rather than dressed up as a finding.</p></div></div>
       <div class="arch-step"><div class="arch-num">5</div><div class="arch-content">
-        <h6>Simulate</h6><p>Budget moves are modelled at the winner's observed CPA, with the assumption stated on screen rather than buried.</p></div></div>
+        <h6>Does the what-if honestly</h6><p>Models moving the budget, and prints the assumption it made right next to the answer instead of hiding it in a footnote.</p></div></div>
       <div class="arch-step"><div class="arch-num">6</div><div class="arch-content">
-        <h6>Recommend</h6><p>Untested combinations are ranked by the product of their angle and hook multipliers; creatives losing money at scale are listed for cutting.</p></div></div>
+        <h6>Tells you what to do</h6><p>What to try next, what to switch off &mdash; built only from the results that held up.</p></div></div>
     </div>
 
-    <div class="ai-panel" data-open="false" id="aiPanel">
-      <button class="ai-toggle" id="aiToggle" aria-expanded="false">
-        <span>Optional: upgrade tagging with live AI</span><span class="chev">&#9660;</span>
-      </button>
-      <div class="ai-body" style="margin-top:.9rem">
-        <p>The keyword classifier handles clear cases well and struggles with irony, implication and mixed messages. With a key, Claude re-tags every headline instead — and the result is fed through the same deterministic statistics, so the model never gets to decide what is significant. Your key stays in <code>sessionStorage</code>, goes only to <code>api.anthropic.com</code>, and is dropped when the tab closes.</p>
-        <div class="field">
-          <label class="field-label" for="apiKey">Anthropic API key</label>
-          <input id="apiKey" class="input" type="password" placeholder="sk-ant-..." autocomplete="off" spellcheck="false">
-        </div>
-        <div class="btn-row">
-          <button class="btn btn-ghost btn-sm" id="aiRun">Re-tag with Claude</button>
-          <button class="btn btn-ghost btn-sm" id="aiReset">Revert to keyword tags</button>
-          <button class="btn btn-ghost btn-sm" id="aiClear">Clear key</button>
-        </div>
-        <div class="ai-status" id="aiStatus"></div>
-      </div>
+    <div class="callout callout-info" style="margin-top:1.5rem">
+      <strong>The bit I would want you to notice.</strong> It would have been easier, and honestly more impressive-looking, to rank the six ideas one to six and call it a day. Charts like that get made every week. But two of those six results are not strong enough to act on, and a chart that hides that is worse than no chart &mdash; it gets a real budget moved on the strength of four lucky sales. Saying &ldquo;not enough data yet&rdquo; out loud is the whole point of the thing.
     </div>
   </section>
 
@@ -487,13 +479,13 @@ function decorate(groups, overallRoas, breakeven, minConv){
     g.ciHi = g.roas + 1.96*se;
     g.thin = g.conversions < minConv;
     if(g.thin){
-      g.verdict = "thin"; g.verdictText = "Too few conversions to call";
+      g.verdict = "thin"; g.verdictText = "Not enough data yet";
     } else if(g.ciLo > overallRoas){
-      g.verdict = "above"; g.verdictText = "Above average";
+      g.verdict = "above"; g.verdictText = "Genuinely better than average";
     } else if(g.ciHi < overallRoas){
-      g.verdict = "below"; g.verdictText = "Below average";
+      g.verdict = "below"; g.verdictText = "Genuinely worse than average";
     } else {
-      g.verdict = "flat"; g.verdictText = "Not distinguishable from average";
+      g.verdict = "flat"; g.verdictText = "Too close to call";
     }
     g.belowBreakeven = !g.thin && g.ciHi < breakeven;
   });
@@ -571,12 +563,12 @@ function barChart(mount, groups, opts){
       "font-family":"var(--mono)"},svg).textContent = v.toFixed(1);
   }
   el("text",{x:padL+plotW/2,y:H-4,"text-anchor":"middle","font-size":11,fill:INKSOFT},svg)
-    .textContent = "ROAS (revenue \u00f7 spend)";
+    .textContent = "Money back for every $1 spent";
 
   /* reference lines - labels stacked on separate rows so they never collide */
   const refs = [
-    {v:opts.breakeven, label:"breakeven", dash:"6 3", row:0},
-    {v:opts.overall,   label:"blended avg", dash:"2 3", row:1}
+    {v:opts.breakeven, label:"breaking even", dash:"6 3", row:0},
+    {v:opts.overall,   label:"your average", dash:"2 3", row:1}
   ].filter(r=>r.v>0 && r.v<=maxV).sort((a,b)=>a.v-b.v);
   if(refs.length===2 && Math.abs(x(refs[0].v)-x(refs[1].v)) > 70) refs[1].row = 0;
   refs.forEach(r=>{
@@ -623,10 +615,10 @@ function barChart(mount, groups, opts){
     vlabel.textContent = g.roas.toFixed(2) + (g.thin ? " \u00b7?" : "");
 
     hoverable(bar,
-      "<b>"+esc(g.key)+"</b><br>ROAS "+g.roas.toFixed(2)+
-      "<br>95% interval "+g.ciLo.toFixed(2)+"\u2013"+(isFinite(g.ciHi)?g.ciHi.toFixed(2):"\u221e")+
-      "<br>"+fmt(g.spend)+" spend \u00b7 "+g.conversions+" conv"+
-      "<br>"+g.rows.length+" creative"+(g.rows.length===1?"":"s")+
+      "<b>"+esc(g.key)+"</b><br>"+g.roas.toFixed(2)+"x back for every $1"+
+      "<br>could really be anywhere from "+g.ciLo.toFixed(2)+" to "+(isFinite(g.ciHi)?g.ciHi.toFixed(2):"\u221e")+
+      "<br>"+fmt(g.spend)+" spent \u00b7 "+g.conversions+" sales"+
+      "<br>"+g.rows.length+" ad"+(g.rows.length===1?"":"s")+
       "<br><i>"+esc(g.verdictText)+"</i>");
   });
   return svg;
@@ -636,7 +628,7 @@ function scatterChart(mount, rows, angles, opts){
   mount.innerHTML="";
   const W=760, H=400, padL=56, padR=78, padT=16, padB=46;
   const svg = el("svg",{class:"chart",viewBox:"0 0 "+W+" "+H,role:"img",
-    "aria-label":"Scatter plot of spend versus ROAS for each creative"},mount);
+    "aria-label":"Chart comparing how much was spent on each ad against how much came back"},mount);
   const maxSpend = Math.max(...rows.map(r=>r.spend))*1.08;
   const maxRoas  = Math.max(opts.breakeven, ...rows.map(r=>r.roas))*1.08;
   const maxConv  = Math.max(...rows.map(r=>r.conversions), 1);
@@ -657,15 +649,15 @@ function scatterChart(mount, rows, angles, opts){
       "font-family":"var(--mono)"},svg).textContent = fmt(v);
   }
   el("text",{x:padL+(W-padL-padR)/2,y:H-8,"text-anchor":"middle","font-size":11,fill:INKSOFT},svg)
-    .textContent = "Spend";
+    .textContent = "Amount spent";
   el("text",{x:14,y:padT+(H-padT-padB)/2,"font-size":11,fill:INKSOFT,
     transform:"rotate(-90 14 "+(padT+(H-padT-padB)/2)+")","text-anchor":"middle"},svg)
-    .textContent = "ROAS";
+    .textContent = "Money back per $1";
 
   el("line",{x1:padL,y1:y(opts.breakeven),x2:W-padR,y2:y(opts.breakeven),
     stroke:INK,"stroke-width":1.5,"stroke-dasharray":"6 3",opacity:.6},svg);
   el("text",{x:W-padR+6,y:y(opts.breakeven)+4,"text-anchor":"start","font-size":10,fill:INK,
-    opacity:.8,"font-family":"var(--display)"},svg).textContent = "breakeven "+opts.breakeven.toFixed(1);
+    opacity:.8,"font-family":"var(--display)"},svg).textContent = "breaking even";
 
   rows.slice().sort((a,b)=>b.conversions-a.conversions).forEach(r=>{
     const rad = 4 + 7*Math.sqrt(r.conversions/maxConv);
@@ -673,7 +665,7 @@ function scatterChart(mount, rows, angles, opts){
       fill:color(r.angle),"fill-opacity":.78,stroke:SURFACE,"stroke-width":2},svg);
     hoverable(c, "<b>"+esc(r.creative)+"</b><br>"+esc(r.headline)+
       "<br>"+esc(r.angle)+" · "+esc(r.hook)+(r.format?" · "+esc(r.format):"")+
-      "<br>"+fmt(r.spend)+" spend · "+r.conversions+" conv · ROAS "+r.roas.toFixed(2));
+      "<br>"+fmt(r.spend)+" spent \u00b7 "+r.conversions+" sales \u00b7 "+r.roas.toFixed(2)+"x back");
   });
   return svg;
 }
@@ -684,7 +676,7 @@ function matrixChart(mount, rows, angles, hooks, opts){
   const W = padL + angles.length*cw + padR;
   const H = padT + hooks.length*ch + padB;
   const svg = el("svg",{class:"chart",viewBox:"0 0 "+W+" "+H,role:"img",
-    "aria-label":"Matrix of ROAS by hook type and angle"},mount);
+    "aria-label":"Grid showing how much money came back for each idea and each way of opening"},mount);
   hatchDef(svg,"mxHatch",INKSOFT);
 
   const cells = new Map();
@@ -738,9 +730,9 @@ function matrixChart(mount, rows, angles, hooks, opts){
         fill: dark ? "#fff" : INK, "font-family":"var(--mono)"},svg);
       t.textContent = label;
       hoverable(rect, "<b>"+esc(h.replace("_"," "))+" × "+esc(a)+"</b>"+
-        "<br>ROAS "+roas.toFixed(2)+"<br>"+fmt(c.spend)+" spend · "+c.conversions+" conv"+
-        "<br>"+c.n+" creative"+(c.n===1?"":"s")+
-        (thin?"<br><i>below the "+opts.minConv+"-conversion floor — not reliable</i>":""));
+        "<br>"+roas.toFixed(2)+"x back<br>"+fmt(c.spend)+" spent \u00b7 "+c.conversions+" sales"+
+        "<br>"+c.n+" ad"+(c.n===1?"":"s")+
+        (thin?"<br><i>too few sales behind this to trust it</i>":""));
     });
   });
   return svg;
@@ -751,7 +743,7 @@ const $ = s=>document.querySelector(s);
 const esc = s=>String(s==null?"":s).replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;","\"":"&quot;","'":"&#39;"}[c]));
 const fmt = n => "$"+Math.round(n).toLocaleString("en-US");
 
-let STATE = { rows:[], ds:"fintech", aiTags:null, angleVocab:null };
+let STATE = { rows:[], ds:"fintech", angleVocab:null };
 
 /* ===================== ANALYSIS ===================== */
 function analyse(){
@@ -775,13 +767,6 @@ function analyse(){
     return tagRow(r);
   });
 
-  if(STATE.aiTags){
-    rows.forEach(r=>{
-      const t = STATE.aiTags[r.creative] || STATE.aiTags[r.headline];
-      if(t){ r.angle=t.angle; r.hook=t.hook; r.angleWhy=["AI"]; r.hookWhy=["AI"]; }
-    });
-  }
-
   STATE.rows = rows;
   STATE.breakeven = breakeven;
   STATE.minConv = minConv;
@@ -796,8 +781,8 @@ function analyse(){
   const hooks  = decorate(group(rows,"hook"),  overall, breakeven, minConv);
   STATE.angles = angles; STATE.hooks = hooks;
 
-  $("#msg").innerHTML = rows.length+" creatives analysed."+
-    (parsed.errors.length ? ' <span style="color:var(--amber-text)">'+parsed.errors.length+" row(s) skipped: "+esc(parsed.errors[0])+"</span>" : "");
+  $("#msg").innerHTML = rows.length+" ads read."+
+    (parsed.errors.length ? ' <span style="color:var(--amber-text)">'+parsed.errors.length+" row(s) skipped \u2014 "+esc(parsed.errors[0])+"</span>" : "");
 
   ["tagSection","angleSection","scatterSection","matrixSection","simSection","planSection"]
     .forEach(id=>document.getElementById(id).hidden=false);
@@ -817,11 +802,11 @@ function renderMetrics(rows, angles, overall, totalSpend, totalConv){
   const losing = angles.filter(a=>a.belowBreakeven);
   const losingSpend = losing.reduce((s,a)=>s+a.spend,0);
   const boxes = [
-    [rows.length+" → "+angles.length, "creatives reduced to angle-level decisions"],
-    [callable.length+" / "+angles.length, "angles with a result the data can actually support"],
-    [fmt(losingSpend), "spend in angles confidently below breakeven"],
-    [(angles.length - conf.length)+"", "angles flagged as too thin to call"],
-    [overall.toFixed(2), "blended ROAS across "+fmt(totalSpend)]
+    [rows.length+" → "+angles.length, "ads boiled down to a handful of ideas"],
+    [callable.length+" / "+angles.length, "ideas where the evidence is strong enough to act on"],
+    [fmt(losingSpend), "spent on ideas that are genuinely losing money"],
+    [(angles.length - conf.length)+"", "ideas that need more data before you judge them"],
+    [overall.toFixed(2), "came back for every $1 spent, across "+fmt(totalSpend)]
   ];
   $("#metrics").innerHTML = boxes.map(b=>
     '<div class="metric-box"><span class="num">'+esc(b[0])+'</span><span class="label">'+esc(b[1])+'</span></div>'
@@ -832,9 +817,9 @@ function renderTags(rows){
   const byAngle = {};
   rows.forEach(r=>{ byAngle[r.angle]=(byAngle[r.angle]||0)+1; });
   const other = byAngle["other"]||0;
-  $("#tagStats").textContent = Object.keys(byAngle).length+" angles detected"+
-    (other?" · "+other+" unclassified":"") + (STATE.aiTags?" · AI-tagged":" · keyword-tagged") +
-    (STATE.angleVocab?" · vocabulary scoped to this account":" · full vocabulary");
+  $("#tagStats").textContent = Object.keys(byAngle).length+" different ideas found"+
+    (other?" \u00b7 "+other+" it could not place":"") + " \u00b7 sorted by keyword" +
+    (STATE.angleVocab?" \u00b7 using this brand's word list":" \u00b7 using every word list");
 
   $("#tagTable tbody").innerHTML = rows.slice().sort((a,b)=>b.spend-a.spend).map(r=>
     '<tr><td class="mono">'+esc(r.creative)+'</td>'+
@@ -851,27 +836,27 @@ function renderTags(rows){
 
   $("#kwBody").innerHTML =
     (STATE.angleVocab
-      ? "<p><strong>Active angle vocabulary:</strong> "+STATE.angleVocab.map(a=>"<code>"+esc(a)+"</code>").join(" ")+
-        ". The same word carries different intent in different categories — <code>rated</code> is a trust signal for a lender and a social-proof signal for a skincare brand — so the vocabulary is scoped per account instead of being universal. Upload your own file to score against every label.</p>"
-      : "<p><strong>Active angle vocabulary:</strong> all labels, because this is your own data.</p>")+
-    "<p>Each headline is scored against every label's keyword list using word-boundary matching; the highest score wins, ties break toward the first label. Hover any tag in the table to see which keywords matched.</p>"+
+      ? "<p><strong>Word lists in use:</strong> "+STATE.angleVocab.map(a=>"<code>"+esc(a)+"</code>").join(" ")+
+        ". The same word means different things in different businesses \u2014 <code>rated</code> is about trust for a lender, but about popularity for a skincare brand \u2014 so each brand gets its own list rather than one list for everybody.</p>"
+      : "<p><strong>Word lists in use:</strong> all of them, because this is your own data.</p>")+
+    "<p>Each headline is checked against a list of words for every possible label. Whichever label matches the most words wins. Hover any label in the table above to see exactly which words triggered it.</p>"+
     "<p><strong>Angles:</strong> "+Object.entries(ANGLE_KW).map(([k,v])=>
       "<code>"+esc(k)+"</code> ("+v.slice(0,5).map(esc).join(", ")+"…)").join(" · ")+"</p>"+
     "<p><strong>Hooks:</strong> "+Object.entries(HOOK_KW).map(([k,v])=>
       "<code>"+esc(k)+"</code> ("+v.slice(0,4).map(esc).join(", ")+"…)").join(" · ")+
       " · <code>benefit</code> (default when nothing else matches)</p>"+
-    "<p>This is deliberately simple and auditable. It will mislabel irony and implication — which is exactly what the optional AI tagging step is for.</p>";
+    "<p>It is deliberately simple, so you can always check its work. It will get sarcasm and implication wrong sometimes \u2014 when it does, the fix is to add a word to the list above, not to trust it harder.</p>";
 }
 
 function renderAngles(angles, hooks, overall, breakeven, minConv){
   $("#angleChartSub").textContent =
-    "Hatched bars are results the data can't support: either under "+minConv+
-    " conversions, or an interval that straddles the blended average of "+overall.toFixed(2)+".";
+    "Striped bars are the ones to be careful with \u2014 either fewer than "+minConv+
+    " sales behind them, or close enough to your "+overall.toFixed(2)+"x average that the difference could be luck.";
 
   barChart($("#angleChart"), angles, {color:CAT[0], hatchId:"angleHatch",
-    breakeven, overall, aria:"ROAS by angle"});
+    breakeven, overall, aria:"Chart of how much money came back for each idea"});
   barChart($("#hookChart"), hooks, {color:CAT[1], hatchId:"hookHatch",
-    breakeven, overall, aria:"ROAS by hook type"});
+    breakeven, overall, aria:"Chart of how much money came back for each way of opening"});
 
   $("#angleTable tbody").innerHTML = angles.map(g=>{
     const cls = g.verdict==="above"?"pill-ok":g.verdict==="below"?"pill-bad":
@@ -891,12 +876,12 @@ function renderAngles(angles, hooks, overall, breakeven, minConv){
   const callable = angles.filter(g=>g.verdict==="above"||g.verdict==="below");
   const thin = angles.filter(g=>g.thin);
   const flat = angles.filter(g=>g.verdict==="flat");
-  let html = '<div class="callout callout-info"><strong>How to read this.</strong> ';
+  let html = '<div class="callout callout-info"><strong>What this is telling you.</strong> ';
   html += callable.length
-    ? "Only <strong>"+callable.length+" of "+angles.length+"</strong> angles differ from the blended average by more than sampling noise. "
-    : "No angle differs from the blended average by more than sampling noise. ";
-  if(flat.length) html += flat.length+" ("+flat.map(g=>esc(g.key)).join(", ")+") look different on the bar chart but are not: their intervals overlap the average. ";
-  if(thin.length) html += thin.length+" ("+thin.map(g=>esc(g.key)).join(", ")+") "+(thin.length===1?"has":"have")+" too few conversions to judge at all — the honest action is more volume, not a verdict.";
+    ? "Only <strong>"+callable.length+" of "+angles.length+"</strong> ideas are genuinely different from your average \u2014 the rest could be luck. "
+    : "Not one idea is clearly different from your average once you account for luck. ";
+  if(flat.length) html += flat.length+" of them ("+flat.map(g=>esc(g.key)).join(", ")+") look different on the chart but are not really \u2014 the gap is within what chance alone would produce. ";
+  if(thin.length) html += thin.length+" ("+thin.map(g=>esc(g.key)).join(", ")+") simply "+(thin.length===1?"has":"have")+" too few sales to judge \u2014 the honest move is to run "+(thin.length===1?"it":"them")+" a bit longer, not to draw a conclusion.";
   html += "</div>";
   $("#angleCallout").innerHTML = html;
 }
@@ -909,7 +894,7 @@ function renderScatter(rows, angles){
     const i = idx.has(a) ? idx.get(a) : -1;
     return '<span><span class="sw" style="background:'+catColor(i)+'"></span>'+esc(a)+
       (i<0||i>=CAT.length?' <span style="opacity:.7">(neutral)</span>':'')+'</span>';
-  }).join("") + '<span style="margin-left:auto;opacity:.8">dot size = conversions</span>';
+  }).join("") + '<span style="margin-left:auto;opacity:.8">bigger dot = more sales</span>';
 }
 
 function renderMatrix(rows, angles, hooks, minConv){
@@ -918,12 +903,12 @@ function renderMatrix(rows, angles, hooks, minConv){
     .concat(hooks.map(h=>h.key).filter(h=>HOOK_ORDER.indexOf(h)===-1));
   const total = aNames.length*hNames.length;
   const tested = new Set(rows.map(r=>r.hook+"||"+r.angle)).size;
-  $("#matrixSub").textContent = tested+" of "+total+" hook × angle combinations have ever been tested. "+
-    "Darker is higher ROAS; hatched cells are below the "+minConv+"-conversion floor.";
+  $("#matrixSub").textContent = "You have tried "+tested+" of the "+total+" possible combinations. "+
+    "Darker means more money back; striped squares have too few sales to trust yet.";
   matrixChart($("#matrix"), rows, aNames, hNames, {minConv});
   $("#matrixLegend").innerHTML =
     SEQ.map((c,i)=>'<span><span class="sw" style="background:'+c+'"></span>'+
-      (i===0?"lower ROAS":i===SEQ.length-1?"higher ROAS":"")+'</span>').join("")+
+      (i===0?"less money back":i===SEQ.length-1?"more money back":"")+'</span>').join("")+
     '<span><span class="sw" style="background:#fff;border:1px dashed '+LINE+'"></span>untested</span>';
 }
 
@@ -935,20 +920,20 @@ function renderSim(angles, overall, breakeven, totalSpend, totalRev, totalConv){
   const winner = winners[0];
 
   if(!losers.length || !winner){
-    $("#simPanel").innerHTML = '<div class="callout callout-warn"><strong>Nothing to simulate.</strong> '+
-      (!winner ? "No angle is confidently above the blended average, so there is no evidenced destination for the budget. " : "")+
-      (!losers.length ? "No angle is confidently below breakeven, so there is no budget that clearly should move. " : "")+
-      "Moving spend on this evidence would be guessing.</div>";
+    $("#simPanel").innerHTML = '<div class="callout callout-warn"><strong>Nothing worth moving yet.</strong> '+
+      (!winner ? "No idea is clearly beating your average, so there is nowhere sensible to move money to. " : "")+
+      (!losers.length ? "No idea is clearly losing money, so there is no budget that obviously should move. " : "")+
+      "Moving budget on this much evidence would just be guessing.</div>";
     return;
   }
 
   $("#simPanel").innerHTML =
-    '<div class="callout callout-info" style="margin-top:0"><strong>Eligible to move:</strong> '+
-      losers.map(g=>esc(g.key)+" ("+fmt(g.spend)+", ROAS "+g.roas.toFixed(2)+")").join(", ")+
-      '. <strong>Destination:</strong> '+esc(winner.key)+' (ROAS '+winner.roas.toFixed(2)+
-      ', CPA '+fmt(winner.cpa)+').</div>'+
+    '<div class="callout callout-info" style="margin-top:0"><strong>Money that could move:</strong> '+
+      losers.map(g=>esc(g.key)+" ("+fmt(g.spend)+" spent, "+g.roas.toFixed(2)+"x back)").join(", ")+
+      '. <strong>Best home for it:</strong> '+esc(winner.key)+' ('+winner.roas.toFixed(2)+'x back'+
+      ', '+fmt(winner.cpa)+' per sale).</div>'+
     '<div class="slider-row">'+
-      '<label class="field-label" for="shift" style="margin:0">Share of that spend to move</label>'+
+      '<label class="field-label" for="shift" style="margin:0">How much of it to move</label>'+
       '<input id="shift" type="range" min="0" max="100" step="5" value="50">'+
       '<strong id="shiftVal" style="font-family:var(--display);min-width:3.2rem">50%</strong>'+
     '</div>'+
@@ -984,18 +969,18 @@ function renderSim(angles, overall, breakeven, totalSpend, totalRev, totalConv){
 
     $("#simOut").innerHTML =
       '<div class="sim-box"><span class="k">Budget moved</span><span class="v">'+fmt(moved)+'</span>'+
-        '<span class="d">of '+fmt(loserSpend)+' eligible</span></div>'+
-      '<div class="sim-box"><span class="k">Conversions</span><span class="v">'+Math.round(newConv).toLocaleString("en-US")+'</span>'+
+        '<span class="d">out of '+fmt(loserSpend)+' that could move</span></div>'+
+      '<div class="sim-box"><span class="k">Sales</span><span class="v">'+Math.round(newConv).toLocaleString("en-US")+'</span>'+
         '<span class="d">'+d(newConv,totalConv)+' vs '+Math.round(totalConv).toLocaleString("en-US")+'</span></div>'+
-      '<div class="sim-box"><span class="k">Blended ROAS</span><span class="v">'+newRoas.toFixed(2)+'</span>'+
+      '<div class="sim-box"><span class="k">Money back per $1</span><span class="v">'+newRoas.toFixed(2)+'</span>'+
         '<span class="d"><span class="'+(newRoas>=overall?"up":"down")+'">'+
         (newRoas>=overall?"+":"")+(newRoas-overall).toFixed(2)+'</span> vs '+overall.toFixed(2)+'</span></div>';
 
-    $("#simAssume").innerHTML = "<strong>Read this before quoting the number.</strong> "+
-      "The model assumes "+esc(winner.key)+" keeps its observed CPA of "+fmt(winner.cpa)+
-      " as it absorbs "+fmt(moved)+" of extra budget. In practice CPA rises as you scale into a "+
-      "narrower audience, so treat this as an optimistic ceiling and a reason to test the shift "+
-      "at "+Math.min(25,Math.round(pct*100))+"% first — not as a forecast.";
+    $("#simAssume").innerHTML = "<strong>Please read this before repeating the number.</strong> "+
+      "This assumes "+esc(winner.key)+" keeps costing "+fmt(winner.cpa)+" per sale even after you "+
+      "push another "+fmt(moved)+" through it. It almost certainly will not \u2014 costs creep up as you "+
+      "spend more and start reaching people who were harder to convince. So read this as the "+
+      "best case, and a good reason to move "+Math.min(25,Math.round(pct*100))+"% first and watch what happens.";
   }
   $("#shift").addEventListener("input", update);
   update();
@@ -1017,16 +1002,16 @@ function renderPlan(rows, angles, hooks, overall, breakeven){
   combos.sort((x,y)=>y.expected-x.expected);
 
   $("#testPlan").innerHTML = combos.length
-    ? '<div class="table-wrap"><table class="data"><thead><tr><th>Hook × angle</th>'+
-      '<th class="num-cell">Implied ROAS</th><th>Basis</th></tr></thead><tbody>'+
+    ? '<div class="table-wrap"><table class="data"><thead><tr><th>What to try</th>'+
+      '<th class="num-cell">Might return</th><th>Based on</th></tr></thead><tbody>'+
       combos.slice(0,6).map(c=>
         '<tr><td><strong>'+esc(c.hook.replace("_"," "))+'</strong> × '+esc(c.angle)+'</td>'+
         '<td class="num-cell">'+c.expected.toFixed(2)+'</td>'+
-        '<td style="font-size:.76rem;color:var(--ink-soft)">angle ×'+c.aLift.toFixed(2)+
-        ' · hook ×'+c.hLift.toFixed(2)+'</td></tr>').join("")+
+        '<td style="font-size:.76rem;color:var(--ink-soft)">the idea does '+c.aLift.toFixed(2)+'x your average, '+
+        'the opening does '+c.hLift.toFixed(2)+'x</td></tr>').join("")+
       '</tbody></table></div>'+
-      '<p style="font-size:.78rem;color:var(--ink-soft);margin:.7rem 0 0">Implied ROAS multiplies the angle and hook effects, which assumes they are independent. They are usually not — this ranks what to try, it does not predict what you will get.</p>'
-    : '<div class="empty">Every combination of the angles and hooks with usable volume has already been tested.</div>';
+      '<p style="font-size:.78rem;color:var(--ink-soft);margin:.7rem 0 0">This assumes the idea and the opening work independently of each other. In real life they often do not. Treat it as a sensible order to try things in, not a promise.</p>'
+    : '<div class="empty">You have already tried every combination that has enough data behind it. Nothing obvious left to test.</div>';
 
   const kills = rows.filter(r=>r.roas<breakeven && r.spend>=(STATE.overall?0:0))
     .filter(r=>r.conversions>=3 || r.spend > 1500)
@@ -1035,46 +1020,22 @@ function renderPlan(rows, angles, hooks, overall, breakeven){
   const wasted = kills.reduce((s,r)=>s+r.spend*(1 - r.roas/breakeven),0);
 
   $("#killList").innerHTML = kills.length
-    ? '<div class="table-wrap"><table class="data"><thead><tr><th>Creative</th>'+
-      '<th class="num-cell">Spend</th><th class="num-cell">ROAS</th></tr></thead><tbody>'+
+    ? '<div class="table-wrap"><table class="data"><thead><tr><th>Ad</th>'+
+      '<th class="num-cell">Spent</th><th class="num-cell">Return</th></tr></thead><tbody>'+
       kills.map(r=>'<tr><td style="max-width:15rem"><span class="mono">'+esc(r.creative)+
         '</span><br><span style="font-size:.75rem;color:var(--ink-soft)">'+esc(r.headline)+'</span></td>'+
         '<td class="num-cell">'+fmt(r.spend)+'</td>'+
         '<td class="num-cell" style="color:var(--red-text)">'+r.roas.toFixed(2)+'</td></tr>').join("")+
       '</tbody></table></div>'+
-      '<div class="callout callout-warn" style="margin-bottom:0">Roughly <strong>'+fmt(wasted)+
-      '</strong> of the spend on these '+kills.length+' creatives is below what breakeven would have returned.</div>'
-    : '<div class="empty">No creative is spending meaningfully below breakeven.</div>';
-}
-
-/* ===================== AI ===================== */
-const KEY="anthropic_api_key";
-function getKey(){ try{ return sessionStorage.getItem(KEY)||""; }catch(e){ return ""; } }
-function setKey(v){ try{ v?sessionStorage.setItem(KEY,v):sessionStorage.removeItem(KEY); }catch(e){} }
-
-async function callClaude(prompt, maxTokens){
-  const key=getKey();
-  if(!key) throw new Error("No API key entered.");
-  const res = await fetch("https://api.anthropic.com/v1/messages",{
-    method:"POST",
-    headers:{"content-type":"application/json","x-api-key":key,
-      "anthropic-version":"2023-06-01","anthropic-dangerous-direct-browser-access":"true"},
-    body:JSON.stringify({model:"claude-sonnet-4-5-20250929",max_tokens:maxTokens||2000,
-      messages:[{role:"user",content:prompt}]})
-  });
-  if(!res.ok){
-    let msg=res.status+" "+res.statusText;
-    try{ const j=await res.json(); if(j.error&&j.error.message) msg=j.error.message; }catch(e){}
-    throw new Error(msg);
-  }
-  const j=await res.json();
-  return (j.content||[]).filter(b=>b.type==="text").map(b=>b.text).join("");
+      '<div class="callout callout-warn" style="margin-bottom:0">About <strong>'+fmt(wasted)+
+      '</strong> of what you spent on these '+kills.length+' ads never came back. That is what leaving them running costs you.</div>'
+    : '<div class="empty">Nothing here is losing you real money. Leave them running.</div>';
 }
 
 /* ===================== WIRING ===================== */
 function loadDataset(name){
   const d=DATASETS[name];
-  STATE.ds=name; STATE.aiTags=null; STATE.angleVocab=d.angles||null;
+  STATE.ds=name; STATE.angleVocab=d.angles||null;
   $("#csv").value=d.csv;
   $("#breakeven").value=d.breakeven;
   $("#minconv").value=d.minconv;
@@ -1090,7 +1051,7 @@ $("#upload").addEventListener("change", e=>{
   const f=e.target.files && e.target.files[0];
   if(!f) return;
   const fr=new FileReader();
-  fr.onload=()=>{ $("#csv").value=String(fr.result||""); STATE.aiTags=null;
+  fr.onload=()=>{ $("#csv").value=String(fr.result||"");
     STATE.angleVocab=null; analyse(); };
   fr.onerror=()=>{ $("#msg").innerHTML='<span style="color:var(--red-text)">Could not read that file.</span>'; };
   fr.readAsText(f);
@@ -1107,46 +1068,6 @@ $("#exportTags").addEventListener("click", ()=>{
   a.href=URL.createObjectURL(b); a.download="creatives-tagged.csv";
   document.body.appendChild(a); a.click();
   setTimeout(()=>{URL.revokeObjectURL(a.href); a.remove();},0);
-});
-
-$("#aiToggle").addEventListener("click",()=>{
-  const p=$("#aiPanel"); const open=p.dataset.open==="true";
-  p.dataset.open=String(!open);
-  $("#aiToggle").setAttribute("aria-expanded",String(!open));
-});
-$("#apiKey").value=getKey();
-$("#apiKey").addEventListener("input",e=>setKey(e.target.value.trim()));
-$("#aiClear").addEventListener("click",()=>{ setKey(""); $("#apiKey").value=""; $("#aiStatus").textContent="Key cleared."; });
-$("#aiReset").addEventListener("click",()=>{ STATE.aiTags=null; $("#aiStatus").textContent="Reverted to keyword tags."; analyse(); });
-
-$("#aiRun").addEventListener("click", async ()=>{
-  const st=$("#aiStatus");
-  if(!getKey()){ st.textContent="Enter an API key first."; return; }
-  if(!STATE.rows.length){ st.textContent="Run an analysis first."; return; }
-  st.innerHTML='<span class="spin"></span> Re-tagging '+STATE.rows.length+' headlines…';
-  $("#aiRun").disabled=true;
-  try{
-    const angleNames=[...new Set(STATE.angles.map(a=>a.key))].filter(a=>a!=="other");
-    const list=STATE.rows.map(r=>({id:r.creative, headline:r.headline}));
-    const prompt="You are tagging advertising creatives for a marketing analysis.\n\n"+
-      "For each headline, assign:\n"+
-      "- angle: the ARGUMENT it makes. Use one of: "+angleNames.join(", ")+". If none fit, use \"other\".\n"+
-      "- hook: how it OPENS. Use exactly one of: question, stat, objection, social_proof, urgency, benefit.\n\n"+
-      "Headlines:\n"+JSON.stringify(list,null,0)+"\n\n"+
-      "Respond with ONLY a JSON array, no markdown fence, no commentary, in this exact shape:\n"+
-      '[{"id":"...","angle":"...","hook":"..."}]';
-    const out=await callClaude(prompt, 4000);
-    const m=out.match(/\[[\s\S]*\]/);
-    if(!m) throw new Error("Model did not return JSON.");
-    const arr=JSON.parse(m[0]);
-    const map={};
-    arr.forEach(t=>{ if(t && t.id) map[t.id]={angle:String(t.angle||"other"), hook:String(t.hook||"benefit")}; });
-    if(!Object.keys(map).length) throw new Error("No usable tags returned.");
-    STATE.aiTags=map;
-    analyse();
-    st.textContent="Re-tagged "+Object.keys(map).length+" creatives with Claude. The statistics below are unchanged in method.";
-  }catch(err){ st.textContent="Failed: "+err.message; }
-  finally{ $("#aiRun").disabled=false; }
 });
 
 window.addEventListener("scroll", hideTip, {passive:true});

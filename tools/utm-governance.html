@@ -3,8 +3,8 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Campaign UTM &amp; Taxonomy Governance Engine — Priyanshu Goyal</title>
-<meta name="description" content="Audits campaign tracking links against a governed taxonomy, collapses phantom campaigns, and quantifies how much ad spend is sitting in misattributed rows.">
+<title>Why Your Campaign Report Doesn't Add Up — Priyanshu Goyal</title>
+<meta name="description" content="One campaign can show up four times in your analytics. This tool shows you why, how much budget it is hiding, and how to stop it happening again.">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&display=swap" rel="stylesheet">
@@ -20,13 +20,15 @@
 </div>
 
 <header class="wrap tool-header">
-  <p class="eyebrow">Marketing Ops Automation</p>
-  <h1>Campaign UTM &amp; Taxonomy Governance Engine</h1>
-  <p class="tool-sub">Finds every broken tracking link before it poisons your attribution — then fixes them, collapses the duplicates, and hands your team a naming standard they can't break.</p>
+  <p class="eyebrow">A story about broken reports</p>
+  <h1>Why your campaign report doesn't add up</h1>
+  <p class="tool-sub">Five people shared the same campaign link. Your analytics now shows four different campaigns, with the budget split between them. Here is how that happens, and how to fix it in about a minute.</p>
 
   <div class="problem-box">
-    <h2>The problem</h2>
-    <p>Nobody governs UTM parameters. One person writes <code>Facebook</code>, another writes <code>fb</code>, a third leaves a space in the campaign name. Analytics tools treat every variant as a separate campaign, so one real campaign shows up as four rows with the spend split between them. Every month someone spends hours reconciling it in a spreadsheet, and every optimisation decision before that cleanup was made on broken numbers.</p>
+    <h2>Monday morning</h2>
+    <p>Your team ran one campaign last month. Five people shared the link &mdash; on Facebook, in an email, through a partner, in a WhatsApp group. Today your manager asks the simplest question there is: <em>how did it do?</em></p>
+    <p style="margin-top:.7rem">You open the report. The campaign is listed four times. The budget is split across all four rows, so none of the numbers match what you remember spending. Someone loses an afternoon gluing it back together in a spreadsheet, and by the time it is fixed, the campaign is over.</p>
+    <p style="margin-top:.7rem"><strong>Nobody did anything wrong.</strong> One person typed <code>Facebook</code>, another typed <code>fb</code>, a third left a space in the name. Your analytics tool treats every version as a brand-new campaign. That is the whole bug.</p>
   </div>
 
   <div class="metrics-ribbon" id="metrics"></div>
@@ -36,12 +38,12 @@
 
   <!-- ============ INPUT ============ -->
   <section class="tool-section" style="border-top:none">
-    <h2>1. Load campaign links</h2>
-    <p class="section-intro">Paste tracking URLs (one per line), or a CSV with a <code>url</code> column and optional <code>spend</code> column. Two realistic datasets are loaded below — both are deliberately messy in the ways real accounts are.</p>
+    <h2>Step 1 &middot; Show me your links</h2>
+    <p class="section-intro">These are the web addresses your team shares &mdash; the long ones with extra bits stuck on the end after a question mark. Those bits are what tells your analytics who sent the visitor. Two example sets are already loaded, both messy in exactly the ways real ones are. Paste your own over them any time.</p>
 
     <div class="panel">
       <div class="panel-head">
-        <h3>Input</h3>
+        <h3>Your campaign links</h3>
         <div class="seg" role="group" aria-label="Choose dataset">
           <button type="button" data-ds="fintech" aria-pressed="true">Fintech / lending</button>
           <button type="button" data-ds="consumer" aria-pressed="false">Consumer D2C</button>
@@ -50,15 +52,15 @@
       </div>
 
       <div class="field">
-        <label for="raw">Campaign URLs or CSV</label>
+        <label for="raw">Paste links here &mdash; one per line</label>
         <textarea id="raw" class="input" rows="9" spellcheck="false" aria-describedby="rawhint"></textarea>
         <p id="rawhint" class="hint" style="font-size:.78rem;color:var(--ink-soft);margin:.4rem 0 0">
-          Accepts <code>url</code> alone, or <code>url,spend</code> as CSV with a header row. Spend is optional — it only powers the "spend at risk" figure.
+          Just the links is fine. If you also paste how much you spent on each one, the tool can tell you how much money is caught up in the mess.
         </p>
       </div>
 
       <div class="btn-row">
-        <button class="btn btn-primary" id="run">Run audit</button>
+        <button class="btn btn-primary" id="run">Check my links</button>
         <button class="btn btn-ghost btn-sm" id="clear">Clear</button>
         <span id="parsemsg" style="font-size:.82rem;color:var(--ink-soft)"></span>
       </div>
@@ -66,24 +68,24 @@
 
     <div class="panel" id="taxpanel">
       <div class="panel-head">
-        <h3>Taxonomy registry</h3>
-        <span class="hint">These are the rules the audit enforces. Edit them and re-run.</span>
+        <h3>The names your team agreed on</h3>
+        <span class="hint">Change any of these and check again &mdash; the rules are yours, not mine.</span>
       </div>
       <div class="grid-2">
         <div class="field">
-          <label for="okSources">Approved <code>utm_source</code> values</label>
+          <label for="okSources">Approved sources &mdash; <em>where the visitor came from</em></label>
           <textarea id="okSources" class="input" rows="3" spellcheck="false"></textarea>
         </div>
         <div class="field">
-          <label for="okMediums">Approved <code>utm_medium</code> values</label>
+          <label for="okMediums">Approved channel types &mdash; <em>how they got there</em></label>
           <textarea id="okMediums" class="input" rows="3" spellcheck="false"></textarea>
         </div>
       </div>
       <div class="field" style="margin-bottom:0">
-        <label for="pattern">Campaign naming convention</label>
+          <label for="pattern">How campaign names should be written</label>
         <input id="pattern" class="input" spellcheck="false" value="{geo}_{channel}_{product}_{objective}_{yyyymm}">
         <p style="font-size:.78rem;color:var(--ink-soft);margin:.4rem 0 0">
-          Tokens: <code>{geo}</code> 2-letter code or <code>global</code> &middot; <code>{yyyymm}</code> 6 digits or <code>ongoing</code> &middot; all others lowercase alphanumeric.
+          A pattern everyone follows, so any campaign name can be read at a glance: which country, which channel, which product, what it was for, and when. <code>{geo}</code> is a two-letter country code or <code>global</code>; <code>{yyyymm}</code> is a year and month like <code>202509</code>, or <code>ongoing</code> for something with no end date.
         </p>
       </div>
     </div>
@@ -91,26 +93,26 @@
 
   <!-- ============ RESULTS ============ -->
   <section class="tool-section" id="resultsSection" hidden>
-    <h2>2. Audit results</h2>
-    <p class="section-intro">Every violation below is detected deterministically — no model involved. Severity reflects whether the issue actually splits or destroys an attribution row.</p>
+    <h2>Step 2 &middot; Here is what is broken</h2>
+    <p class="section-intro">Every problem below was found by simple checking, the same way a spell-checker works. Nothing here is a guess. The ones marked <strong>serious</strong> are the ones genuinely splitting your report into pieces &mdash; the rest are worth tidying but will not change your numbers.</p>
 
     <div id="violationSummary"></div>
 
     <div class="panel">
       <div class="panel-head">
-        <h3>Link-by-link audit</h3>
+        <h3>Every link, one by one</h3>
         <div class="btn-row">
           <button class="btn btn-ghost btn-sm" id="filterToggle" aria-pressed="true">Show only problems</button>
-          <button class="btn btn-accent btn-sm" id="fixAll">Fix all auto-fixable</button>
-          <button class="btn btn-ghost btn-sm" id="exportCsv">Export CSV</button>
-          <button class="btn btn-ghost btn-sm" id="copyFixed">Copy fixed URLs</button>
+          <button class="btn btn-accent btn-sm" id="fixAll">Fix everything you safely can</button>
+          <button class="btn btn-ghost btn-sm" id="exportCsv">Download as spreadsheet</button>
+          <button class="btn btn-ghost btn-sm" id="copyFixed">Copy the fixed links</button>
         </div>
       </div>
       <div class="table-wrap" style="max-height:32rem">
         <table class="data" id="auditTable">
           <thead><tr>
-            <th>#</th><th>Source</th><th>Medium</th><th>Campaign</th>
-            <th class="num-cell">Spend</th><th>Issues</th><th>Corrected link</th>
+            <th>#</th><th>Source</th><th>Channel type</th><th>Campaign name</th>
+            <th class="num-cell">Budget</th><th>What is wrong</th><th>Fixed version</th>
           </tr></thead>
           <tbody></tbody>
         </table>
@@ -121,38 +123,38 @@
 
   <!-- ============ CLUSTERS ============ -->
   <section class="tool-section" id="clusterSection" hidden>
-    <h2>3. Phantom campaigns</h2>
-    <p class="section-intro">Campaign names are normalised (case, separators, whitespace stripped) and then compared with Levenshtein edit distance to catch typos. Each cluster below is <em>one real campaign</em> that your analytics tool is currently reporting as several.</p>
+    <h2>Step 3 &middot; The same campaign, counted twice</h2>
+    <p class="section-intro">This is the expensive one. People write the same campaign name in slightly different ways &mdash; a capital letter here, a dash instead of an underscore there, the occasional typo. Your analytics tool has no idea they are the same thing, so it makes a new row for each. Every group below is <strong>one real campaign</strong> that your report is currently showing as several.</p>
     <div id="clusters"></div>
   </section>
 
   <!-- ============ BUILDER ============ -->
   <section class="tool-section" id="builderSection">
-    <h2>4. Governed link builder</h2>
-    <p class="section-intro">The fix isn't cleaning links once — it's making bad links impossible to create. This builder only emits URLs that satisfy the registry and the naming convention above.</p>
+    <h2>Step 4 &middot; Stop it happening again</h2>
+    <p class="section-intro">Cleaning this up once does not help. It comes straight back next month, because the people making links have no easy way to get them right. So the real fix is this: a builder that can only produce correct links, and a one-page rulebook your team will actually read.</p>
 
     <div class="panel">
       <div class="grid-2">
         <div class="field">
-          <label for="bUrl">Destination URL</label>
+          <label for="bUrl">Where the link should go</label>
           <input id="bUrl" class="input" value="https://www.example.com/apply" spellcheck="false">
         </div>
         <div class="field">
-          <label for="bSource">Source</label>
+          <label for="bSource">Source &mdash; where from</label>
           <select id="bSource" class="input"></select>
         </div>
       </div>
       <div class="grid-3">
         <div class="field">
-          <label for="bMedium">Medium</label>
+          <label for="bMedium">Channel type</label>
           <select id="bMedium" class="input"></select>
         </div>
         <div class="field">
-          <label for="bGeo">Geo</label>
+          <label for="bGeo">Country</label>
           <input id="bGeo" class="input" value="in" maxlength="6" spellcheck="false">
         </div>
         <div class="field">
-          <label for="bDate">Year + month</label>
+          <label for="bDate">Year and month</label>
           <input id="bDate" class="input" value="202509" maxlength="7" spellcheck="false">
         </div>
       </div>
@@ -166,7 +168,7 @@
           <input id="bProduct" class="input" value="loan" spellcheck="false">
         </div>
         <div class="field">
-          <label for="bObjective">Objective</label>
+          <label for="bObjective">What it is for</label>
           <input id="bObjective" class="input" value="apply" spellcheck="false">
         </div>
       </div>
@@ -174,48 +176,33 @@
       <div id="builderOut"></div>
 
       <div class="btn-row" style="margin-top:.9rem">
-        <button class="btn btn-primary btn-sm" id="copyBuilt">Copy link</button>
-        <button class="btn btn-ghost btn-sm" id="dlStandard">Download taxonomy standard (.md)</button>
+        <button class="btn btn-primary btn-sm" id="copyBuilt">Copy this link</button>
+        <button class="btn btn-ghost btn-sm" id="dlStandard">Download the one-page rulebook</button>
       </div>
     </div>
   </section>
 
   <!-- ============ HOW ============ -->
   <section class="tool-section">
-    <h2>How it works</h2>
-    <p class="section-intro">The audit is pure deterministic logic — it runs identically every time, with or without an API key. That matters: governance rules you can't reproduce aren't governance.</p>
+    <h2>What this tool actually does</h2>
+    <p class="section-intro">Nothing here is magic, and nothing asks you to take it on trust. Every check is something you could do by hand with enough patience &mdash; the tool just does it across hundreds of links in a second, and never gets sloppy at five on a Friday.</p>
     <div class="arch-steps">
       <div class="arch-step"><div class="arch-num">1</div><div class="arch-content">
-        <h6>Parse</h6><p>Each row is parsed with the native <code>URL</code> API. Malformed links are caught and reported rather than silently dropped.</p></div></div>
+        <h6>Reads each link</h6><p>Takes the web address apart and pulls out the tracking bits from the end.</p></div></div>
       <div class="arch-step"><div class="arch-num">2</div><div class="arch-content">
-        <h6>Validate against registry</h6><p>Source and medium are checked against approved lists, plus a synonym map that resolves <code>ppc</code>, <code>paid_search</code> and <code>cpc</code> to one canonical value.</p></div></div>
+        <h6>Checks them against your list</h6><p>Compares each one to the names your team agreed on, and catches the near-misses &mdash; <code>Facebook</code> when everyone said <code>facebook</code>, <code>ppc</code> when everyone said <code>cpc</code>.</p></div></div>
       <div class="arch-step"><div class="arch-num">3</div><div class="arch-content">
-        <h6>Cluster</h6><p>Campaign names are normalised and compared with Levenshtein distance scaled to name length, so typos merge but genuinely different campaigns stay apart.</p></div></div>
+        <h6>Finds the duplicates</h6><p>Spots campaign names that are really the same thing typed differently, including typos &mdash; while being careful not to merge two campaigns that only look alike.</p></div></div>
       <div class="arch-step"><div class="arch-num">4</div><div class="arch-content">
-        <h6>Quantify</h6><p>Spend attached to non-canonical variants is summed — turning a hygiene problem into a number a CMO will act on.</p></div></div>
+        <h6>Puts a price on it</h6><p>Adds up the budget sitting in the wrong rows. This is the bit that turns &ldquo;our naming is untidy&rdquo; into a number your boss will act on.</p></div></div>
       <div class="arch-step"><div class="arch-num">5</div><div class="arch-content">
-        <h6>Auto-fix</h6><p>Corrected URLs are regenerated from canonical values. Anything the engine can't fix without guessing is flagged for a human instead of invented.</p></div></div>
+        <h6>Fixes what it safely can</h6><p>Rewrites the links it can fix without guessing. Where something is genuinely missing, it says so rather than inventing an answer.</p></div></div>
       <div class="arch-step"><div class="arch-num">6</div><div class="arch-content">
-        <h6>Prevent</h6><p>The builder and the exported standard close the loop, so the same mess doesn't reappear next quarter.</p></div></div>
+        <h6>Stops it coming back</h6><p>Hands you a builder that can only make correct links, and a one-page rulebook, so next month starts clean.</p></div></div>
     </div>
 
-    <div class="ai-panel" data-open="false" id="aiPanel">
-      <button class="ai-toggle" id="aiToggle" aria-expanded="false">
-        <span>Optional: add live AI commentary</span><span class="chev">&#9660;</span>
-      </button>
-      <div class="ai-body" style="margin-top:.9rem">
-        <p>Everything above works with no key. Adding one lets Claude write the plain-English rationale section of the exported taxonomy standard — the part that gets stakeholders to actually follow it. Your key is held in <code>sessionStorage</code>, sent only to <code>api.anthropic.com</code>, and dropped when the tab closes.</p>
-        <div class="field">
-          <label class="field-label" for="apiKey">Anthropic API key</label>
-          <input id="apiKey" class="input" type="password" placeholder="sk-ant-..." autocomplete="off" spellcheck="false">
-        </div>
-        <div class="btn-row">
-          <button class="btn btn-ghost btn-sm" id="aiRun">Generate rationale</button>
-          <button class="btn btn-ghost btn-sm" id="aiClear">Clear key</button>
-        </div>
-        <div class="ai-status" id="aiStatus"></div>
-        <div id="aiOut"></div>
-      </div>
+    <div class="callout callout-info" style="margin-top:1.5rem">
+      <strong>One honest note about the careful bit.</strong> Step 3 is where a tool like this usually goes wrong. It is tempting to just measure how similar two names look, but <code>in_paidsocial_loan_apply</code> and <code>ph_paidsocial_loan_apply</code> differ by two letters and are completely different campaigns &mdash; India and the Philippines. Merging those would be worse than the mess it set out to fix. So it only treats names as the same when one whole word is a likely typo of another, and never when a country code or a date is involved.
     </div>
   </section>
 
@@ -336,16 +323,16 @@ const REQUIRED = ["utm_source","utm_medium","utm_campaign"];
    severity: high = destroys or splits an attribution row
    ======================================================================== */
 const RULES = {
-  MISSING:      { sev:"high",   label:"Missing param",       why:"Traffic lands in (not set) / (direct) and cannot be credited to the campaign at all." },
-  EMPTY:        { sev:"high",   label:"Empty value",         why:"The parameter is present but blank, which analytics tools treat the same as missing." },
-  WHITESPACE:   { sev:"high",   label:"Whitespace",          why:"Spaces get encoded inconsistently across platforms, creating a separate row per encoding." },
-  CASE:         { sev:"high",   label:"Casing",              why:"Most analytics tools are case-sensitive, so Facebook and facebook become two different sources." },
-  NONCANON:     { sev:"high",   label:"Non-canonical value", why:"A synonym of an approved value. Splits one channel across multiple rows." },
-  UNKNOWN:      { sev:"medium", label:"Not in registry",     why:"Either a genuinely new channel that should be added to the registry, or a typo. Needs a human decision." },
-  CONVENTION:   { sev:"medium", label:"Breaks convention",   why:"Cannot be parsed into geo / channel / product / objective / date, so it can't be grouped or filtered in reporting." },
-  DUPLICATE:    { sev:"high",   label:"Duplicate campaign",  why:"Another link points at the same real campaign under a different name, splitting its spend and conversions." },
-  SPECIAL:      { sev:"medium", label:"Special characters",  why:"Characters that require encoding tend to be encoded differently by different tools." },
-  MALFORMED:    { sev:"high",   label:"Malformed URL",       why:"The URL could not be parsed at all and will not track." }
+  MISSING:      { sev:"high",   label:"Something is missing",  why:"The link is missing a piece it needs. Visitors from it show up as if they typed your web address from memory, so the campaign gets no credit at all." },
+  EMPTY:        { sev:"high",   label:"Left blank",           why:"The slot is there but nothing was put in it, which your analytics treats exactly like missing." },
+  WHITESPACE:   { sev:"high",   label:"Has a space in it",    why:"A space slipped in. Different tools deal with spaces differently, so the same link gets recorded more than one way." },
+  CASE:         { sev:"high",   label:"Capital letters",     why:"Most analytics tools see Facebook and facebook as two completely different sources, and split your results between them." },
+  NONCANON:     { sev:"high",   label:"Different word, same thing", why:"Someone used a word that means the same as the agreed one. Your report splits one channel into two." },
+  UNKNOWN:      { sev:"medium", label:"Not on your list",     why:"This name is not on the approved list. Either it is a new channel worth adding, or it is a typo. Only a person can tell which." },
+  CONVENTION:   { sev:"medium", label:"Ignores the naming rule", why:"The name cannot be read as country / channel / product / goal / date, so you cannot group or filter your report by any of those." },
+  DUPLICATE:    { sev:"high",   label:"Same campaign, different name", why:"Another link points at this exact campaign but spells it differently, so the budget and the results get split between them." },
+  SPECIAL:      { sev:"medium", label:"Unusual characters",  why:"Characters that need special handling, which different tools handle in different ways." },
+  MALFORMED:    { sev:"high",   label:"Not a working link",  why:"This is not a valid web address, so it will not track anything at all." }
 };
 
 /* ========================================================================
@@ -662,12 +649,12 @@ function renderMetrics(res){
   const highSev = res.items.reduce((s,i)=>s+i.issues.filter(v=>RULES[v.code].sev==="high").length,0);
 
   const boxes = [
-    ["num-"+pct, pct+"%", "of links carry at least one violation"],
-    ["", String(highSev), "high-severity issues that split or kill attribution"],
-    ["", phantom+" → "+realCampaigns, "phantom campaigns collapsed into real ones"]
+    ["num-"+pct, pct+"%", "of your links have at least one problem"],
+    ["", String(highSev), "serious problems that break your reporting"],
+    ["", phantom+" → "+realCampaigns, "duplicate campaigns that are really just one"]
   ];
-  if(hasSpend) boxes.push(["", money(leak), "spend sitting in mis-named duplicate rows"]);
-  boxes.push(["", res.items.filter(i=>i.issues.length && i.fixed).length+" / "+bad, "problem links auto-fixable without a human"]);
+  if(hasSpend) boxes.push(["", money(leak), "of budget hiding in the wrong rows"]);
+  boxes.push(["", res.items.filter(i=>i.issues.length && i.fixed).length+" / "+bad, "of the broken links fix themselves"]);
 
   $("#metrics").innerHTML = boxes.map(b=>
     '<div class="metric-box"><span class="num">'+esc(b[1])+'</span><span class="label">'+esc(b[2])+'</span></div>'
@@ -679,19 +666,19 @@ function renderSummary(res){
   res.items.forEach(i=>i.issues.forEach(v=>{ counts[v.code]=(counts[v.code]||0)+1; }));
   const order=Object.keys(counts).sort((a,b)=>counts[b]-counts[a]);
   if(!order.length){
-    $("#violationSummary").innerHTML='<div class="callout callout-ok"><strong>Clean.</strong> Every link matched the registry and the naming convention.</div>';
+    $("#violationSummary").innerHTML='<div class="callout callout-ok"><strong>All clean.</strong> Every link matches the names your team agreed on, and follows the naming rule. Nothing to fix.</div>';
     return;
   }
   $("#violationSummary").innerHTML =
-    '<div class="panel"><div class="panel-head"><h3>Violations by type</h3>'+
-    '<span class="hint">Sorted by frequency. Severity is about attribution impact, not aesthetics.</span></div>'+
-    '<div class="table-wrap"><table class="data"><thead><tr><th>Issue</th><th class="num-cell">Count</th><th>Severity</th><th>Why it matters</th></tr></thead><tbody>'+
+    '<div class="panel"><div class="panel-head"><h3>What went wrong, and how often</h3>'+
+    '<span class="hint">Most common first. &ldquo;Serious&rdquo; means it actually breaks your reporting, not that it looks untidy.</span></div>'+
+    '<div class="table-wrap"><table class="data"><thead><tr><th>What is wrong</th><th class="num-cell">How many</th><th>How bad</th><th>Why it matters</th></tr></thead><tbody>'+
     order.map(code=>{
       const r=RULES[code];
       const pill = r.sev==="high"?"pill-bad":r.sev==="medium"?"pill-warn":"pill-mute";
       return '<tr><td><strong>'+esc(r.label)+'</strong></td>'+
         '<td class="num-cell">'+counts[code]+'</td>'+
-        '<td><span class="pill '+pill+'">'+esc(r.sev)+'</span></td>'+
+        '<td><span class="pill '+pill+'">'+esc(r.sev==="high"?"Serious":"Worth fixing")+'</span></td>'+
         '<td style="color:var(--ink-soft)">'+esc(r.why)+'</td></tr>';
     }).join("")+
     '</tbody></table></div></div>';
@@ -719,17 +706,17 @@ function renderTable(res){
 
     let fixedCell;
     if(it.malformed){
-      fixedCell = '<span style="color:var(--red-text);font-size:.78rem">unparseable — needs manual rewrite</span>';
+      fixedCell = '<span style="color:var(--red-text);font-size:.78rem">this is not a working link — it needs rewriting by hand</span>';
     } else if(it.fixed){
       fixedCell = '<span class="mono">'+esc(it.fixed.replace(/^https?:\/\//,""))+'</span>';
     } else {
       const reasons=[];
-      if(!it.params.utm_source) reasons.push("no source to work from");
-      if(!it.params.utm_campaign) reasons.push("no campaign name to work from");
-      if(it.inferredMedium) reasons.push("medium inferred as “"+it.canonical.utm_medium+"” from source — confirm before use");
-      if(it.issues.some(v=>v.code==="UNKNOWN")) reasons.push("unregistered value needs a human decision");
-      fixedCell = '<span style="color:var(--amber-text);font-size:.78rem">Not auto-fixable: '+esc(reasons.join("; ")||"needs review")+'</span>'
-        + (it.inferredMedium ? '<div class="mono" style="margin-top:.3rem;opacity:.75">suggested: '+esc(it.proposed.replace(/^https?:\/\//,""))+'</div>' : '');
+      if(!it.params.utm_source) reasons.push("there is no source to work from");
+      if(!it.params.utm_campaign) reasons.push("there is no campaign name to work from");
+      if(it.inferredMedium) reasons.push("best guess at the channel type is \u201c"+it.canonical.utm_medium+"\u201d, based on the source \u2014 worth a quick check");
+      if(it.issues.some(v=>v.code==="UNKNOWN")) reasons.push("a name that is not on your list \u2014 someone has to decide");
+      fixedCell = '<span style="color:var(--amber-text);font-size:.78rem">Needs a person: '+esc(reasons.join("; ")||"needs review")+'</span>'
+        + (it.inferredMedium ? '<div class="mono" style="margin-top:.3rem;opacity:.75">our best guess: '+esc(it.proposed.replace(/^https?:\/\//,""))+'</div>' : '');
     }
 
     return '<tr'+(it.issues.length?'':' class="dim"')+'>'+
@@ -744,24 +731,24 @@ function renderTable(res){
 
   const nf = res.items.filter(i=>i.issues.length && !i.fixed).length;
   $("#fixnote").textContent = nf
-    ? nf+" link"+(nf===1?"":"s")+" cannot be auto-fixed. The engine will not invent a source or campaign name that was never there — those need a human."
-    : "Every problem link can be corrected automatically.";
+    ? nf+" link"+(nf===1?"":"s")+" need a person to look at "+(nf===1?"it":"them")+". The tool will not invent a campaign name that was never there \u2014 guessing would be worse than leaving it broken."
+    : "Every broken link here can be fixed automatically.";
 }
 
 function renderClusters(res){
   const el=$("#clusters");
   if(!res.clusters.length){
-    el.innerHTML='<div class="callout callout-ok"><strong>No phantom campaigns.</strong> Every campaign name resolves to exactly one variant.</div>';
+    el.innerHTML='<div class="callout callout-ok"><strong>No duplicates.</strong> Every campaign is written one way and one way only.</div>';
     return;
   }
   el.innerHTML = res.clusters.map(c=>{
     const leakLine = c.leak>0
-      ? '<div class="callout callout-warn" style="margin:.8rem 0 0"><strong>'+esc(money(c.leak))+'</strong> of spend is attached to the non-canonical variants and is being reported separately from the main campaign row.</div>'
+      ? '<div class="callout callout-warn" style="margin:.8rem 0 0"><strong>'+esc(money(c.leak))+'</strong> of your budget is attached to the other spellings, and is being reported as if it belonged to different campaigns entirely.</div>'
       : '';
     return '<div class="panel">'+
       '<div class="panel-head"><h3 class="mono" style="font-size:.95rem">'+esc(c.canonNorm)+'</h3>'+
-      '<span class="pill pill-bad">'+c.count+' variants → 1 campaign</span></div>'+
-      '<div class="table-wrap"><table class="data"><thead><tr><th>Variant as written</th><th>Links</th><th class="num-cell">Spend</th><th>Verdict</th></tr></thead><tbody>'+
+      '<span class="pill pill-bad">'+c.count+' ways of writing one campaign</span></div>'+
+      '<div class="table-wrap"><table class="data"><thead><tr><th>How it was written</th><th>Links</th><th class="num-cell">Budget</th><th>What to do</th></tr></thead><tbody>'+
       c.variants.map(v=>{
         const its=c.items.filter(i=>(i.params.utm_campaign||"").trim()===v);
         const sp=its.reduce((s,i)=>s+(typeof i.spend==="number"?i.spend:0),0);
@@ -821,85 +808,56 @@ function renderBuilder(){
     const p=new URLSearchParams();
     p.set("utm_source",src); p.set("utm_medium",med); p.set("utm_campaign",campaign);
     url = u.origin+u.pathname+"?"+p.toString();
-  }catch(e){ problems.push("Destination URL is not valid."); }
+  }catch(e){ problems.push("That web address does not look right."); }
 
-  if(convRe && !convRe.test(campaign)) problems.push("Campaign name does not satisfy "+cfg.pattern+".");
-  tokens.forEach(t=>{ if(vals[t]!==undefined && !vals[t]) problems.push("“"+t+"” is empty."); });
+  if(convRe && !convRe.test(campaign)) problems.push("The campaign name does not follow your rule ("+cfg.pattern+").");
+  tokens.forEach(t=>{ if(vals[t]!==undefined && !vals[t]) problems.push("You still need to fill in \u201c"+t+"\u201d."); });
 
   STATE.built = problems.length?null:url;
   $("#builderOut").innerHTML = problems.length
-    ? '<div class="callout callout-warn"><strong>Not emitted.</strong> '+problems.map(esc).join(" ")+'</div>'
-    : '<div class="callout callout-ok"><strong>Valid.</strong><div class="mono" style="margin-top:.4rem;word-break:break-all">'+esc(url)+'</div></div>';
+    ? '<div class="callout callout-warn"><strong>Not ready yet.</strong> '+problems.map(esc).join(" ")+'</div>'
+    : '<div class="callout callout-ok"><strong>Good to go.</strong><div class="mono" style="margin-top:.4rem;word-break:break-all">'+esc(url)+'</div></div>';
   $("#copyBuilt").disabled = !!problems.length;
 }
 
 function standardMd(){
   const cfg=currentCfg();
   const res=STATE.result;
-  const ai = STATE.aiRationale ? "\n## Why this matters\n\n"+STATE.aiRationale+"\n" : "";
   let audit="";
   if(res){
     const bad=res.items.filter(i=>i.issues.length).length;
-    audit = "\n## Current state (last audit)\n\n"+
-      "- Links audited: **"+res.items.length+"**\n"+
-      "- Links with at least one violation: **"+bad+"** ("+Math.round(bad/res.items.length*100)+"%)\n"+
-      "- Phantom campaigns found: **"+res.clusters.reduce((s,c)=>s+c.variants.length-1,0)+"**\n"+
-      (res.clusters.length?"\n### Campaigns to merge\n\n"+res.clusters.map(c=>
-        "- `"+c.canonNorm+"` ← "+c.variants.filter(v=>v!==c.canonical).map(v=>"`"+v+"`").join(", ")
+    audit = "\n## Where we are today\n\n"+
+      "- Links checked: **"+res.items.length+"**\n"+
+      "- Links with at least one problem: **"+bad+"** ("+Math.round(bad/res.items.length*100)+"%)\n"+
+      "- Campaigns being counted more than once: **"+res.clusters.reduce((s,c)=>s+c.variants.length-1,0)+"**\n"+
+      (res.clusters.length?"\n### Names to merge\n\n"+res.clusters.map(c=>
+        "- Use `"+c.canonNorm+"` instead of "+c.variants.filter(v=>v!==c.canonical).map(v=>"`"+v+"`").join(", ")
       ).join("\n")+"\n":"");
   }
-  return "# Campaign Taxonomy Standard\n\n"+
-    "_Generated by the UTM Governance Engine._\n\n"+
-    "## Naming convention\n\n```\n"+cfg.pattern+"\n```\n\n"+
-    "| Token | Rule | Example |\n|---|---|---|\n"+
-    "| `{geo}` | ISO 2-letter country code, or `global` | `in`, `ng`, `global` |\n"+
-    "| `{channel}` | lowercase alphanumeric, no separators | `paidsocial`, `search` |\n"+
-    "| `{product}` | lowercase alphanumeric | `loan`, `serum` |\n"+
-    "| `{objective}` | lowercase alphanumeric | `apply`, `acquire`, `retarget` |\n"+
-    "| `{yyyymm}` | 6 digits, or `ongoing` for evergreen | `202509`, `ongoing` |\n\n"+
-    "## Approved `utm_source`\n\n"+cfg.sources.map(s=>"- `"+s+"`").join("\n")+"\n\n"+
-    "## Approved `utm_medium`\n\n"+cfg.mediums.map(s=>"- `"+s+"`").join("\n")+"\n\n"+
-    "## Hard rules\n\n"+
-    "1. **Lowercase everything.** Analytics platforms are case-sensitive; `Facebook` and `facebook` are two different sources.\n"+
-    "2. **Never use spaces.** Use `_` as the separator. Spaces get encoded differently by different platforms.\n"+
-    "3. **All three of `utm_source`, `utm_medium`, `utm_campaign` are required.** A link missing any of them lands in (direct)/(none).\n"+
-    "4. **Use canonical values only.** `ppc`, `paid_search` and `cpc` all mean `cpc` — pick one, which is `cpc`.\n"+
-    "5. **New channel? Update the registry first**, then use it. Do not invent values at link-build time.\n"+
-    audit+ai+
-    "\n---\n\nStandard generated "+new Date().toISOString().slice(0,10)+".\n";
-}
-
-/* ========================================================================
-   AI LAYER (optional)
-   ======================================================================== */
-const KEY="anthropic_api_key";
-function getKey(){ try{ return sessionStorage.getItem(KEY)||""; }catch(e){ return ""; } }
-function setKey(v){ try{ v?sessionStorage.setItem(KEY,v):sessionStorage.removeItem(KEY); }catch(e){} }
-
-async function callClaude(prompt, maxTokens){
-  const key=getKey();
-  if(!key) throw new Error("No API key entered.");
-  const res = await fetch("https://api.anthropic.com/v1/messages",{
-    method:"POST",
-    headers:{
-      "content-type":"application/json",
-      "x-api-key":key,
-      "anthropic-version":"2023-06-01",
-      "anthropic-dangerous-direct-browser-access":"true"
-    },
-    body:JSON.stringify({
-      model:"claude-sonnet-4-5-20250929",
-      max_tokens:maxTokens||900,
-      messages:[{role:"user",content:prompt}]
-    })
-  });
-  if(!res.ok){
-    let msg = res.status+" "+res.statusText;
-    try{ const j=await res.json(); if(j.error&&j.error.message) msg=j.error.message; }catch(e){}
-    throw new Error(msg);
-  }
-  const j=await res.json();
-  return (j.content||[]).filter(b=>b.type==="text").map(b=>b.text).join("");
+  return "# How we name campaign links\n\n"+
+    "_One page. Follow this and our reports will add up._\n\n"+
+    "## Why this exists\n\n"+
+    "When two people write the same campaign name slightly differently, our analytics counts it as two "+
+    "separate campaigns and splits the budget between them. The report stops matching reality, and nobody "+
+    "notices until someone tries to work out what actually worked. These rules take about ten seconds to "+
+    "follow and save an afternoon a month.\n\n"+
+    "## The pattern\n\n```\n"+cfg.pattern+"\n```\n\n"+
+    "| Part | What goes here | Example |\n|---|---|---|\n"+
+    "| `{geo}` | Two-letter country code, or `global` if it is everywhere | `in`, `ng`, `global` |\n"+
+    "| `{channel}` | Where it runs, lowercase, no spaces | `paidsocial`, `search` |\n"+
+    "| `{product}` | What is being sold | `loan`, `serum` |\n"+
+    "| `{objective}` | What you want people to do | `apply`, `acquire`, `retarget` |\n"+
+    "| `{yyyymm}` | Year and month, or `ongoing` if it never ends | `202509`, `ongoing` |\n\n"+
+    "## Approved sources (where the visitor came from)\n\n"+cfg.sources.map(s=>"- `"+s+"`").join("\n")+"\n\n"+
+    "## Approved channel types (how they got here)\n\n"+cfg.mediums.map(s=>"- `"+s+"`").join("\n")+"\n\n"+
+    "## Five rules, and that is all\n\n"+
+    "1. **Everything lowercase.** Our analytics treats `Facebook` and `facebook` as two different sources and splits your results between them.\n"+
+    "2. **No spaces, ever.** Use `_` between words. Different tools handle spaces differently, so a space means the same link gets recorded more than one way.\n"+
+    "3. **Fill in all three: source, channel type, campaign name.** Miss any one and the visit shows up as if the person typed our web address from memory. The campaign gets no credit at all.\n"+
+    "4. **Use the words on the lists above, not synonyms.** `ppc`, `paid_search` and `cpc` all mean the same thing to you, and three different things to the report. We use `cpc`.\n"+
+    "5. **New channel? Add it to this page first**, then use it. Inventing a name at the moment you build a link is how this mess started.\n"+
+    audit+
+    "\n---\n\nWritten "+new Date().toISOString().slice(0,10)+".\n";
 }
 
 /* ========================================================================
@@ -922,13 +880,13 @@ function loadDataset(name){
 function run(){
   const rows=parseInput($("#raw").value);
   if(!rows.length){
-    $("#parsemsg").textContent="Nothing to audit — paste some URLs first.";
+    $("#parsemsg").textContent="Nothing to check yet \u2014 paste some links in first.";
     $("#resultsSection").hidden=true; $("#clusterSection").hidden=true; $("#metrics").innerHTML="";
     return;
   }
   const res=auditRows(rows,currentCfg());
   STATE.result=res;
-  $("#parsemsg").textContent=rows.length+" link"+(rows.length===1?"":"s")+" parsed.";
+  $("#parsemsg").textContent=rows.length+" link"+(rows.length===1?"":"s")+" ready to check.";
   $("#resultsSection").hidden=false;
   $("#clusterSection").hidden=false;
   renderMetrics(res); renderSummary(res); renderTable(res); renderClusters(res);
@@ -958,7 +916,7 @@ $("#fixAll").addEventListener("click", ()=>{
   run();
   const left=STATE.result.items.filter(i=>i.issues.length).length;
   $("#parsemsg").textContent=fixed.length+" problem link"+(fixed.length===1?"":"s")+
-    " corrected and re-audited. "+left+" still need"+(left===1?"s":"")+" a human decision.";
+    " fixed. "+left+" still need"+(left===1?"s":"")+" a person to decide.";
 });
 
 $("#exportCsv").addEventListener("click", ()=>{
@@ -983,50 +941,12 @@ $("#copyBuilt").addEventListener("click", async e=>{
   if(STATE.built) await copy(STATE.built, e.currentTarget, "Copy link");
 });
 
-$("#dlStandard").addEventListener("click", ()=>download("Campaign-Taxonomy-Standard.md", standardMd(), "text/markdown"));
+$("#dlStandard").addEventListener("click", ()=>download("How-we-name-campaign-links.md", standardMd(), "text/markdown"));
 
 ["#bUrl","#bGeo","#bChannel","#bProduct","#bObjective","#bDate"].forEach(s=>$(s).addEventListener("input",renderBuilder));
 ["#bSource","#bMedium"].forEach(s=>$(s).addEventListener("change",renderBuilder));
 ["#okSources","#okMediums"].forEach(s=>$(s).addEventListener("input",refreshBuilderOptions));
 $("#pattern").addEventListener("input",renderBuilder);
-
-/* AI panel */
-$("#aiToggle").addEventListener("click",()=>{
-  const p=$("#aiPanel"); const open=p.dataset.open==="true";
-  p.dataset.open=String(!open);
-  $("#aiToggle").setAttribute("aria-expanded",String(!open));
-});
-$("#apiKey").value=getKey();
-$("#apiKey").addEventListener("input",e=>setKey(e.target.value.trim()));
-$("#aiClear").addEventListener("click",()=>{ setKey(""); $("#apiKey").value=""; $("#aiStatus").textContent="Key cleared."; });
-$("#aiRun").addEventListener("click", async ()=>{
-  const st=$("#aiStatus");
-  if(!getKey()){ st.textContent="Enter an API key first."; return; }
-  if(!STATE.result){ st.textContent="Run an audit first."; return; }
-  st.innerHTML='<span class="spin"></span> Calling Claude…';
-  $("#aiRun").disabled=true;
-  try{
-    const res=STATE.result;
-    const counts={}; res.items.forEach(i=>i.issues.forEach(v=>{counts[RULES[v.code].label]=(counts[RULES[v.code].label]||0)+1;}));
-    const prompt="You are writing the rationale section of an internal marketing-operations standard document.\n\n"+
-      "Audit findings from our campaign tracking links:\n"+
-      "- Links audited: "+res.items.length+"\n"+
-      "- Links with violations: "+res.items.filter(i=>i.issues.length).length+"\n"+
-      "- Violations by type: "+Object.entries(counts).map(([k,v])=>k+" ("+v+")").join(", ")+"\n"+
-      "- Duplicate campaign clusters: "+res.clusters.length+"\n"+
-      (res.clusters.length?"- Examples: "+res.clusters.slice(0,3).map(c=>c.variants.join(" / ")).join(" ; ")+"\n":"")+
-      "\nWrite 3 short paragraphs in plain business English aimed at a marketing team that finds governance boring. "+
-      "Explain the cost of this specific mess in terms of wasted budget and wrong decisions, not in terms of tidiness. "+
-      "No preamble, no headings, no bullet points. Do not invent numbers beyond those given.";
-    const out=await callClaude(prompt, 700);
-    STATE.aiRationale=out.trim();
-    $("#aiOut").innerHTML='<div class="callout callout-info" style="margin-top:.9rem;white-space:pre-wrap">'+esc(out.trim())+'</div>'+
-      '<p style="font-size:.8rem;color:#94A3B8;margin:.6rem 0 0">This is now included in the downloaded taxonomy standard.</p>';
-    st.textContent="Done.";
-  }catch(err){
-    st.textContent="Failed: "+err.message;
-  } finally { $("#aiRun").disabled=false; }
-});
 
 /* helpers */
 function download(name, text, mime){
