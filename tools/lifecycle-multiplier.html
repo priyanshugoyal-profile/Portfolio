@@ -3,817 +3,1136 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>One Message, Four Places, Nothing Broken — Priyanshu Goyal</title>
-<meta name="description" content="Write your campaign once and get the email, text, WhatsApp and notification versions, each checked against the rules that get copy rejected or quietly double your bill.">
+<title>The Most Expensive Word in Your Message — Priyanshu Goyal</title>
+<meta name="description" content="One message, written four ways, with the bill and the rulebook attached. A copywriting tool for Indian lending, where a single word can cost you seven times more and break a Reserve Bank rule at the same time.">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=Instrument+Serif:ital@1&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="../assets/site.css">
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=Instrument+Serif:ital@0;1&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
 <style>
-  .variant { background:var(--paper); border:1px solid var(--line); border-radius:var(--r); padding:1.15rem; margin-bottom:1rem; box-shadow:var(--shadow-sm); transition:border-color .25s, box-shadow .25s; }
-  .variant:hover { border-color:var(--line-strong); box-shadow:var(--shadow); }
-  .variant.bad { border-color:#FFC4B8; }
-  .variant-head { display:flex; justify-content:space-between; align-items:center; gap:.6rem; flex-wrap:wrap; margin-bottom:.7rem; }
-  .variant-head h5 { font-family:var(--display); font-size:.86rem; margin:0; font-weight:700; }
-  .vfield { margin-bottom:.6rem; }
-  .vfield label { display:block; font-size:.68rem; text-transform:uppercase; letter-spacing:.07em; color:var(--ink-soft); margin-bottom:.25rem; font-family:var(--display); font-weight:600; }
-  .vfield textarea {
-    width:100%; font-family:var(--body); font-size:.88rem; line-height:1.55; color:var(--ink);
-    background:var(--paper-cool); border:1.5px solid var(--line); border-radius:var(--r-sm);
-    padding:.6rem .75rem; resize:vertical; transition:border-color .2s, background .2s, box-shadow .2s;
-  }
-  .vfield textarea:focus { outline:none; border-color:var(--brand); background:var(--paper); box-shadow:0 0 0 4px var(--brand-tint); }
-  .counter { display:flex; justify-content:space-between; gap:.5rem; font-size:.72rem; margin-top:.25rem; font-family:var(--mono); color:var(--ink-soft); }
-  .counter .over { color:var(--coral-deep); font-weight:700; }
-  .counter .warn { color:var(--gold-deep); }
-  .meter { height:3px; background:var(--line); border-radius:2px; overflow:hidden; margin-top:.3rem; }
-  .meter i { display:block; height:100%; background:var(--brand); transition:width .15s linear; }
-  .meter i.over { background:var(--coral); }
-  .meter i.warn { background:var(--gold); }
-  .preview { border:1px solid var(--line); border-radius:var(--r-sm); padding:.8rem .9rem; background:var(--paper-warm); font-size:.84rem; margin-top:.6rem; }
-  .preview .p-from { font-weight:700; font-family:var(--display); font-size:.8rem; }
-  .preview .p-sub { color:var(--ink); }
-  .preview .p-pre { color:var(--ink-soft); }
-  .phone-push { background:var(--ink); color:#fff; border-radius:var(--r); padding:.85rem 1rem; font-size:.82rem; box-shadow:var(--shadow); }
-  .phone-push .t { font-weight:700; font-family:var(--display); margin-bottom:.15rem; }
-  .phone-push .b { color:#B9C4DB; line-height:1.45; }
-  .seq { display:grid; grid-template-columns:1fr; gap:.6rem; }
-  .seq-step { display:flex; gap:1rem; align-items:flex-start; background:var(--paper); border:1px solid var(--line); border-radius:var(--r); padding:.9rem 1.1rem; }
-  .seq-day { font-family:var(--mono); font-weight:500; font-size:.76rem; color:var(--brand); min-width:3.6rem; padding-top:.1rem; }
-  .seq-body { flex:1; }
-  .seq-body strong { font-family:var(--display); font-size:.88rem; }
-  .seq-body p { margin:.15rem 0 0; font-size:.8rem; color:var(--ink-soft); }
-  .spec-table td.ok { color:var(--green-text); }
-  @media (min-width:900px){ .variant-cols { display:grid; grid-template-columns:1fr 1fr; gap:1rem; align-items:start; } }
+:root{
+  --paper:#FFFFFF; --paper-warm:#FDFAF4; --paper-cool:#F4F7FD; --paper-deep:#0F1E3D;
+  --ink:#0F1E3D; --ink-body:#2B3855; --ink-soft:#66718C; --ink-faint:#98A2B8;
+  --brand:#1B44C8; --brand-deep:#122E8C; --brand-tint:#E9EEFF;
+  --gold:#FFB020; --gold-deep:#B77400; --gold-tint:#FFF4DE;
+  --coral:#FF5A3C; --coral-deep:#C43A20; --coral-tint:#FFEBE6;
+  --mint:#0FB47F; --mint-deep:#07805A; --mint-tint:#DEF7EE;
+  --line:#E3E8F3; --line-soft:#EEF1F8; --line-strong:#CDD6E8;
+  --display:'Plus Jakarta Sans',ui-sans-serif,system-ui,-apple-system,sans-serif;
+  --body:'Plus Jakarta Sans',ui-sans-serif,system-ui,-apple-system,sans-serif;
+  --serif:'Instrument Serif',Georgia,'Times New Roman',serif;
+  --mono:'JetBrains Mono',ui-monospace,SFMono-Regular,Menlo,monospace;
+  --wrap:78rem; --wrap-narrow:52rem;
+  --r-sm:.5rem; --r:.9rem; --r-lg:1.4rem; --r-xl:2rem;
+  --shadow-sm:0 1px 2px rgba(15,30,61,.04),0 2px 8px rgba(15,30,61,.04);
+  --shadow:0 2px 4px rgba(15,30,61,.04),0 12px 32px rgba(15,30,61,.07);
+  --shadow-lg:0 4px 8px rgba(15,30,61,.05),0 24px 60px rgba(15,30,61,.10);
+  --ease:cubic-bezier(.22,.61,.36,1);
+}
+*{box-sizing:border-box;margin:0;padding:0}
+html{-webkit-text-size-adjust:100%;scroll-behavior:smooth}
+body{font-family:var(--body);background:var(--paper);color:var(--ink-body);
+  font-size:1.0625rem;line-height:1.72;-webkit-font-smoothing:antialiased;overflow-x:hidden}
+.wrap{max-width:var(--wrap);margin:0 auto;padding:0 1.5rem}
+.narrow{max-width:var(--wrap-narrow);margin:0 auto}
+p{margin-bottom:1.1rem} p:last-child{margin-bottom:0}
+strong{color:var(--ink);font-weight:700}
+a{color:var(--brand);text-decoration:none;border-bottom:1px solid rgba(27,68,200,.28)}
+a:hover{border-bottom-color:var(--brand)}
+
+.topbar{position:sticky;top:0;z-index:60;background:rgba(255,255,255,.9);
+  backdrop-filter:blur(14px);-webkit-backdrop-filter:blur(14px);border-bottom:1px solid var(--line-soft)}
+.topbar .wrap{display:flex;align-items:center;justify-content:space-between;height:3.6rem;gap:1rem}
+.back{font-size:.8rem;font-weight:600;color:var(--ink-soft);border:0}
+.back:hover{color:var(--brand)}
+.pill{font-family:var(--mono);font-size:.62rem;font-weight:500;letter-spacing:.11em;
+  text-transform:uppercase;color:var(--brand-deep);background:var(--brand-tint);
+  padding:.36rem .7rem;border-radius:99px;white-space:nowrap}
+
+section{padding:5rem 0}
+.tint-warm{background:var(--paper-warm)}
+.tint-cool{background:var(--paper-cool)}
+.eyebrow{font-family:var(--mono);font-size:.66rem;font-weight:600;letter-spacing:.16em;
+  text-transform:uppercase;color:var(--brand);margin-bottom:1.1rem;display:block}
+.eyebrow.gold{color:var(--gold-deep)} .eyebrow.coral{color:var(--coral-deep)}
+.eyebrow.mint{color:var(--mint-deep)} .eyebrow.soft{color:var(--ink-soft)}
+h1{font-family:var(--serif);font-weight:400;font-size:clamp(2.6rem,6.4vw,4.6rem);
+  line-height:1.03;letter-spacing:-.02em;color:var(--ink);margin-bottom:1.6rem}
+h2{font-family:var(--serif);font-weight:400;font-size:clamp(2rem,4.4vw,3.1rem);
+  line-height:1.08;letter-spacing:-.015em;color:var(--ink);margin-bottom:1.3rem}
+h3{font-family:var(--display);font-weight:700;font-size:1.25rem;line-height:1.3;
+  letter-spacing:-.01em;color:var(--ink);margin-bottom:.7rem}
+h4{font-family:var(--display);font-weight:700;font-size:1rem;color:var(--ink);margin-bottom:.4rem}
+.lede{font-size:1.2rem;line-height:1.65;color:var(--ink-body)}
+.sub{font-size:.95rem;color:var(--ink-soft);line-height:1.62}
+
+.note{background:var(--paper-warm);border:1px solid var(--line);border-left:3px solid var(--gold);
+  border-radius:var(--r);padding:1.5rem 1.7rem;margin:2rem 0}
+.note .tag{font-family:var(--mono);font-size:.62rem;font-weight:600;letter-spacing:.14em;
+  text-transform:uppercase;color:var(--gold-deep);display:block;margin-bottom:.7rem}
+.note.blue{border-left-color:var(--brand);background:var(--paper-cool)}
+.note.blue .tag{color:var(--brand-deep)}
+.note.coral{border-left-color:var(--coral);background:var(--coral-tint)}
+.note.coral .tag{color:var(--coral-deep)}
+.note.mint{border-left-color:var(--mint);background:var(--mint-tint)}
+.note.mint .tag{color:var(--mint-deep)}
+
+.card{background:var(--paper);border:1px solid var(--line);border-radius:var(--r-lg);
+  padding:1.5rem;box-shadow:var(--shadow-sm)}
+.grid{display:grid;gap:1.1rem}
+.g2{grid-template-columns:repeat(2,1fr)} .g3{grid-template-columns:repeat(3,1fr)}
+.g4{grid-template-columns:repeat(4,1fr)}
+
+.stat{font-family:var(--display);font-weight:800;font-size:2rem;line-height:1;
+  letter-spacing:-.025em;color:var(--ink);font-variant-numeric:tabular-nums}
+.stat.brand{color:var(--brand)} .stat.mint{color:var(--mint-deep)}
+.stat.coral{color:var(--coral-deep)} .stat.gold{color:var(--gold-deep)}
+.stat-label{font-family:var(--mono);font-size:.61rem;font-weight:500;letter-spacing:.12em;
+  text-transform:uppercase;color:var(--ink-soft);margin-top:.5rem;line-height:1.5}
+
+/* ---------- form ---------- */
+.ctrl{margin-bottom:1.1rem}
+.ctrl label,.flab{display:block;font-family:var(--mono);font-size:.62rem;font-weight:600;
+  letter-spacing:.11em;text-transform:uppercase;color:var(--ink-soft);margin-bottom:.45rem}
+input[type=text],textarea,select{width:100%;font-family:var(--body);font-size:.95rem;
+  color:var(--ink);background:var(--paper);border:1px solid var(--line-strong);
+  border-radius:var(--r-sm);padding:.65rem .8rem;line-height:1.55;resize:vertical}
+input[type=text]:focus,textarea:focus,select:focus{outline:none;border-color:var(--brand);
+  box-shadow:0 0 0 3px var(--brand-tint)}
+input[type=range]{-webkit-appearance:none;appearance:none;width:100%;height:4px;border-radius:99px;
+  background:var(--line-strong);outline:none;cursor:pointer}
+input[type=range]::-webkit-slider-thumb{-webkit-appearance:none;width:17px;height:17px;border-radius:99px;
+  background:var(--brand);border:3px solid #fff;box-shadow:0 1px 5px rgba(15,30,61,.28)}
+input[type=range]::-moz-range-thumb{width:17px;height:17px;border-radius:99px;background:var(--brand);
+  border:3px solid #fff;box-shadow:0 1px 5px rgba(15,30,61,.28)}
+.seg{display:inline-flex;background:var(--line-soft);border-radius:99px;padding:.28rem;gap:.2rem;flex-wrap:wrap}
+.seg button{font-family:var(--display);font-size:.82rem;font-weight:600;color:var(--ink-soft);
+  background:transparent;border:0;padding:.5rem 1rem;border-radius:99px;cursor:pointer;
+  transition:all .2s var(--ease);text-align:left}
+.seg button.on{background:var(--paper);color:var(--ink);box-shadow:var(--shadow-sm)}
+/* the audience picker stacks, so square it off and let each line breathe */
+#audTabs{border-radius:var(--r);padding:.3rem}
+#audTabs button{border-radius:var(--r-sm);width:100%;padding:.6rem .85rem;line-height:1.4}
+.btn{font-family:var(--display);font-size:.85rem;font-weight:600;color:var(--paper);
+  background:var(--brand);border:0;padding:.7rem 1.3rem;border-radius:99px;cursor:pointer}
+.btn:hover{background:var(--brand-deep)}
+.btn.ghost{background:transparent;color:var(--ink-soft);border:1px solid var(--line-strong)}
+.btn.ghost:hover{background:var(--line-soft);color:var(--ink)}
+.btn.mint{background:var(--mint-deep)} .btn.mint:hover{background:var(--mint)}
+.btn.sm{font-size:.76rem;padding:.42rem .85rem}
+.chips{display:flex;gap:.4rem;flex-wrap:wrap;margin-top:.5rem}
+.chip{font-size:.76rem;font-weight:500;color:var(--brand-deep);background:var(--brand-tint);
+  border:0;padding:.32rem .7rem;border-radius:99px;cursor:pointer;text-align:left;line-height:1.4}
+.chip:hover{background:var(--brand);color:#fff}
+
+/* ---------- the big switch ---------- */
+.switch{display:flex;align-items:center;gap:1rem;flex-wrap:wrap;
+  background:var(--paper);border:1px solid var(--line);border-radius:99px;
+  padding:.4rem .4rem .4rem 1.2rem;box-shadow:var(--shadow-sm)}
+.switch .lbl{font-family:var(--mono);font-size:.64rem;font-weight:600;letter-spacing:.12em;
+  text-transform:uppercase;color:var(--ink-soft)}
+
+/* ---------- channel card ---------- */
+.chan-card{background:var(--paper);border:1px solid var(--line);border-radius:var(--r-lg);
+  overflow:hidden;box-shadow:var(--shadow-sm);display:flex;flex-direction:column}
+.chan-head{padding:1.1rem 1.3rem;border-bottom:1px solid var(--line-soft);
+  display:flex;align-items:center;justify-content:space-between;gap:.8rem;flex-wrap:wrap}
+.chan-name{font-family:var(--display);font-weight:700;font-size:1.05rem;color:var(--ink);
+  display:flex;align-items:center;gap:.55rem}
+.dot{width:.62rem;height:.62rem;border-radius:99px;flex:none}
+.badge{font-family:var(--mono);font-size:.58rem;font-weight:600;letter-spacing:.1em;
+  text-transform:uppercase;padding:.28rem .6rem;border-radius:99px;white-space:nowrap}
+.badge.ok{background:var(--mint-tint);color:var(--mint-deep)}
+.badge.warn{background:var(--gold-tint);color:var(--gold-deep)}
+.badge.stop{background:var(--coral-tint);color:var(--coral-deep)}
+.badge.neutral{background:var(--line-soft);color:var(--ink-soft)}
+.chan-body{padding:1.3rem;flex:1}
+.fld{margin-bottom:1rem}
+.fld:last-child{margin-bottom:0}
+.fld-top{display:flex;justify-content:space-between;align-items:baseline;gap:.6rem;margin-bottom:.35rem}
+.counter{font-family:var(--mono);font-size:.62rem;font-weight:500;color:var(--ink-soft);
+  font-variant-numeric:tabular-nums;white-space:nowrap}
+.counter.warn{color:var(--gold-deep)} .counter.bad{color:var(--coral-deep)}
+.meter{height:3px;border-radius:99px;background:var(--line-soft);margin-top:.35rem;overflow:hidden}
+.meter i{display:block;height:100%;background:var(--mint);transition:width .18s var(--ease)}
+.meter i.warn{background:var(--gold)} .meter i.bad{background:var(--coral)}
+.chan-foot{padding:1.1rem 1.3rem;background:var(--paper-cool);border-top:1px solid var(--line-soft)}
+.kv{display:flex;justify-content:space-between;gap:1rem;padding:.4rem 0;font-size:.86rem;
+  border-bottom:1px solid rgba(205,214,232,.45)}
+.kv:last-child{border-bottom:0}
+.kv b{font-variant-numeric:tabular-nums;color:var(--ink);white-space:nowrap}
+.kv.big{padding-top:.7rem;margin-top:.3rem;border-top:1px solid var(--line-strong);border-bottom:0}
+.kv.big b{font-size:1.15rem;font-weight:800}
+
+/* ---------- flags ---------- */
+.flag{display:grid;grid-template-columns:1.4rem 1fr;gap:.6rem;padding:.75rem 0;
+  border-bottom:1px solid var(--line-soft);font-size:.87rem;line-height:1.55}
+.flag:last-child{border-bottom:0}
+.flag .ic{font-family:var(--mono);font-size:.7rem;font-weight:700;width:1.3rem;height:1.3rem;
+  border-radius:99px;display:flex;align-items:center;justify-content:center;margin-top:.15rem}
+.flag.stop .ic{background:var(--coral-tint);color:var(--coral-deep)}
+.flag.warn .ic{background:var(--gold-tint);color:var(--gold-deep)}
+.flag.ok .ic{background:var(--mint-tint);color:var(--mint-deep)}
+.flag b{display:block;color:var(--ink);margin-bottom:.12rem}
+.flag .why{color:var(--ink-soft);font-size:.82rem}
+.flag .src{font-family:var(--mono);font-size:.58rem;letter-spacing:.09em;text-transform:uppercase;
+  color:var(--ink-faint);margin-top:.28rem;display:block}
+.quote{background:var(--coral-tint);color:var(--coral-deep);font-weight:600;
+  padding:.06rem .3rem;border-radius:.2rem}
+
+/* ---------- table ---------- */
+.tbl-wrap{overflow-x:auto;-webkit-overflow-scrolling:touch;border:1px solid var(--line);
+  border-radius:var(--r);background:var(--paper)}
+table{width:100%;border-collapse:collapse;font-size:.88rem;min-width:40rem}
+th{font-family:var(--mono);font-size:.59rem;font-weight:600;letter-spacing:.1em;text-transform:uppercase;
+  color:var(--ink-soft);text-align:right;padding:.8rem .85rem;border-bottom:1px solid var(--line);
+  background:var(--paper-cool);white-space:nowrap}
+th:first-child{text-align:left}
+td{padding:.75rem .85rem;border-bottom:1px solid var(--line-soft);text-align:right;
+  font-variant-numeric:tabular-nums;white-space:nowrap}
+td:first-child{text-align:left;font-weight:600;color:var(--ink);white-space:normal}
+tr:last-child td{border-bottom:0}
+tr.total td{background:var(--paper-warm);font-weight:700;color:var(--ink);border-top:2px solid var(--line-strong)}
+
+.hr{height:1px;background:var(--line);margin:3rem 0;border:0}
+footer{background:var(--paper-deep);color:#A9B6D4;padding:3.5rem 0;font-size:.88rem}
+footer a{color:#fff;border-bottom-color:rgba(255,255,255,.3)}
+footer .wrap{display:flex;justify-content:space-between;gap:1.5rem;flex-wrap:wrap;align-items:center}
+
+@media(max-width:980px){
+  #outGrid{grid-template-columns:repeat(2,1fr)!important}
+  #briefGrid{grid-template-columns:minmax(0,1fr)!important}
+  #briefGrid>.card{position:static!important}
+}
+@media(max-width:860px){
+  section{padding:3.6rem 0}
+  .g3,.g4{grid-template-columns:repeat(2,1fr)}
+  .lede{font-size:1.08rem} .stat{font-size:1.65rem}
+}
+@media(max-width:620px){
+  body{font-size:1rem}
+  .wrap{padding:0 1rem}
+  #outGrid{grid-template-columns:minmax(0,1fr)!important}
+  .g2,.g3,.g4{grid-template-columns:1fr}
+  .note{padding:1.2rem 1.25rem} .card{padding:1.2rem}
+  .pill-more{display:none}
+  .topbar .wrap{height:3.1rem} .back{font-size:.74rem}
+  .seg{width:100%} .seg button{flex:1 1 auto;text-align:center}
+}
 </style>
 </head>
 <body>
 
-<div class="tool-bar">
-  <div class="wrap tool-bar-inner">
-    <a class="back-link" href="../index.html"><svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M19 12H5M11 18l-6-6 6-6"/></svg>Priyanshu Goyal</a>
-    <span class="tool-bar-tag">Independent build &middot; 03</span>
+<div class="topbar">
+  <div class="wrap">
+    <a class="back" href="../index.html">&larr; Priyanshu Goyal</a>
+    <span class="pill">Lending copy<span class="pill-more"> &middot; cost &amp; compliance</span></span>
   </div>
 </div>
 
-<header class="tool-header">
-  <div class="wash"><i class="w1"></i><i class="w2"></i></div>
-  <div class="wrap above">
-  <p class="eyebrow">A story about an afternoon lost</p>
-  <h1>One message, four places, nothing broken</h1>
-  <p class="tool-sub">You have written the campaign. Now it has to become an email, a text, a WhatsApp message and a notification on someone's lock screen &mdash; each with its own fiddly rules that nobody keeps in their head.</p>
+<!-- ================= OPENING ================= -->
+<section style="padding-top:4.2rem">
+  <div class="wrap narrow">
+    <span class="eyebrow">A story about one sentence</span>
+    <h1>The most expensive word in your message</h1>
 
-  <div class="problem-box">
-    <h2>The copy-and-paste afternoon</h2>
-    <p>So you write them all out. You guess at the lengths, because who actually knows how long a push notification can be. You upload them. Half come back rejected. You fix those, upload again, and something else trips.</p>
-    <p style="margin-top:.7rem">The nastiest one never announces itself at all. Write your text message in Word, or paste it from an email, and you will pick up a curly apostrophe &mdash; <code>&rsquo;</code> instead of <code>'</code>. It looks identical. It is not. That one character can <strong>double what the whole send costs you</strong>, and nothing anywhere will warn you. You just get a bigger invoice at the end of the month and never find out why.</p>
-    <p style="margin-top:.7rem">None of this is hard. It is just tedious, easy to get wrong, and completely invisible until it costs money.</p>
+    <p class="lede">Here is a line somebody writes in a lending company every single day. It takes about nine seconds.</p>
+
+    <div class="note coral" style="margin:1.8rem 0">
+      <span class="tag">The nine-second sentence</span>
+      <p style="font-size:1.12rem;color:var(--ink);font-weight:600">&ldquo;Apply now &mdash; get an instant loan approved in 10 minutes. Guaranteed approval, no documents needed. Offer expires tonight!&rdquo;</p>
+    </div>
+
+    <p>Four things just happened, and nobody in the room knows about any of them yet.</p>
+
+    <div class="grid g2" style="margin:1.8rem 0">
+      <div class="card"><h4>The WhatsApp bill went up seven times</h4>
+        <p class="sub">The word <strong>&ldquo;offer&rdquo;</strong> turned it into an advertisement. WhatsApp charges about seven times more to deliver an advertisement than an update about something a customer already started.</p></div>
+      <div class="card"><h4>One text message became three</h4>
+        <p class="sub">That long dash is not on a phone keypad. One character outside the basic set and the whole message switches to an alphabet that fits less than half as much in.</p></div>
+      <div class="card"><h4>Nearly a third of people will never see it</h4>
+        <p class="sub">An advertisement cannot be sent by text to anyone who asked not to be advertised at. An update about their own loan can. Same people, same phone, different rules.</p></div>
+      <div class="card"><h4>It breaks Reserve Bank rules three times over</h4>
+        <p class="sub">A loan in ten minutes. A guaranteed yes. No documents. The rulebook for lenders in India has something to say about all three, and it is not subtle.</p></div>
+    </div>
+
+    <p><strong>Nothing on the screen went red.</strong> It never does. The bill arrives at the end of the month, the compliance email arrives the month after, and by then nobody remembers who typed the word &ldquo;offer&rdquo;.</p>
+
+    <p>So I built the thing that goes red.</p>
+
+    <div class="note blue">
+      <span class="tag">What this does</span>
+      <p>You write <strong>one</strong> message. It writes that message four ways &mdash; WhatsApp, text, email and a phone notification &mdash; and then, for each one, it tells you two things almost nobody puts on the same screen:</p>
+      <p><strong>What it will cost</strong>, worked out the way the phone networks and WhatsApp actually work it out. And <strong>whether you are allowed to say it</strong>, checked against the rules Indian lenders live under.</p>
+      <p>Then it shows you the same message written properly, so you can see the difference in rupees and in risk at the same time.</p>
+    </div>
+  </div>
+</section>
+
+<!-- ================= STEP 1 : THE BRIEF ================= -->
+<section class="tint-cool">
+  <div class="wrap narrow" style="margin-bottom:2.2rem">
+    <span class="eyebrow">Step one</span>
+    <h2>Say it once</h2>
+    <p class="lede">Three answers. Everything below is built from them, and you can edit any of it afterwards.</p>
+    <p>The first question is the one that matters most, and almost nobody asks it before writing. <strong>Who is this going to, and what have they already done with you?</strong> That single fact decides whether your message is an update or an advertisement &mdash; and an advertisement costs roughly seven times more to deliver.</p>
   </div>
 
-  <div class="metrics-ribbon" id="metrics"></div>
+  <div class="wrap">
+    <div class="grid" style="grid-template-columns:minmax(0,23rem) minmax(0,1fr);gap:1.5rem;align-items:start" id="briefGrid">
+      <div class="card" style="position:sticky;top:4.5rem">
+        <div class="ctrl">
+          <span class="flab">Who are you writing to?</span>
+          <div class="seg" id="audTabs" style="flex-direction:column;width:100%"></div>
+          <p class="sub" style="font-size:.82rem;margin-top:.6rem" id="audNote"></p>
+        </div>
+
+        <div class="ctrl">
+          <label for="msg">What do you want to say? One sentence.</label>
+          <textarea id="msg" rows="3"></textarea>
+          <div class="chips" id="msgChips"></div>
+        </div>
+
+        <div class="grid g2" style="gap:.8rem">
+          <div class="ctrl"><label for="brand">Your name</label><input type="text" id="brand" value="TallyCapital"></div>
+          <div class="ctrl"><label for="lender">Who actually lends</label><input type="text" id="lender" value="Kotak Mahindra Bank"></div>
+        </div>
+
+        <div class="ctrl">
+          <label>How many people <b id="audOut" style="font-family:var(--display);font-size:.9rem;font-weight:700;color:var(--ink);text-transform:none;letter-spacing:0">40,000</b></label>
+          <input type="range" id="audience" min="1" max="200" step="1" value="40">
+        </div>
+
+        <button class="btn" id="go" style="width:100%">Write it four ways</button>
+      </div>
+
+      <div>
+        <div class="card" style="margin-bottom:1.1rem;display:flex;align-items:center;justify-content:space-between;gap:1rem;flex-wrap:wrap">
+          <div>
+            <h4 style="margin-bottom:.15rem">Which version am I looking at?</h4>
+            <p class="sub" style="font-size:.85rem;margin:0">Flip this. Watch the bill and the warnings move together.</p>
+          </div>
+          <div class="seg" id="modeTabs">
+            <button data-mode="sloppy">The way most people write it</button>
+            <button data-mode="clean" class="on">The way it should be written</button>
+          </div>
+        </div>
+
+        <div class="grid g4" style="margin-bottom:1.1rem" id="topStats">
+          <div class="card"><div class="stat" id="sTotal">&#8377;0</div><div class="stat-label">What this send costs</div></div>
+          <div class="card"><div class="stat brand" id="sReach">0</div><div class="stat-label">Reach of the best single channel</div></div>
+          <div class="card"><div class="stat" id="sFlags">0</div><div class="stat-label">Rules it breaks outright</div></div>
+          <div class="card"><div class="stat gold" id="sSave">&#8377;0</div><div class="stat-label">Difference between the two versions</div></div>
+        </div>
+
+        <div id="verdict"></div>
+      </div>
+    </div>
   </div>
-</header>
+</section>
 
-<main class="wrap">
-
-  <!-- ============ BRIEF ============ -->
-  <section class="tool-section" style="border-top:none">
-    <h2>Step 1 &middot; Write it once</h2>
-    <p class="section-intro">Fill this in one time. Everything further down is built from it. You can edit any of the results afterwards &mdash; the checking is the useful part here, not the wording.</p>
-
-    <div class="panel">
-      <div class="panel-head">
-        <h3>What is this campaign about?</h3>
-        <div class="seg" role="group" aria-label="Choose example">
-          <button type="button" data-ds="fintech" aria-pressed="true">Fintech / lending</button>
-          <button type="button" data-ds="consumer" aria-pressed="false">Consumer D2C</button>
-        </div>
-      </div>
-
-      <div class="grid-2">
-        <div class="field">
-          <label for="brand">Brand name</label>
-          <input id="brand" class="input">
-        </div>
-        <div class="field">
-          <label for="product">What you are offering</label>
-          <input id="product" class="input">
-        </div>
-      </div>
-      <div class="grid-2">
-        <div class="field">
-          <label for="proof">Something that builds trust (a number is best)</label>
-          <input id="proof" class="input">
-        </div>
-        <div class="field">
-          <label for="cta">What you want them to do</label>
-          <input id="cta" class="input">
-        </div>
-      </div>
-      <div class="grid-2">
-        <div class="field">
-          <label for="objection">The main thing putting people off</label>
-          <input id="objection" class="input">
-        </div>
-        <div class="field">
-          <label for="deadline">Any deadline (optional)</label>
-          <input id="deadline" class="input">
-        </div>
-      </div>
-
-      <div class="field">
-        <span class="field-label">Who are you writing to?</span>
-        <div class="checkrow" id="segments"></div>
-      </div>
-
-      <div class="field">
-        <span class="field-label">Where should it go?</span>
-        <div class="checkrow" id="channels"></div>
-      </div>
-
-      <div class="grid-3">
-        <div class="field">
-          <label for="smsRate">Cost per text message</label>
-          <input id="smsRate" class="input" type="number" step="0.0005" min="0" value="0.0075">
-        </div>
-        <div class="field">
-          <label for="audience">How many people</label>
-          <input id="audience" class="input" type="number" step="1000" min="0" value="40000">
-        </div>
-        <div class="field">
-          <label for="tz">Where in the world are they?</label>
-          <select id="tz" class="input">
-            <option value="single">All in one time zone</option>
-            <option value="global" selected>Spread around the world</option>
-          </select>
-        </div>
-      </div>
-
-      <div class="btn-row">
-        <button class="btn btn-primary" id="gen">Write all the versions</button>
-        <span id="genMsg" style="font-size:.82rem;color:var(--ink-soft)"></span>
-      </div>
-    </div>
-  </section>
-
-  <!-- ============ OUTPUT ============ -->
-  <section class="tool-section" id="outSection" hidden>
-    <h2>Step 2 &middot; Here it is, everywhere it needs to be</h2>
-    <p class="section-intro">Every box below is checked as you type, against the real rules each place enforces. The counters are not decoration. The one on the text message is doing the same sum your phone network does when it works out what to charge you &mdash; try the <strong>&ldquo;paste from Word&rdquo;</strong> button on it and watch the cost jump.</p>
-    <div id="output"></div>
-  </section>
-
-  <!-- ============ SPECS ============ -->
-  <section class="tool-section" id="specSection" hidden>
-    <h2>Step 3 &middot; The rules it is checking</h2>
-    <p class="section-intro">Here they all are, in the open, so you can disagree with any of them. A rule you cannot see is just someone else's guess with extra confidence.</p>
-    <div class="panel">
-      <div class="table-wrap">
-        <table class="data spec-table" id="specTable">
-          <thead><tr><th>Where</th><th>Which bit</th><th class="num-cell">Limit</th><th>Why it matters</th></tr></thead>
-          <tbody></tbody>
-        </table>
-      </div>
-      <div class="callout callout-info">
-        <strong>The apostrophe that doubles your bill.</strong> Phones have two ways of storing a text message. The cheap way handles the ordinary characters on your keyboard and fits 160 of them into one message. The expensive way handles everything else &mdash; curly quotes, long dashes, emoji &mdash; and only fits 70.<br><br>
-        Here is the catch: <strong>one</strong> unusual character anywhere in the message switches the whole thing to the expensive way. So a perfectly normal 110-character text suddenly needs two messages instead of one, and your send costs twice as much. Nothing warns you, because to a human the two apostrophes look identical. The counter above spots it and tells you exactly which character did it.
-      </div>
-    </div>
-  </section>
-
-  <!-- ============ SEQUENCE ============ -->
-  <section class="tool-section" id="seqSection" hidden>
-    <h2>Step 4 &middot; When to send what</h2>
-    <p class="section-intro">Cheapest and least annoying first, saving the intrusive ones for people who did not respond. The warnings underneath look at the whole run of messages together, not one at a time &mdash; because &ldquo;is this one message fine?&rdquo; is the wrong question when someone is getting four of them.</p>
-    <div class="panel" id="seqPanel"></div>
-  </section>
-
-  <!-- ============ EXPORT ============ -->
-  <section class="tool-section" id="exportSection" hidden>
-    <h2>Step 5 &middot; Take it away</h2>
-    <p class="section-intro">Ready to paste into whatever you send with. Anything still broken is held back by default, which is rather the point &mdash; nothing that would be rejected should ever reach the upload screen.</p>
-    <div class="panel">
-      <div class="btn-row">
-        <button class="btn btn-primary btn-sm" id="expCsv">Download as spreadsheet</button>
-        <button class="btn btn-ghost btn-sm" id="expJson">Download for developers</button>
-        <button class="btn btn-ghost btn-sm" id="copyAll">Copy everything</button>
-        <label style="display:inline-flex;align-items:center;gap:.4rem;font-size:.84rem;margin-left:.5rem">
-          <input type="checkbox" id="incFailing"> include the broken ones anyway
-        </label>
-      </div>
-      <div id="exportSummary" style="margin-top:.9rem"></div>
-    </div>
-  </section>
-
-  <!-- ============ HOW ============ -->
-  <section class="tool-section">
-    <h2>What this tool actually does</h2>
-    <p class="section-intro">The writing is the easy half. The checking is the half that saves you the afternoon.</p>
-    <div class="arch-steps">
-      <div class="arch-step"><div class="arch-num">1</div><div class="arch-content">
-        <h6>Takes your brief once</h6><p>What you are selling, what puts people off, what you want them to do. Every version below is built from those same few answers, so the message stays consistent.</p></div></div>
-      <div class="arch-step"><div class="arch-num">2</div><div class="arch-content">
-        <h6>Writes each version</h6><p>Three different approaches per place &mdash; one leads with the benefit, one answers the objection, one uses the deadline &mdash; rather than the same sentence reworded three times.</p></div></div>
-      <div class="arch-step"><div class="arch-num">3</div><div class="arch-content">
-        <h6>Counts properly</h6><p>Not just characters. It works out how your phone network will actually split and bill the message, including the expensive-alphabet trap.</p></div></div>
-      <div class="arch-step"><div class="arch-num">4</div><div class="arch-content">
-        <h6>Checks as you type</h6><p>Lengths, where text gets cut off on a real phone, and WhatsApp's fussy rules about where you can put a name. Every keystroke, instantly.</p></div></div>
-      <div class="arch-step"><div class="arch-num">5</div><div class="arch-content">
-        <h6>Looks at the whole run</h6><p>Four messages in a week is a lot. Someone on the other side of the world gets your 9am send at 2am. It says so.</p></div></div>
-      <div class="arch-step"><div class="arch-num">6</div><div class="arch-content">
-        <h6>Holds back what is broken</h6><p>Anything that would be rejected is left out of the download unless you deliberately tick the box.</p></div></div>
-    </div>
-
-    <div class="callout callout-info" style="margin-top:1.5rem">
-      <strong>Why the boring half is the valuable half.</strong> Plenty of things will write you four versions of a message. Almost nothing checks them against the rules of the place they are going. So the copy arrives looking finished, gets rejected at upload, and someone spends the afternoon counting characters by hand to find out why. The writing was never the bottleneck.
-    </div>
-  </section>
-
-  <div class="footer-note">
-    <p>Built by Priyanshu Goyal as an independent project. Runs entirely in your browser — no backend, no tracking. <a href="../index.html">Back to portfolio</a></p>
+<!-- ================= STEP 2 : THE FOUR COPIES ================= -->
+<section>
+  <div class="wrap narrow" style="margin-bottom:2.2rem">
+    <span class="eyebrow gold">Step two</span>
+    <h2>Here it is, four times, with the bill</h2>
+    <p class="lede">Every box is live. Type in any of them and the counter, the price and the warnings all move as you go.</p>
+    <p>The counters are not decoration. The one on the text message is doing the same sum your phone network does when it works out what to charge you. The one on WhatsApp is deciding which of two price lists you land on.</p>
   </div>
-</main>
+  <div class="wrap">
+    <div class="grid" style="grid-template-columns:repeat(4,minmax(0,1fr));align-items:start" id="outGrid"></div>
+  </div>
+</section>
+
+<!-- ================= STEP 3 : THE BILL ================= -->
+<section class="tint-warm">
+  <div class="wrap narrow">
+    <span class="eyebrow coral">Step three</span>
+    <h2>Why the same sentence has two prices</h2>
+    <p class="lede">This is the part that surprises people, so it is worth going slowly.</p>
+
+    <h3 style="margin-top:2rem">WhatsApp has two price lists, and your words decide which one you are on</h3>
+    <p>WhatsApp sorts every business message into buckets. The two that matter here are:</p>
+    <p><strong>An update</strong> &mdash; something about a thing this person already started. Their application. Their instalment. A document they still owe you. WhatsApp calls this a utility message and charges very little for it, because it is genuinely useful and nobody asked to be sold to.</p>
+    <p><strong>An advertisement</strong> &mdash; an offer, an invitation, anything trying to start something new. WhatsApp calls this marketing and charges roughly seven and a half times as much.</p>
+
+    <div class="note coral">
+      <span class="tag">The trap</span>
+      <p>You cannot talk your way into the cheap bucket. <strong>The relationship decides the bucket, not the wording.</strong> If this person has no application open with you, there is nothing to update them about, and any message you send is an advertisement no matter how you phrase it.</p>
+      <p>But the reverse absolutely happens, and it is expensive. Somebody writes a perfectly good update about a pending application, then adds one cheerful sentence at the end &mdash; <em>&ldquo;and you could get up to &#8377;15 lakh!&rdquo;</em> &mdash; and that single sentence drags the whole message into the expensive bucket, on every send, forever.</p>
+      <p>The tool above spots that sentence and tells you what it costs.</p>
+    </div>
+
+    <h3 style="margin-top:2.5rem">Text messages have a cheap alphabet and an expensive one</h3>
+    <p>Phones have two ways of storing a text message. The cheap way handles the ordinary characters on a keyboard and fits 160 of them into one message. The expensive way handles everything else &mdash; curly quotes, long dashes, the rupee sign, emoji &mdash; and only fits 70.</p>
+    <p>One unusual character anywhere switches the whole message to the expensive way. A perfectly normal 140-character text suddenly needs three messages instead of one, and your send costs three times as much. Nothing warns you, because to a human the two apostrophes look identical.</p>
+
+    <div class="note">
+      <span class="tag">And then there is who you are allowed to text</span>
+      <p>In India a text message is registered as either an advertisement or a service message before it is ever sent. An advertisement cannot go to anybody who has signed up to stop receiving advertisements, and it can only be sent between nine in the morning and nine at night.</p>
+      <p>A service message &mdash; a real update about something they already have with you &mdash; reaches everybody, at any hour. It costs a little more per message and reaches considerably more people. On a base of any size the cheaper message is usually the more expensive decision.</p>
+    </div>
+
+    <h3 style="margin-top:2.5rem">So here is the whole bill, both ways</h3>
+    <div class="tbl-wrap" style="margin-top:1.2rem">
+      <table id="billTbl">
+        <thead><tr>
+          <th>Where it goes</th><th>What it is called</th><th>Price each</th>
+          <th>Reaches</th><th>The way most people write it</th><th>Written properly</th>
+        </tr></thead>
+        <tbody></tbody>
+      </table>
+    </div>
+    <p class="sub" style="margin-top:.9rem;font-size:.82rem" id="billNote"></p>
+
+    <div class="note blue" style="margin-top:2rem">
+      <span class="tag">Where these prices come from</span>
+      <p>WhatsApp publishes its own rates, and in India an advertisement currently costs <strong>&#8377;0.8631</strong> to deliver against <strong>&#8377;0.1150</strong> for an update. On top of that sits whatever your messaging supplier charges, usually five to thirty paise, and 18% tax on the lot. Both of those are adjustable below, because yours will differ.</p>
+      <p>Text messages run roughly <strong>&#8377;0.08&ndash;&#8377;0.12</strong> as an advertisement and <strong>&#8377;0.10&ndash;&#8377;0.18</strong> as a service message, per part. Email is a few paise. A phone notification is free to send and reaches only people who installed the app and left notifications on, which is never as many as anybody hopes.</p>
+      <p>Rates move. That is rather the point of putting them in a box you can edit rather than baking them into a slide.</p>
+    </div>
+
+    <div class="card" style="margin-top:1.5rem">
+      <h4 style="margin-bottom:1rem">The price list, in a box you can argue with</h4>
+      <div class="grid g3" id="rateCtrls"></div>
+    </div>
+  </div>
+</section>
+
+<!-- ================= STEP 4 : THE RULEBOOK ================= -->
+<section>
+  <div class="wrap narrow">
+    <span class="eyebrow mint">Step four</span>
+    <h2>What you are actually allowed to say</h2>
+    <p class="lede">Lending is not retail. You are not selling shoes, you are selling debt, and the rules reflect that.</p>
+    <p>Below are the rules this tool checks, every one of them written out in plain words with where it comes from. A rule you cannot see is just somebody else's guess with extra confidence &mdash; so here they all are, and you are welcome to disagree with any of them.</p>
+    <p class="sub">I am a marketer, not a lawyer. This is how I would brief a legal team, not a substitute for one.</p>
+
+    <div id="rulebook" style="margin-top:2rem"></div>
+
+    <div class="note mint" style="margin-top:2rem">
+      <span class="tag">The one people find hardest</span>
+      <p>You may not say a loan will be approved. Not &ldquo;guaranteed&rdquo;, not &ldquo;assured&rdquo;, not &ldquo;100%&rdquo;. Every marketer's instinct is to remove doubt, and in lending the doubt is the honest part &mdash; a credit check has not happened yet.</p>
+      <p>What you <em>can</em> do is be precise about the thing that is genuinely fast. Checking whether somebody pre-qualifies really can take under a minute. Money in the account cannot. <strong>&ldquo;Check in a minute&rdquo; is true. &ldquo;Loan in a minute&rdquo; is a rule broken.</strong> One word apart, and the whole difference is whether you are describing the check or the cash.</p>
+    </div>
+  </div>
+</section>
+
+<!-- ================= STEP 5 : TAKE IT AWAY ================= -->
+<section class="tint-cool">
+  <div class="wrap narrow">
+    <span class="eyebrow">Step five</span>
+    <h2>Take it away</h2>
+    <p class="lede">Ready to paste into whatever you send with. Anything that breaks a rule is held back by default, which is rather the point &mdash; copy that would be rejected should never reach the upload screen.</p>
+    <div style="display:flex;gap:.7rem;flex-wrap:wrap;margin-top:1.8rem">
+      <button class="btn" id="dlCsv">Download as a spreadsheet</button>
+      <button class="btn ghost" id="dlJson">Download for developers</button>
+      <button class="btn ghost" id="copyAll">Copy everything</button>
+    </div>
+    <p class="sub" style="margin-top:.9rem" id="dlNote"></p>
+
+    <div class="hr"></div>
+
+    <h3>What this actually does</h3>
+    <div class="grid g3" style="margin-top:1.2rem">
+      <div class="card"><span class="eyebrow soft" style="margin-bottom:.5rem">One</span>
+        <h4>Takes your brief once</h4>
+        <p class="sub">Who it is going to, what you want to say, who is lending. Every version below is built from those same few answers, so the message stays consistent.</p></div>
+      <div class="card"><span class="eyebrow soft" style="margin-bottom:.5rem">Two</span>
+        <h4>Writes it four ways</h4>
+        <p class="sub">Each place has its own shape. A subject line is not a push title is not a WhatsApp header. Same message, four different jobs.</p></div>
+      <div class="card"><span class="eyebrow soft" style="margin-bottom:.5rem">Three</span>
+        <h4>Prices it properly</h4>
+        <p class="sub">Works out which bucket WhatsApp will put you in, how your network will split the text message, and who you are allowed to send it to at all.</p></div>
+      <div class="card"><span class="eyebrow soft" style="margin-bottom:.5rem">Four</span>
+        <h4>Reads it as a regulator would</h4>
+        <p class="sub">Checks every line against the rules Indian lenders live under, and shows you the exact words that caused the problem.</p></div>
+      <div class="card"><span class="eyebrow soft" style="margin-bottom:.5rem">Five</span>
+        <h4>Shows both versions</h4>
+        <p class="sub">The one most people write and the one that passes, side by side, so the cost of doing it properly is a number rather than an argument.</p></div>
+      <div class="card"><span class="eyebrow soft" style="margin-bottom:.5rem">Six</span>
+        <h4>Holds back what is broken</h4>
+        <p class="sub">Anything that would be rejected is left out of the download unless you deliberately ask for it.</p></div>
+    </div>
+
+    <div class="note" style="margin-top:2rem">
+      <span class="tag">Why the boring half is the valuable half</span>
+      <p>Plenty of things will write you four versions of a message. Almost nothing checks them against the price list of the place they are going, and nothing at all checks them against the rulebook of the industry you are in.</p>
+      <p>So the copy arrives looking finished, costs four times what it needed to, and somebody in compliance finds out about it six weeks later. <strong>The writing was never the bottleneck.</strong></p>
+    </div>
+
+    <div style="margin-top:2rem;display:flex;gap:.7rem;flex-wrap:wrap">
+      <a class="btn" href="../index.html" style="border:0;display:inline-block">See the rest of my work</a>
+      <a class="btn ghost" href="tallycapital-growth-lab.html" style="border:1px solid var(--line-strong);display:inline-block">Where these messages fit in the bigger picture</a>
+    </div>
+  </div>
+</section>
+
+<footer>
+  <div class="wrap">
+    <div>
+      <p style="color:#fff;font-weight:600;margin-bottom:.3rem">Built by Priyanshu Goyal as an independent project.</p>
+      <p style="margin:0">Runs entirely in your browser &mdash; no backend, no tracking. Rates are illustrative and editable. Not legal advice.</p>
+    </div>
+    <a href="../index.html">Back to portfolio</a>
+  </div>
+</footer>
 
 <script>
-(function(){
-"use strict";
-
 /* ==================================================================
-   GSM 03.38 — the 7-bit alphabet SMS uses until one character forces
-   the whole message to UCS-2 and halves the limit.
+   GSM 03.38 — the 7-bit alphabet a text message uses, right up until
+   one stray character forces the whole thing into UCS-2 and less than
+   halves what fits. Carried over unchanged from the first version of
+   this tool, because this part was already right.
    ================================================================== */
 const GSM_BASIC = "@£$¥èéùìòÇ\nØø\rÅåΔ_ΦΓΛΩΠΨΣΘΞÆæßÉ !\"#¤%&'()*+,-./0123456789:;<=>?¡ABCDEFGHIJKLMNOPQRSTUVWXYZÄÖÑÜ§¿abcdefghijklmnopqrstuvwxyzäöñüà";
 const GSM_EXT = "^{}\\[~]|€";
 const BASIC = new Set(GSM_BASIC.split(""));
-const EXT = new Set(GSM_EXT.split(""));
+const EXT   = new Set(GSM_EXT.split(""));
 
 function smsInfo(text){
   text = text || "";
-  let units = 0, offenders = [];
-  let gsm = true;
+  let units = 0, offenders = [], gsm = true;
   for(const ch of text){
-    if(BASIC.has(ch)) { units += 1; }
-    else if(EXT.has(ch)) { units += 2; }
+    if(BASIC.has(ch)) units += 1;
+    else if(EXT.has(ch)) units += 2;
     else { gsm = false; offenders.push(ch); }
   }
   const chars = [...text].length;
   let segments, limit, per;
-  if(gsm){
-    per = units;
-    limit = 160;
-    segments = per === 0 ? 0 : (per <= 160 ? 1 : Math.ceil(per/153));
-  } else {
-    per = chars;
-    limit = 70;
-    segments = per === 0 ? 0 : (per <= 70 ? 1 : Math.ceil(per/67));
-  }
-  const uniqueOffenders = [...new Set(offenders)];
-  return { gsm, units:per, limit, segments, chars, offenders:uniqueOffenders };
+  if(gsm){ per = units; limit = 160; segments = per===0?0:(per<=160?1:Math.ceil(per/153)); }
+  else   { per = chars; limit = 70;  segments = per===0?0:(per<=70 ?1:Math.ceil(per/67)); }
+  return { gsm, units:per, limit, segments, chars, offenders:[...new Set(offenders)] };
 }
 
 /* ==================================================================
-   CHANNEL SPECS
+   MONEY
    ================================================================== */
-const SPECS = {
-  email: { label:"Email", fields:[
-    { key:"subject",   label:"Subject line", max:50,
-      why:"Mobile inboxes cut the subject around 35–50 characters; past that, the end of your line is invisible on the device most people read on." },
-    { key:"preheader", label:"Preheader",    max:100,
-      why:"The preview text next to the subject. Under ~40 it looks empty; over ~100 it is truncated." },
-    { key:"body",      label:"Body",         max:900,
-      why:"Not a hard limit, but lifecycle email that runs past this stops being read and starts being skimmed." }
-  ]},
-  sms: { label:"SMS", fields:[
-    { key:"text", label:"Message", max:160, sms:true,
-      why:"160 ordinary characters fit in one message. Add a single curly quote, long dash or emoji and the limit falls to 70, so the same text needs two messages and costs twice as much." }
-  ]},
-  whatsapp: { label:"WhatsApp", fields:[
-    { key:"header", label:"Header", max:60,
-      why:"WhatsApp template headers are capped at 60 characters and cannot contain variables in most template categories." },
-    { key:"body",   label:"Body",   max:1024, wa:true,
-      why:"1024 characters. Variables use {{1}} numbering, cannot sit adjacent to each other, and cannot open or close the body." },
-    { key:"footer", label:"Footer", max:60,
-      why:"60 characters, no variables, no formatting." }
-  ]},
-  push: { label:"Push", fields:[
-    { key:"title", label:"Title", max:65, soft:40,
-      why:"Android allows about 65; iOS lock screens show roughly 40 before truncating." },
-    { key:"body",  label:"Body",  max:240, soft:110,
-      why:"240 is the technical ceiling; an unexpanded iOS notification shows about 110." }
-  ]}
+const inr  = n => "₹" + (Math.round(n*100)/100).toLocaleString("en-IN",{minimumFractionDigits:0,maximumFractionDigits:2});
+const inr0 = n => "₹" + Math.round(n).toLocaleString("en-IN");
+const num  = n => Math.round(n).toLocaleString("en-IN");
+const paise= n => "₹" + n.toFixed(4).replace(/0+$/,"").replace(/\.$/,"");
+
+const RATES = {
+  waMkt:0.8631,        // what WhatsApp charges to deliver an advertisement, India
+  waUtil:0.1150,       // ...and an update about something already in progress
+  bsp:0.10,            // your messaging supplier's cut, on top
+  gst:0.18,
+  smsPromo:0.10,       // per part, advertisement route
+  smsService:0.14,     // per part, service route — costs more, reaches everyone
+  email:0.03,
+  push:0
 };
+// how much of the list each place can actually get to
+const REACH = { whatsapp:.78, smsPromo:.69, smsService:1.0, email:.94, push:.22 };
+
+const waCost = kind => (kind==="marketing" ? RATES.waMkt : RATES.waUtil) + RATES.bsp;
+const waAllIn= kind => waCost(kind) * (1+RATES.gst);
 
 /* ==================================================================
-   EXAMPLE BRIEFS
+   WHO YOU ARE WRITING TO.
+   This is the field that decides your bill, and almost nobody asks it
+   before writing. WhatsApp will only let you use the cheap price list
+   when there is genuinely something open to update them about.
    ================================================================== */
-const BRIEFS = {
-  fintech: {
-    brand:"MPOWER", product:"no-cosigner student loan",
-    proof:"25,000+ international students funded",
-    cta:"Finish your application", objection:"you need a U.S. cosigner",
-    deadline:"before the term deposit date", smsRate:0.0075, audience:40000,
-    segments:[
-      { id:"applied_not_submitted", label:"Applied, not submitted",
-        context:"started an application and stopped partway", urgencyOk:true },
-      { id:"approved_not_disbursed", label:"Approved, not disbursed",
-        context:"has an approved offer but has not accepted it", urgencyOk:true },
-      { id:"lapsed_90d", label:"Lapsed 90 days",
-        context:"has not opened or engaged in three months", urgencyOk:false }
-    ]
-  },
-  consumer: {
-    brand:"Lumora", product:"barrier-repair serum",
-    proof:"rated 4.9 by 12,000+ buyers",
-    cta:"Complete your order", objection:"it might irritate sensitive skin",
-    deadline:"while the bundle price lasts", smsRate:0.0075, audience:85000,
-    segments:[
-      { id:"cart_abandoned", label:"Cart abandoned",
-        context:"left items in the basket in the last 48 hours", urgencyOk:true },
-      { id:"first_purchase_no_repeat", label:"One purchase, no repeat",
-        context:"bought once and has not come back", urgencyOk:false },
-      { id:"lapsed_180d", label:"Lapsed 180 days",
-        context:"has not ordered in six months", urgencyOk:false }
-    ]
-  }
-};
-
-/* ==================================================================
-   TEMPLATE GENERATION (offline)
-   ================================================================== */
-const ANGLES = [
-  { id:"value",       label:"Value" },
-  { id:"reassurance", label:"Reassurance" },
-  { id:"urgency",     label:"Urgency" }
+const AUDS = [
+  { id:"stopped", label:"They started an application and stopped",
+    open:true,
+    note:"There is something open. This is the one situation where an honest update can use WhatsApp's cheap price list — and where a text message counts as service rather than advertising.",
+    thing:"application" },
+  { id:"repaying", label:"They are repaying well and could borrow more",
+    open:false,
+    note:"They have a loan, but more money is new business. However politely you word it, an offer of a top-up is an advertisement and is priced as one. The reminder about their instalment is not — those are two different messages and should stay that way.",
+    thing:"loan" },
+  { id:"finished", label:"They finished repaying last month",
+    open:false,
+    note:"Nothing is open, so everything you send is an advertisement. This is also where the rules bite hardest, because you are asking somebody to take on debt they did not ask about.",
+    thing:null }
 ];
 
-function cap(s){ return s ? s.charAt(0).toUpperCase()+s.slice(1) : s; }
-
-function templates(b, seg, channel, angle){
-  const P = b.product, BR = b.brand, CTA = b.cta, PROOF = b.proof,
-        OBJ = b.objection, DL = b.deadline;
-  const short = P.length > 20 ? P.split(" ").slice(-2).join(" ") : P;
-
-  if(channel === "email"){
-    if(angle === "value") return {
-      subject: cap(short)+": pick up where you left off",
-      preheader: "You are further along than you think. "+cap(PROOF)+".",
-      body: "Hi {{first_name}},\n\nYou started your "+P+" with "+BR+" and stopped partway. Everything you entered is still saved.\n\n"+cap(PROOF)+" — and the part you have left takes about five minutes.\n\n"+CTA+" →\n\n— The "+BR+" team"
-    };
-    if(angle === "reassurance") return {
-      subject: "About "+OBJ,
-      preheader: "The short answer: that is not how this works.",
-      body: "Hi {{first_name}},\n\nMost people who stop at this stage stop because they believe "+OBJ+".\n\nThat is the assumption worth checking. "+cap(PROOF)+", and the requirement you are worried about is not one of ours.\n\n"+CTA+" →\n\n— The "+BR+" team"
-    };
-    return {
-      subject: "Closing soon: your "+short,
-      preheader: "A short window left "+DL+".",
-      body: "Hi {{first_name}},\n\nYour "+P+" is still open, but not indefinitely — it closes "+DL+".\n\n"+cap(PROOF)+".\n\n"+CTA+" →\n\n— The "+BR+" team"
-    };
-  }
-
-  if(channel === "sms"){
-    /* Straight apostrophes are inside GSM-7, so these pass as written. Swap one
-       for a curly quote and the whole message falls to UCS-2 - which is what the
-       "paste from Word" button demonstrates. */
-    if(angle === "value") return { text:
-      BR+": your "+short+" is saved and you're about 5 minutes from done. "+CTA+": {{link}}" };
-    if(angle === "reassurance") return { text:
-      BR+": worried "+OBJ+"? That's not a requirement here. "+CTA+": {{link}}" };
-    return { text:
-      BR+": your "+short+" closes "+DL+". Don't lose your place. "+CTA+": {{link}}" };
-  }
-
-  if(channel === "whatsapp"){
-    const base = { header: cap(BR)+" update", footer: "Reply STOP to opt out" };
-    if(angle === "value") return Object.assign({}, base, { body:
-      "Hi {{1}}, your "+P+" is saved and roughly five minutes from complete. "+PROOF+". "+CTA+" here: {{2}} and we will take it from there." });
-    if(angle === "reassurance") return Object.assign({}, base, { body:
-      "Hi {{1}}, a lot of people stop because they think "+OBJ+". It is not a requirement with us. "+PROOF+". "+CTA+" here: {{2}} to see your options." });
-    return Object.assign({}, base, { body:
-      "Hi {{1}}, your "+P+" closes "+DL+". "+PROOF+". "+CTA+" here: {{2}} before it does." });
-  }
-
-  if(angle === "value") return {
-    title: "Almost done",
-    body: "Your "+short+" is saved — about 5 minutes left. "+CTA+"." };
-  if(angle === "reassurance") return {
-    title: "Not a requirement",
-    body: cap(OBJ)+"? Not with "+BR+". "+CTA+"." };
-  return {
-    title: "Closes "+DL.replace(/^before the /,"").replace(/^while the /,""),
-    body: "Your "+short+" is still open, but not for long. "+CTA+"." };
-}
+const PRESETS = {
+  stopped:  ["Finish the application you started","Tell them the check takes a minute","Ask for the one document still missing"],
+  repaying: ["Offer a top-up on the loan they are repaying","Tell them what their repayment record has earned them","Offer an overdraft instead of another term loan"],
+  finished: ["Invite them back for a second loan","Offer their free credit report","Tell them about working capital before the festive season"]
+};
 
 /* ==================================================================
-   VALIDATION
+   THE COPY.
+   Two versions of everything: the one people actually write, and the
+   one that passes. Keeping both is the whole point — the difference
+   between them is a number, not an opinion.
    ================================================================== */
-function validateField(channel, field, value){
-  const issues = [];
-  const v = value || "";
-  const len = [...v].length;
-
-  if(field.sms){
-    const s = smsInfo(v);
-    if(!s.gsm){
-      issues.push({ level:"warn",
-        msg:"The character"+(s.offenders.length>1?"s":"")+" "+s.offenders.map(c=>"\u201c"+c+"\u201d").join(" ")+
-            " "+(s.offenders.length>1?"are":"is")+" not on a standard keyboard. That switches the whole message to the expensive alphabet \u2014 the limit drops from 160 characters to 70, and every message now costs twice as much to send." });
-    }
-    if(s.segments > 1){
-      issues.push({ level: s.segments > 2 ? "error" : "warn",
-        msg:"This will go out as "+s.segments+" separate messages, and you will be charged for "+s.segments+"." });
-    }
-    return { issues, sms:s, len };
+function writeCopy(aud, mode, B, L, want){
+  const S = mode === "sloppy";
+  if(aud === "stopped"){
+    return S ? {
+      whatsapp:{ header:"Instant loan approved!",
+        body:"Apply now — get an instant loan approved in 10 minutes. Guaranteed approval, no documents needed. Get up to ₹15 lakh at the lowest interest rates. Offer expires tonight!",
+        footer:B },
+      sms:{ text:"Apply now — instant loan approved in 10 mins! Guaranteed approval, no documents needed. Get up to ₹15 lakh. Offer expires tonight! "+B },
+      email:{ subject:"Instant loan approved in 10 minutes — guaranteed!",
+        preheader:"Offer expires tonight. Apply now, no documents needed.",
+        body:"Your loan is waiting!\n\nGet an instant loan approved in just 10 minutes. Guaranteed approval for all applicants, no documents needed, lowest interest rates in the market.\n\nUp to ₹15 lakh. Hurry, this offer expires tonight!\n\nApply now." },
+      push:{ title:"Instant loan approved!", body:"Guaranteed approval in 10 minutes, no documents. Apply before tonight!" }
+    } : {
+      whatsapp:{ header:"Your application",
+        body:"Hello {{1}}, your business loan application with "+B+" is saved and one step from finished. Picking it up again takes about a minute and will not affect your credit score. Lending by "+L+". Full charges are set out in the Key Fact Statement before you accept anything. Reply STOP to stop these messages.",
+        footer:B },
+      sms:{ text:B+": your loan application is saved - you're one step from done. Finish here: {link}. Lending by "+L+". T&C apply." },
+      email:{ subject:"Your application is saved, one step from done",
+        preheader:"Picking it up again takes about a minute and will not affect your score.",
+        body:"You got further than you think.\n\nYour business loan application with "+B+" is saved exactly where you left it. Finishing it takes about a minute, and checking what you qualify for will not affect your credit score.\n\nLending is by "+L+". Every charge — interest, processing fee, anything else — appears in the Key Fact Statement before you accept, and approval depends on a credit assessment.\n\nFinish your application." },
+      push:{ title:"Almost done", body:"Your application is saved. About a minute left to finish it." }
+    };
   }
-
-  if(len === 0){ issues.push({ level:"error", msg:"Nothing here yet." }); return { issues, len }; }
-  if(len > field.max) issues.push({ level:"error", msg:(len-field.max)+" characters too long. The limit is "+field.max+"." });
-  else if(field.soft && len > field.soft) issues.push({ level:"warn",
-    msg:"Anything after about "+field.soft+" characters gets cut off on most phones. It will still send \u2014 people just will not see the end of it." });
-
-  if(field.wa){
-    const vars = v.match(/\{\{\s*\d+\s*\}\}/g) || [];
-    if(/^\s*\{\{/.test(v)) issues.push({ level:"error", msg:"WhatsApp will not approve a message that starts with a name or a link. Put a word in front of it." });
-    if(/\}\}\s*$/.test(v))  issues.push({ level:"error", msg:"WhatsApp will not approve a message that ends with a name or a link. Add a few words after it." });
-    if(/\}\}\s*\{\{/.test(v)) issues.push({ level:"error", msg:"Two blanks cannot sit side by side \u2014 WhatsApp needs words between them." });
-    const nums = vars.map(x=>parseInt(x.replace(/\D/g,""),10)).sort((a,b)=>a-b);
-    nums.forEach((num,i)=>{ if(num !== i+1) issues.push({ level:"error",
-      msg:"The blanks have to be numbered in order starting at 1. This one is {{"+num+"}} but sits in position "+(i+1)+"." }); });
+  if(aud === "repaying"){
+    return S ? {
+      whatsapp:{ header:"You are pre-approved!",
+        body:"Congratulations! You are pre-approved for an instant top-up loan. Guaranteed approval, zero paperwork, money in your account in 10 minutes. Limited time offer — apply now!",
+        footer:B },
+      sms:{ text:"Congrats! You are pre-approved for an instant top-up — guaranteed approval, zero paperwork, money in 10 mins. Limited offer, apply now! "+B },
+      email:{ subject:"You are pre-approved — instant top-up, guaranteed!",
+        preheader:"Zero paperwork. Money in 10 minutes. Limited time only.",
+        body:"Congratulations!\n\nYou are pre-approved for an instant top-up loan with guaranteed approval and zero paperwork. Money in your account in 10 minutes.\n\nLimited time offer. Apply now before it expires!" },
+      push:{ title:"You are pre-approved!", body:"Instant top-up, guaranteed approval, money in 10 minutes. Apply now!" }
+    } : {
+      whatsapp:{ header:"About your loan",
+        body:"Hello {{1}}, you have repaid most of your "+B+" loan without missing an instalment. If you need more working capital, you may be eligible for a top-up. Whether it is approved depends on a credit assessment, and every charge appears in the Key Fact Statement before you accept. Lending by "+L+". Reply STOP to stop these messages.",
+        footer:B },
+      sms:{ text:B+": your repayment record may qualify you for a top-up. Check here: {link}. Lending by "+L+". Reply STOP to opt out." },
+      email:{ subject:"What eleven payments on time has earned you",
+        preheader:"You may be eligible for more. Approval still depends on a credit check.",
+        body:"You have not missed an instalment.\n\nThat record sits with "+L+", and it may make you eligible for a top-up on the loan you are already repaying — more working capital without starting again from scratch.\n\nWhether it is approved depends on a credit assessment. The interest rate, the processing fee and every other charge appear in the Key Fact Statement before you agree to anything.\n\nSee what you may be eligible for." },
+      push:{ title:"You may be eligible for more", body:"Your repayment record could support a top-up. Check what it allows." }
+    };
   }
-  return { issues, len };
-}
-
-/* ==================================================================
-   STATE + RENDER
-   ================================================================== */
-const $ = s=>document.querySelector(s);
-const esc = s=>String(s==null?"":s).replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;","\"":"&quot;","'":"&#39;"}[c]));
-let STATE = { ds:"fintech", brief:null, variants:[] };
-
-function readBrief(){
-  const b = BRIEFS[STATE.ds];
-  return {
-    brand:$("#brand").value.trim() || b.brand,
-    product:$("#product").value.trim() || b.product,
-    proof:$("#proof").value.trim() || b.proof,
-    cta:$("#cta").value.trim() || b.cta,
-    objection:$("#objection").value.trim() || b.objection,
-    deadline:$("#deadline").value.trim() || b.deadline,
-    smsRate:parseFloat($("#smsRate").value)||0,
-    audience:parseInt($("#audience").value,10)||0,
-    tz:$("#tz").value,
-    segments:[...document.querySelectorAll("#segments input:checked")].map(i=>i.value),
-    channels:[...document.querySelectorAll("#channels input:checked")].map(i=>i.value)
+  return S ? {
+    whatsapp:{ header:"Get a new loan now!",
+      body:"Your loan is closed! Get a new instant loan in 2 minutes with guaranteed approval and zero paperwork. No hidden charges, lowest interest rates. Hurry, limited period offer!",
+      footer:B },
+    sms:{ text:"Loan closed! Get a new instant loan in 2 mins — guaranteed approval, zero paperwork, no hidden charges. Lowest rates! Hurry, limited offer. "+B },
+    email:{ subject:"Get a new instant loan in 2 minutes — guaranteed",
+      preheader:"Zero paperwork, no hidden charges, lowest rates. Hurry!",
+      body:"Your loan is closed — get another one now!\n\nInstant approval in 2 minutes. Guaranteed. Zero paperwork, no hidden charges, and the lowest interest rates anywhere.\n\nHurry, this is a limited period offer!" },
+    push:{ title:"Get a new loan now!", body:"Instant approval in 2 minutes, guaranteed, zero paperwork. Hurry!" }
+  } : {
+    whatsapp:{ header:"Your loan is closed",
+      body:"Hello {{1}}, you closed your "+B+" loan last month having paid every instalment on time. That record stays with you. If working capital would help this season, we can show you what you may be eligible for — approval depends on a credit assessment, and all charges appear in the Key Fact Statement before you accept. Lending by "+L+". Reply STOP to stop these messages.",
+      footer:B },
+    sms:{ text:B+": your loan is closed, paid in full and on time. See what you may qualify for: {link}. Lending by "+L+". Reply STOP to opt out." },
+    email:{ subject:"You closed your loan without missing a payment",
+      preheader:"That record is worth something. Here is what it may allow.",
+      body:"You paid every instalment on time.\n\nYour "+B+" loan closed last month, and that record stays with you. If stock or cash flow needs funding this season, we can show you what you may be eligible for.\n\nApproval depends on a credit assessment, and the interest rate, processing fee and every other charge appear in the Key Fact Statement before you accept anything. Lending is by "+L+".\n\nSee what you may be eligible for." },
+    push:{ title:"Your record is worth something", body:"Every instalment paid on time. See what that may allow you to borrow." }
   };
 }
 
-function generate(){
-  const b = readBrief();
-  STATE.brief = b;
-  if(!b.segments.length || !b.channels.length){
-    $("#genMsg").innerHTML = '<span style="color:var(--red-text)">Pick at least one type of customer and one place to send.</span>';
-    ["outSection","specSection","seqSection","exportSection"].forEach(id=>$("#"+id).hidden=true);
-    return;
-  }
-  const segDefs = BRIEFS[STATE.ds].segments;
-  const variants = [];
-  b.segments.forEach(segId=>{
-    const seg = segDefs.find(s=>s.id===segId) || {id:segId,label:segId,urgencyOk:true};
-    b.channels.forEach(ch=>{
-      ANGLES.forEach(angle=>{
-        if(angle.id === "urgency" && !seg.urgencyOk) return;
-        const key = segId+"|"+ch+"|"+angle.id;
-        const content = templates(b, seg, ch, angle.id);
-        variants.push({ key, seg, channel:ch, angle, content });
-      });
-    });
-  });
-  STATE.variants = variants;
-  ["outSection","specSection","seqSection","exportSection"].forEach(id=>$("#"+id).hidden=false);
-  $("#genMsg").textContent = variants.length+" messages written for "+
-    b.segments.length+" type"+(b.segments.length===1?"":"s")+" of customer across "+b.channels.length+" place"+(b.channels.length===1?"":"s")+".";
-  renderOutput();
-  renderSpecs();
-  renderSequence();
-  renderMetrics();
-}
+/* ==================================================================
+   THE RULEBOOK.
+   Every rule written out in the open, in plain words, with where it
+   comes from. A rule you cannot see is just somebody else's guess
+   with extra confidence.
+   I am a marketer, not a lawyer. This is how I would brief a legal
+   team, not a replacement for one.
+   ================================================================== */
+const RULES = [
+{ id:"speed", sev:"stop",
+  re:/\b(instant\s+(loan|cash|money|approval|credit|disburs\w*)|loans?\s+in\s+\d+\s*(min|minute|sec|second)\w*|approved?\s+in\s+\d+\s*(min|minute|sec|second)\w*|money\s+in\s+(\d+\s*(min|minute)\w*|your account in \d+)|\d+\s*[-\s]?minute\s+loan)/gi,
+  title:"Promising a loan in minutes",
+  why:"The Reserve Bank's rulebook for lenders names this almost word for word — a lender must not advertise loans available “in a matter of 2-3 minutes”. Deciding whether somebody pre-qualifies really can take a minute. Money arriving in a bank account cannot.",
+  fix:"Describe the check, not the cash. “See what you qualify for in about a minute” is true, useful and allowed.",
+  src:"RBI Fair Practices Code for NBFCs" },
 
-function renderOutput(){
-  const bySeg = {};
-  STATE.variants.forEach(v=>{ (bySeg[v.seg.id] = bySeg[v.seg.id] || []).push(v); });
-  $("#output").innerHTML = Object.keys(bySeg).map(segId=>{
-    const list = bySeg[segId];
-    const seg = list[0].seg;
-    return '<div class="panel"><div class="panel-head">'+
-      '<h3>'+esc(seg.label)+'</h3>'+
-      '<span class="hint">'+esc(seg.context||"")+
-      (seg.urgencyOk===false?' \u00b7 no deadline version \u2014 it would feel pushy for this group':'')+'</span></div>'+
-      '<div class="variant-cols">'+list.map(v=>variantHtml(v)).join("")+'</div></div>';
-  }).join("");
-  STATE.variants.forEach(v=>wireVariant(v));
-  updateAllCounters();
-}
+{ id:"guarantee", sev:"stop",
+  re:/\b(guarante\w+|100%\s*approv\w*|assured\s+(loan|approval|disburs\w*|credit)|pre[-\s]?approved|sure[-\s]?shot|no\s+rejection|approval\s+for\s+all)\b/gi,
+  title:"Promising the answer will be yes",
+  why:"Nobody can promise approval before a credit check has happened. Saying “guaranteed” or “pre-approved” to somebody who has not been underwritten is a claim with nothing behind it, and it is the single most common thing lenders get pulled up for.",
+  fix:"“See if you pre-qualify” or “you may be eligible”. Add that approval depends on a credit assessment.",
+  src:"RBI Fair Practices Code for NBFCs" },
 
-function variantHtml(v){
-  const spec = SPECS[v.channel];
-  return '<div class="variant" id="v-'+cssId(v.key)+'">'+
-    '<div class="variant-head"><h5>'+esc(spec.label)+' · '+esc(v.angle.label)+'</h5>'+
-      '<span class="pill pill-mute" data-role="status">checking…</span></div>'+
-    (v.channel==="sms"
-      ? '<div class="btn-row" style="margin:-.2rem 0 .7rem">'+
-        '<button class="btn btn-ghost btn-sm" data-act="smart">Simulate paste from Word</button>'+
-        '<button class="btn btn-ghost btn-sm" data-act="plain">Repair encoding</button>'+
-        '<span style="font-size:.72rem;color:var(--ink-soft)">watch the price change</span>'+
-        '</div>'
-      : '')+
-    spec.fields.map(f=>
-      '<div class="vfield">'+
-        '<label for="f-'+cssId(v.key)+'-'+f.key+'">'+esc(f.label)+'</label>'+
-        '<textarea id="f-'+cssId(v.key)+'-'+f.key+'" rows="'+(f.key==="body"&&v.channel==="email"?6:f.max>200?3:2)+'" '+
-          'data-vkey="'+esc(v.key)+'" data-fkey="'+esc(f.key)+'">'+esc(v.content[f.key]||"")+'</textarea>'+
-        '<div class="counter" data-counter="'+f.key+'"></div>'+
-        '<div class="meter"><i></i></div>'+
-        '<div class="vissues" data-issues="'+f.key+'"></div>'+
-      '</div>').join("")+
-    '<div data-preview="1"></div>'+
-  '</div>';
-}
-function cssId(k){ return k.replace(/[^a-zA-Z0-9]/g,"_"); }
+{ id:"nodocs", sev:"stop",
+  re:/\b(no\s+document\w*|zero\s+paperwork|no\s+paperwork|without\s+kyc|no\s+kyc|no\s+verification|no\s+papers)\b/gi,
+  title:"Offering to skip the paperwork",
+  why:"Identity checks are compulsory for every regulated lender in India. You may honestly say the paperwork is light, because for a Tally user most of it is already in the books. You may not say there is none.",
+  fix:"“Minimal documentation — most of it is already in your books.” True, and more persuasive than the lie.",
+  src:"KYC Master Direction · RBI Digital Lending Directions, 2025" },
 
-function wireVariant(v){
-  const root = document.getElementById("v-"+cssId(v.key));
-  if(!root) return;
-  const smart = root.querySelector('[data-act="smart"]');
-  const plain = root.querySelector('[data-act="plain"]');
-  if(smart) smart.addEventListener("click", ()=>{
-    const ta = root.querySelector("textarea");
-    ta.value = ta.value.replace(/'/g,"\u2019").replace(/ - /g," \u2014 ").replace(/\.\.\./g,"\u2026");
-    v.content[ta.dataset.fkey] = ta.value;
-    updateVariant(v); renderMetrics(); renderSequence();
-  });
-  if(plain) plain.addEventListener("click", ()=>{
-    const ta = root.querySelector("textarea");
-    ta.value = ta.value.replace(/[\u2018\u2019]/g,"'").replace(/[\u201c\u201d]/g,'"')
-                       .replace(/\s*\u2014\s*/g," - ").replace(/\u2026/g,"...");
-    v.content[ta.dataset.fkey] = ta.value;
-    updateVariant(v); renderMetrics(); renderSequence();
-  });
-  root.querySelectorAll("textarea").forEach(ta=>{
-    ta.addEventListener("input", ()=>{
-      v.content[ta.dataset.fkey] = ta.value;
-      updateVariant(v);
-      renderMetrics();
-      renderSequence();
-    });
-  });
-}
+{ id:"coercive", sev:"stop",
+  re:/\b(defaulter|legal\s+action|recovery\s+agent|will\s+be\s+reported|blacklist\w*|seize|court\s+notice)\b/gi,
+  title:"Language that threatens",
+  why:"Debt-shaming and threats have no place in a marketing message. This is the wording that ends up in a newspaper, and the rules on recovery conduct are unambiguous.",
+  fix:"Take it out entirely. Collections language is not marketing language and should never share a template.",
+  src:"RBI Fair Practices Code · recovery conduct" },
 
-function updateVariant(v){
-  const root = document.getElementById("v-"+cssId(v.key));
-  if(!root) return;
-  const spec = SPECS[v.channel];
-  let worst = "ok";
-  let smsSeg = 0;
+{ id:"rate", sev:"warn",
+  re:/\b(lowest\s+(interest|rate)\w*|best\s+rate\w*|\d+(\.\d+)?\s*%\s*(p\.?a\.?|interest|per\s+annum)?|0%\s*interest|no\s+cost\s+emi|cheapest\s+(loan|rate))/gi,
+  title:"A rate or a rate claim with nothing beside it",
+  needsAbsent:/\b(apr|key fact statement|kfs|t&c|terms|charges|processing fee)\b/i,
+  title2:"Rate mentioned without the rest of the cost",
+  why:"If an advertisement talks about interest, it must also make clear that other fees apply and where the full terms can be found. Since 2025 the all-in annual cost — interest plus every fee — has to be disclosed as one number before anybody signs.",
+  fix:"Either drop the rate claim, or add: “All charges are set out in the Key Fact Statement before you accept.”",
+  src:"RBI Digital Lending Directions, 2025 · APR and Key Fact Statement" },
 
-  spec.fields.forEach(f=>{
-    const val = v.content[f.key] || "";
-    const res = validateField(v.channel, f, val);
-    const counter = root.querySelector('[data-counter="'+f.key+'"]');
-    const meter = root.querySelector('[data-counter="'+f.key+'"] + .meter i');
-    const issuesEl = root.querySelector('[data-issues="'+f.key+'"]');
+{ id:"nocharges", sev:"warn",
+  re:/\b(no\s+hidden\s+(charge|cost|fee)\w*|zero\s+(charge|fee)\w*|no\s+processing\s+fee|hidden\s+charges?\s+nil)\b/gi,
+  title:"Claiming there is nothing hidden",
+  why:"A fair claim only if the Key Fact Statement says exactly the same thing. Any charge not written into that statement cannot be collected later without asking again — so if marketing and the statement disagree, marketing is the one that is wrong.",
+  fix:"Keep it only if finance confirms it, word for word, against the Key Fact Statement.",
+  src:"RBI Digital Lending Directions, 2025" },
 
-    let left, pct, cls="";
-    if(f.sms){
-      smsSeg = res.sms.segments;
-      left = res.sms.units+" / "+res.sms.limit+" "+(res.sms.gsm?"plain text":"expensive alphabet");
-      pct = Math.min(100, res.sms.units/res.sms.limit*100);
-      if(!res.sms.gsm || res.sms.segments>1) cls = res.sms.segments>2?"over":"warn";
-      counter.innerHTML = '<span class="'+cls+'">'+esc(left)+'</span><span>'+
-        res.sms.segments+' message'+(res.sms.segments===1?'':'s')+'</span>';
-    } else {
-      pct = Math.min(100, res.len/f.max*100);
-      if(res.len > f.max) cls="over";
-      else if(f.soft && res.len > f.soft) cls="warn";
-      counter.innerHTML = '<span class="'+cls+'">'+res.len+' / '+f.max+'</span>'+
-        (f.soft?'<span>'+(res.len>f.soft?'gets cut off on most phones':'safely visible')+'</span>':'<span></span>');
+{ id:"pressure", sev:"warn",
+  re:/\b(hurry|last\s+chance|expires?\s+(today|tonight|soon)|limited\s+(time|period)\s+offer|act\s+now|don'?t\s+miss|only\s+\d+\s+(hours?|days?)\s+left|ends\s+(today|tonight))\b/gi,
+  title:"A deadline pushing somebody towards debt",
+  why:"Urgency is ordinary in retail and awkward in lending. The 2025 rules ask platforms to avoid designs that nudge a borrower into a choice, and a countdown on a loan offer is exactly that. Nobody should take on debt because a timer was running.",
+  fix:"If the deadline is real — a rate revision, a scheme closing — say what it actually is. If it is invented, delete it.",
+  src:"RBI Digital Lending Directions, 2025 · dark patterns" },
+
+{ id:"lender", sev:"warn",
+  isMissing:true,
+  needsAbsent:null,
+  title:"The actual lender is not named",
+  why:"A platform that arranges loans is not the lender. The borrower has to know whose money it is, which bank or finance company they will owe, and who to complain to. On a platform with several lending partners this matters more, not less.",
+  fix:"One line is enough: “Lending by <the lender>.”",
+  src:"RBI Digital Lending Directions, 2025 · lender identity" },
+
+{ id:"optout", sev:"stop",
+  isOptOut:true,
+  title:"No way to make it stop",
+  why:"An advertisement sent by WhatsApp or text has to carry a way out. Consent can always be withdrawn, and if somebody cannot find the exit they will use the report button instead — which costs you the whole channel, not just the one send.",
+  fix:"“Reply STOP to stop these messages.” Nine words.",
+  src:"RBI Digital Lending Directions, 2025 · consent · TRAI" },
+
+{ id:"shout", sev:"warn",
+  isShout:true,
+  title:"Shouting",
+  why:"Strings of capitals and exclamation marks read as a scam to a person and as spam to a filter. In a category where trust is the product, this is expensive in a way that does not appear on any invoice.",
+  fix:"One exclamation mark at most. Sentence case throughout.",
+  src:"Deliverability · plain good sense" }
+];
+
+function checkCopy(text, opts){
+  const t = text || "";
+  const out = [];
+  for(const r of RULES){
+    if(r.id === "lender"){
+      const promises = /\b(loan|borrow|credit|finance|funding|emi|top[-\s]?up)\b/i.test(t);
+      if(promises && opts.lender && !t.toLowerCase().includes(opts.lender.toLowerCase().split(" ")[0].toLowerCase()))
+        out.push({ ...r, hits:[] });
+      continue;
     }
-    if(meter){ meter.style.width = pct+"%"; meter.className = cls; }
-
-    issuesEl.innerHTML = res.issues.map(i=>
-      '<div style="font-size:.74rem;margin-top:.3rem;color:'+
-      (i.level==="error"?"var(--red-text)":"var(--amber-text)")+'">'+
-      (i.level==="error"?"● ":"▲ ")+esc(i.msg)+'</div>').join("");
-
-    res.issues.forEach(i=>{ if(i.level==="error") worst="error";
-      else if(i.level==="warn" && worst!=="error") worst="warn"; });
-  });
-
-  v.status = worst;
-  v.smsSegments = smsSeg;
-  const badge = root.querySelector('[data-role="status"]');
-  badge.className = "pill " + (worst==="error"?"pill-bad":worst==="warn"?"pill-warn":"pill-ok");
-  badge.textContent = worst==="error"?"will be rejected":worst==="warn"?"will send, but costs more":"all good";
-  root.classList.toggle("bad", worst==="error");
-
-  const pv = root.querySelector('[data-preview="1"]');
-  pv.innerHTML = previewHtml(v);
-}
-
-function previewHtml(v){
-  const c = v.content;
-  if(v.channel === "email"){
-    const sub = c.subject||"", pre = c.preheader||"";
-    const cut = [...sub].slice(0,42).join("");
-    return '<div class="preview"><div class="p-from">'+esc(STATE.brief.brand)+'</div>'+
-      '<div class="p-sub">'+esc(cut)+(([...sub].length>42)?'<span style="color:var(--red-text)">…cut here on mobile</span>':'')+'</div>'+
-      '<div class="p-pre">'+esc([...pre].slice(0,90).join(""))+'</div></div>';
+    if(r.id === "optout"){
+      if(opts.needsOptOut && !/\b(stop|unsubscribe|opt[-\s]?out)\b/i.test(t)) out.push({ ...r, hits:[] });
+      continue;
+    }
+    if(r.id === "shout"){
+      const caps = (t.match(/\b[A-Z]{4,}\b/g)||[]).filter(w=>!["STOP","KYC","EMI","GST","APR","TALLY"].includes(w));
+      const bangs = (t.match(/!/g)||[]).length;
+      if(caps.length || bangs >= 2) out.push({ ...r, hits: caps.length?caps:["!".repeat(Math.min(bangs,3))] });
+      continue;
+    }
+    const hits = t.match(r.re);
+    if(!hits) continue;
+    if(r.needsAbsent && r.needsAbsent.test(t)) continue;   // they did add the caveat
+    out.push({ ...r, title: (r.needsAbsent && r.title2) ? r.title2 : r.title, hits:[...new Set(hits)] });
   }
-  if(v.channel === "push"){
-    const t = c.title||"", b = c.body||"";
-    return '<div class="preview" style="background:transparent;border:none;padding:0"><div class="phone-push">'+
-      '<div class="t">'+esc([...t].slice(0,40).join(""))+(([...t].length>40)?'…':'')+'</div>'+
-      '<div class="b">'+esc([...b].slice(0,110).join(""))+(([...b].length>110)?'…':'')+'</div></div></div>';
-  }
-  if(v.channel === "sms"){
-    const s = smsInfo(c.text||"");
-    const cost = (s.segments * (STATE.brief.smsRate||0) * (STATE.brief.audience||0));
-    return '<div class="preview">Sending this to '+ (STATE.brief.audience||0).toLocaleString("en-US") +
-      ' people costs <strong>$'+cost.toFixed(2)+'</strong>'+
-      (s.segments>1?' — '+s.segments+' times what it needs to':'')+'</div>';
-  }
-  return "";
-}
-
-function updateAllCounters(){ STATE.variants.forEach(v=>updateVariant(v)); }
-
-function renderMetrics(){
-  const v = STATE.variants;
-  if(!v.length){ $("#metrics").innerHTML=""; return; }
-  const pass = v.filter(x=>x.status==="ok").length;
-  const fail = v.filter(x=>x.status==="error").length;
-  const sms = v.filter(x=>x.channel==="sms");
-  const extraSeg = sms.reduce((s,x)=>s+Math.max(0,(x.smsSegments||1)-1),0);
-  const b = STATE.brief;
-  const overspend = extraSeg * (b.smsRate||0) * (b.audience||0);
-  const channels = new Set(v.map(x=>x.channel)).size;
-  const segs = new Set(v.map(x=>x.seg.id)).size;
-
-  $("#metrics").innerHTML = [
-    ["1 \u2192 "+v.length, "one brief, this many finished messages"],
-    [channels+" \u00d7 "+segs, "places to send \u00d7 types of customer"],
-    [pass+" / "+v.length, "pass every rule first time"],
-    [fail===0?"0":String(fail), "would bounce back from your sending tool"],
-    ["$"+overspend.toFixed(0), "of text-message cost you do not need to pay"]
-  ].map(b2=>'<div class="metric-box"><span class="num">'+esc(b2[0])+'</span><span class="label">'+esc(b2[1])+'</span></div>').join("");
-}
-
-function renderSpecs(){
-  const rows=[];
-  Object.entries(SPECS).forEach(([ch,spec])=>{
-    spec.fields.forEach(f=>{
-      rows.push('<tr><td><strong>'+esc(spec.label)+'</strong></td><td>'+esc(f.label)+'</td>'+
-        '<td class="num-cell">'+(f.sms?"160, or 70 with special characters":f.max+(f.soft?" (safe up to "+f.soft+")":""))+'</td>'+
-        '<td style="color:var(--ink-soft);font-size:.8rem">'+esc(f.why)+'</td></tr>');
-    });
-  });
-  $("#specTable tbody").innerHTML = rows.join("");
-}
-
-function renderSequence(){
-  const b = STATE.brief;
-  const order = ["email","push","whatsapp","sms"];
-  const used = order.filter(c=>b.channels.includes(c));
-  if(!used.length){ $("#seqPanel").innerHTML=""; return; }
-  const days = [0,2,4,7,10];
-  const steps = used.map((ch,i)=>({ day:days[i]!==undefined?days[i]:(days[days.length-1]+3*(i-days.length+1)), ch }));
-
-  const smsVariants = STATE.variants.filter(v=>v.channel==="sms");
-  const smsSegs = smsVariants.length ? Math.max(...smsVariants.map(v=>v.smsSegments||1)) : 0;
-
-  let warnings = [];
-  if(steps.length >= 4 && (steps[steps.length-1].day - steps[0].day) < 8){
-    warnings.push("That is four messages in "+(steps[steps.length-1].day-steps[0].day)+" days from one campaign. Most teams cap it at three a week before people start unsubscribing.");
-  }
-  if(b.tz === "global"){
-    warnings.push("Your audience is spread across the world, so one fixed send time lands in the middle of someone's night. Emails can wait in an inbox, but a text or a notification at 2am is a complaint. Send those by local time.");
-  }
-  if(smsSegs > 1){
-    warnings.push("Your text is currently being sent as "+smsSegs+" messages per person, so you are paying "+smsSegs+" times over. Getting it under the limit is the cheapest win available here.");
-  }
-
-  $("#seqPanel").innerHTML =
-    '<div class="seq">'+steps.map(s=>{
-      const spec = SPECS[s.ch];
-      const note = s.ch==="email" ? "Costs almost nothing and is easy to ignore, so it goes first."
-        : s.ch==="push" ? "Free, but only reaches people who have your app and said yes to notifications."
-        : s.ch==="whatsapp" ? "Almost everyone opens it, but you pay per conversation and the message needs approving first."
-        : "The most expensive and the most intrusive. Last resort, and only to people who agreed to it.";
-      return '<div class="seq-step"><div class="seq-day">Day '+s.day+'</div>'+
-        '<div class="seq-body"><strong>'+esc(spec.label)+'</strong><p>'+esc(note)+'</p></div></div>';
-    }).join("")+'</div>'+
-    (warnings.length
-      ? warnings.map(w=>'<div class="callout callout-warn">'+esc(w)+'</div>').join("")
-      : '<div class="callout callout-ok">Nothing to worry about here \u2014 sensible spacing, and no one is getting a message in the middle of the night.</div>');
+  return out;
 }
 
 /* ==================================================================
-   EXPORT
+   WHICH BUCKET WHATSAPP PUTS YOU IN.
+   You cannot word your way into the cheap one. The relationship
+   decides it — the wording only decides whether you are claiming it
+   honestly. But you can very easily word your way OUT of it, and one
+   cheerful sentence is usually all it takes.
+   ================================================================== */
+const SELLY = /\b(apply\s+now|offer|get\s+up\s+to|up\s+to\s+₹|avail|exclusive|special|discount|lowest\s+rate|best\s+rate|limited|hurry|new\s+loan|pre[-\s]?approved|congratulations|claim\s+now|don'?t\s+miss)\b/gi;
+
+function classify(text, aud){
+  const t = text || "";
+  const selling = [...new Set(t.match(SELLY)||[])];
+  const hasOpen = AUDS.find(a=>a.id===aud).open;
+  if(!hasOpen){
+    return { kind:"marketing", selling,
+      why: "Nothing is open with this person, so there is no update to send. Whatever you write is an advertisement and is priced as one. No amount of rewording changes that — the relationship decides it, not the words." };
+  }
+  if(selling.length){
+    return { kind:"marketing", selling,
+      why: "This started as an update about something they already began — which would have been cheap. Then it tried to sell something. " + (selling.length===1?"One phrase":"These phrases") + " did it: " + selling.map(s=>"“"+s+"”").join(", ") + ". That is enough to move the whole message onto the expensive price list, on every single send." };
+  }
+  return { kind:"utility", selling:[],
+    why: "This is a genuine update about something this person already started, and it is not trying to sell anything alongside. That puts it on the cheap price list — roughly one seventh of what an advertisement costs to deliver." };
+}
+
+function classifySms(text, aud){
+  const c = classify(text, aud);
+  return c.kind === "utility"
+    ? { kind:"service", why:"Registered as a service message. It reaches everybody, including people who have asked not to receive advertising, and it can be sent at any hour.", reach:REACH.smsService, rate:RATES.smsService }
+    : { kind:"promotional", why:"Registered as an advertisement. It cannot be sent to anyone on the do-not-disturb list, and only between nine in the morning and nine at night. Cheaper per message, and it reaches noticeably fewer people.", reach:REACH.smsPromo, rate:RATES.smsPromo };
+}
+
+/* ==================================================================
+   CHANNELS
+   ================================================================== */
+const CHANS = {
+  whatsapp:{ name:"WhatsApp", col:"var(--mint)", fields:[
+      {k:"header", label:"Header", max:60},
+      {k:"body",   label:"Message", max:1024, rows:6},
+      {k:"footer", label:"Footer", max:60}] },
+  sms:{ name:"Text message", col:"var(--gold)", fields:[
+      {k:"text", label:"Message", max:160, rows:5}] },
+  email:{ name:"Email", col:"var(--brand)", fields:[
+      {k:"subject",   label:"Subject line", max:50},
+      {k:"preheader", label:"Preview text", max:100},
+      {k:"body",      label:"Body", max:900, rows:8}] },
+  push:{ name:"Phone notification", col:"var(--coral)", fields:[
+      {k:"title", label:"Title", max:65, safe:40},
+      {k:"body",  label:"Message", max:240, safe:110, rows:4}] }
+};
+
+const $  = s => document.querySelector(s);
+const esc= s => String(s==null?"":s).replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]));
+
+let ST = { aud:"stopped", mode:"clean", audience:40000, brand:"TallyCapital", lender:"Kotak Mahindra Bank",
+           copy:{ sloppy:null, clean:null } };
+
+function allText(c){ return Object.values(c).join(" "); }
+
+/* the whole bill for one version, all four places at once */
+function price(copySet){
+  const out = {};
+  const A = ST.audience;
+
+  const wa = classify(copySet.whatsapp.body + " " + copySet.whatsapp.header, ST.aud);
+  const waEach = waAllIn(wa.kind);
+  const waReach = Math.round(A * REACH.whatsapp);
+  out.whatsapp = { cat:wa.kind, catWhy:wa.why, each:waEach, reach:waReach, total:waEach*waReach,
+    label: wa.kind==="utility" ? "Update · cheap list" : "Advertisement · expensive list",
+    lines:[
+      ["What WhatsApp charges", paise(wa.kind==="marketing"?RATES.waMkt:RATES.waUtil)],
+      ["Your messaging supplier", paise(RATES.bsp)],
+      ["Tax at 18%", paise(((wa.kind==="marketing"?RATES.waMkt:RATES.waUtil)+RATES.bsp)*RATES.gst)]] };
+
+  const s  = smsInfo(copySet.sms.text);
+  const sc = classifySms(copySet.sms.text, ST.aud);
+  const smsEach  = sc.rate * Math.max(s.segments,1);
+  const smsReach = Math.round(A * sc.reach);
+  out.sms = { cat:sc.kind, catWhy:sc.why, each:smsEach, reach:smsReach, total:smsEach*smsReach, sms:s,
+    label: sc.kind==="service" ? "Service · reaches everyone" : "Advertisement · 9am–9pm only",
+    lines:[
+      ["Alphabet it landed in", s.gsm ? "the cheap one" : "the expensive one"],
+      ["Parts per message", String(Math.max(s.segments,1))],
+      ["Price per part", paise(sc.rate)]] };
+
+  const eReach = Math.round(A * REACH.email);
+  out.email = { cat:"email", each:RATES.email, reach:eReach, total:RATES.email*eReach,
+    label:"A few paise each",
+    catWhy:"Email has no regulator sitting on the price. It costs a few paise, reaches almost everybody on the list, and is the easiest thing in the world to ignore — which is exactly why it goes first in a sequence.",
+    lines:[["Price per email", paise(RATES.email)],["Deliverable", num(eReach)+" of "+num(A)]] };
+
+  const pReach = Math.round(A * REACH.push);
+  out.push = { cat:"push", each:0, reach:pReach, total:0, label:"Free, and mostly unseen",
+    catWhy:"Free to send, and capped by something money cannot fix: only people who installed the app and left notifications switched on will ever see it. That is a much smaller number than anybody hopes.",
+    lines:[["Price per notification", "nothing"],["Reaches", num(pReach)+" of "+num(A)+" — "+Math.round(REACH.push*100)+"%"]] };
+
+  out.grand = out.whatsapp.total + out.sms.total + out.email.total + out.push.total;
+  out.reach = Math.max(out.whatsapp.reach, out.sms.reach, out.email.reach);
+  return out;
+}
+
+function flagsFor(ch, copySet){
+  const needsOptOut = (ch==="whatsapp" || ch==="sms")
+    && classify(copySet.whatsapp.body, ST.aud).kind === "marketing";
+  return checkCopy(allText(copySet[ch]), { lender:ST.lender, needsOptOut });
+}
+
+/* ==================================================================
+   DRAW
+   ================================================================== */
+function draw(){
+  const set   = ST.copy[ST.mode];
+  const other = ST.copy[ST.mode === "clean" ? "sloppy" : "clean"];
+  const P = price(set), PO = price(other);
+
+  /* ---- the four cards ---- */
+  $("#outGrid").innerHTML = Object.keys(CHANS).map(ch=>{
+    const C = CHANS[ch], p = P[ch], fl = flagsFor(ch, set);
+    const stops = fl.filter(f=>f.sev==="stop").length;
+    const warns = fl.filter(f=>f.sev==="warn").length;
+    const badge = stops ? '<span class="badge stop">'+stops+' broken'+(warns?' · '+warns+' to check':'')+'</span>'
+                : warns ? '<span class="badge warn">'+warns+' to check</span>'
+                        : '<span class="badge ok">Nothing broken</span>';
+    const catCls = ch==="whatsapp" ? (p.cat==="utility" ? "ok":"warn")
+                 : ch==="sms"      ? (p.cat==="service" ? "ok":"warn") : "neutral";
+
+    const fields = C.fields.map(f=>{
+      const v = set[ch][f.k] || "";
+      let count, cls = "", pct;
+      if(ch === "sms"){
+        const s = p.sms, parts = Math.max(s.segments,1);
+        count = s.units+" / "+s.limit+" · "+parts+" part"+(parts>1?"s":"");
+        cls   = s.gsm ? (parts>1 ? "warn" : "") : "bad";
+        pct   = Math.min(100, s.units / s.limit * 100);
+      } else {
+        const n = [...v].length;
+        count = n+" / "+f.max;
+        cls   = n > f.max ? "bad" : (f.safe && n > f.safe ? "warn" : "");
+        pct   = Math.min(100, n / f.max * 100);
+      }
+      return '<div class="fld"><div class="fld-top">'
+        +'<span class="flab" style="margin:0">'+f.label+'</span>'
+        +'<span class="counter '+cls+'">'+count+'</span></div>'
+        +'<textarea data-ch="'+ch+'" data-k="'+f.k+'" rows="'+(f.rows||2)+'">'+esc(v)+'</textarea>'
+        +'<div class="meter"><i class="'+cls+'" style="width:'+pct+'%"></i></div></div>';
+    }).join("");
+
+    /* the demo that makes the point faster than any paragraph can */
+    const smsDemo = ch === "sms"
+      ? '<div style="display:flex;gap:.4rem;flex-wrap:wrap;margin-top:-.4rem;margin-bottom:.8rem">'
+        +'<button class="btn ghost sm" data-sms="word">Paste it from Word</button>'
+        +'<button class="btn ghost sm" data-sms="fix">Put it back</button>'
+        +'<span class="counter" style="align-self:center">watch the price move</span></div>' : "";
+
+    const alphabetNote = (ch==="sms" && !p.sms.gsm)
+      ? '<p class="sub" style="font-size:.82rem;margin-top:.5rem;color:var(--coral-deep)">'
+        +'The expensive alphabet, because of '+p.sms.offenders.map(o=>'<span class="quote">'+esc(o)+'</span>').join(" ")
+        +'. To you those look like ordinary punctuation. To the network they are not, and they cut what fits in one message from 160 characters to 70.</p>' : '';
+
+    const flagHtml = fl.length
+      ? fl.map(f=>'<div class="flag '+f.sev+'"><span class="ic">'+(f.sev==="stop"?"✕":"!")+'</span><div>'
+          +'<b>'+f.title+'</b>'
+          +(f.hits && f.hits.length ? '<div style="margin:.25rem 0 .35rem">'+f.hits.map(h=>'<span class="quote">'+esc(h)+'</span>').join(" ")+'</div>' : '')
+          +'<div class="why">'+f.why+'</div>'
+          +'<div class="why" style="margin-top:.35rem"><strong style="color:var(--mint-deep)">Instead:</strong> '+f.fix+'</div>'
+          +'<span class="src">'+f.src+'</span></div></div>').join("")
+      : '<div class="flag ok"><span class="ic">✓</span><div><b>Nothing here breaks a rule</b>'
+        +'<div class="why">Checked against all ten rules in step four. That is not the same as a lawyer signing it off, but it is a check almost nobody runs before the send.</div></div></div>';
+
+    return '<div class="chan-card">'
+      +'<div class="chan-head"><span class="chan-name"><span class="dot" style="background:'+C.col+'"></span>'+C.name+'</span>'+badge+'</div>'
+      +'<div class="chan-body">'+fields+smsDemo+alphabetNote
+        +'<div style="margin-top:1rem;padding-top:.9rem;border-top:1px dashed var(--line-strong)">'
+        +'<span class="badge '+catCls+'">'+p.label+'</span>'
+        +'<p class="sub" style="font-size:.82rem;margin-top:.55rem">'+p.catWhy+'</p></div></div>'
+      +'<div class="chan-foot">'
+        + p.lines.map(l=>'<div class="kv"><span>'+l[0]+'</span><b>'+l[1]+'</b></div>').join("")
+        +'<div class="kv"><span>Price per message</span><b>'+(p.each ? paise(p.each) : "free")+'</b></div>'
+        +'<div class="kv"><span>People it reaches</span><b>'+num(p.reach)+'</b></div>'
+        +'<div class="kv big"><span>This send costs</span><b>'+(p.total ? inr0(p.total) : "₹0")+'</b></div>'
+        +'<div style="margin-top:1rem">'+flagHtml+'</div>'
+      +'</div></div>';
+  }).join("");
+
+  /* Word quietly swaps your straight quotes and hyphens for typographic
+     ones. They look identical. They are not, and the bill knows. */
+  document.querySelectorAll("[data-sms]").forEach(b=>
+    b.addEventListener("click", ()=>{
+      const t = ST.copy[ST.mode].sms.text;
+      ST.copy[ST.mode].sms.text = b.dataset.sms === "word"
+        ? t.replace(/'/g,"’").replace(/ - /g," — ").replace(/"/g,"“")
+        : t.replace(/’/g,"'").replace(/ — /g," - ").replace(/[“”]/g,'"');
+      draw();
+    }));
+
+  /* editing any box re-prices and re-checks everything, live */
+  document.querySelectorAll("#outGrid textarea").forEach(ta=>{
+    ta.addEventListener("input", e=>{
+      const ch = e.target.dataset.ch, k = e.target.dataset.k, pos = e.target.selectionStart;
+      ST.copy[ST.mode][ch][k] = e.target.value;
+      draw();
+      const again = document.querySelector('textarea[data-ch="'+ch+'"][data-k="'+k+'"]');
+      if(again){ again.focus(); try{ again.setSelectionRange(pos,pos); }catch(_){} }
+    });
+  });
+
+  /* ---- headline numbers ---- */
+  const stops = Object.keys(CHANS).flatMap(ch=>flagsFor(ch,set)).filter(f=>f.sev==="stop").length;
+  const otherStops = Object.keys(CHANS).flatMap(ch=>{
+    const needsOptOut = (ch==="whatsapp"||ch==="sms") && classify(other.whatsapp.body, ST.aud).kind==="marketing";
+    return checkCopy(allText(other[ch]), { lender:ST.lender, needsOptOut });
+  }).filter(f=>f.sev==="stop").length;
+
+  $("#sTotal").textContent = inr0(P.grand);
+  $("#sTotal").className   = "stat " + (P.grand > PO.grand ? "coral" : "mint");
+  $("#sReach").textContent = num(P.reach);
+  $("#sFlags").textContent = stops;
+  $("#sFlags").className   = "stat " + (stops ? "coral" : "mint");
+  $("#sSave").textContent  = inr0(Math.abs(P.grand - PO.grand));
+
+  /* ---- verdict ---- */
+  const cheaper = P.grand <= PO.grand;
+  $("#verdict").innerHTML = '<div class="note '+(stops?"coral":"mint")+'" style="margin:0">'
+    +'<span class="tag">'+(ST.mode==="clean" ? "Written properly" : "The way most people write it")+'</span>'
+    + (ST.mode === "clean"
+      ? '<p>This version breaks <strong>'+stops+'</strong> rules and costs <strong>'+inr0(P.grand)+'</strong> to send. The other one breaks <strong>'+otherStops+'</strong> and costs <strong>'+inr0(PO.grand)+'</strong>.</p>'
+        + (cheaper
+          ? '<p>So the careful version is <strong>'+inr0(PO.grand-P.grand)+' cheaper</strong> on this single send, and reaches <strong>'+num(Math.max(0,P.reach-PO.reach))+' more people</strong>. That is the part nobody expects. Doing it properly is not the expensive option here — it is the cheap one, because the price lists and the rulebook happen to reward exactly the same behaviour.</p>'
+          : '<p>On this audience the careful version is not cheaper, and it is worth saying so plainly rather than pretending. Nothing is open with these people, so everything is an advertisement whatever you write. What the careful version buys you is a send that will not be pulled.</p>')
+      : '<p>This version breaks <strong>'+stops+'</strong> rules and costs <strong>'+inr0(P.grand)+'</strong>. It took about nine seconds to write, and nobody in the room would have stopped it.</p>'
+        +'<p>Flip the switch above. Watch the warnings clear and the bill move at the same time.</p>')
+    +'</div>';
+
+  /* ---- the bill, both ways ---- */
+  const sloppy = ST.mode==="sloppy" ? P : PO;
+  const clean  = ST.mode==="clean"  ? P : PO;
+  const rows = [["whatsapp","WhatsApp"],["sms","Text message"],["email","Email"],["push","Phone notification"]];
+  $("#billTbl").querySelector("tbody").innerHTML = rows.map(([k,label])=>
+    '<tr><td>'+label+'</td>'
+    +'<td style="text-align:left;font-size:.8rem;color:var(--ink-soft);white-space:normal">'+clean[k].label+'</td>'
+    +'<td>'+(clean[k].each ? paise(clean[k].each) : "free")+'</td>'
+    +'<td>'+num(clean[k].reach)+'</td>'
+    +'<td style="color:var(--coral-deep);font-weight:600">'+(sloppy[k].total ? inr0(sloppy[k].total) : "₹0")+'</td>'
+    +'<td style="color:var(--mint-deep);font-weight:700">'+(clean[k].total ? inr0(clean[k].total) : "₹0")+'</td></tr>'
+  ).join("")
+  + '<tr class="total"><td>All four</td><td></td><td></td><td></td>'
+  + '<td style="color:var(--coral-deep)">'+inr0(sloppy.grand)+'</td>'
+  + '<td style="color:var(--mint-deep)">'+inr0(clean.grand)+'</td></tr>';
+
+  const diff = sloppy.grand - clean.grand;
+  $("#billNote").innerHTML = diff > 0
+    ? "One send, "+num(ST.audience)+" people. Writing it properly saves <strong>"+inr0(diff)+"</strong>. Send something like this once a week and that is <strong>"+inr0(diff*52)+"</strong> a year, on wording alone, before anybody has argued about media budget."
+    : "On this audience there is no cheap path. Nothing is open with these people, so every message is an advertisement whatever you write. The saving here is not in rupees, it is in not having the campaign pulled.";
+
+  $("#dlNote").textContent = stops
+    ? stops+" thing"+(stops>1?"s":"")+" in this copy break a rule, so those versions are held back from the download."
+    : "Nothing is being held back. All four are clean.";
+}
+
+/* ==================================================================
+   THE RULEBOOK, PRINTED OUT
+   ================================================================== */
+function drawRulebook(){
+  $("#rulebook").innerHTML = RULES.map((r,i)=>
+    '<div class="card" style="margin-bottom:.9rem">'
+    +'<div style="display:flex;justify-content:space-between;align-items:flex-start;gap:1rem;flex-wrap:wrap;margin-bottom:.6rem">'
+      +'<h4 style="margin:0">'+(i+1)+'. '+(r.title2||r.title)+'</h4>'
+      +'<span class="badge '+(r.sev==="stop"?"stop":"warn")+'">'+(r.sev==="stop"?"Do not send":"Check first")+'</span></div>'
+    +'<p class="sub" style="margin-bottom:.7rem">'+r.why+'</p>'
+    +'<p style="font-size:.9rem;margin:0"><strong style="color:var(--mint-deep)">Say this instead:</strong> '+r.fix+'</p>'
+    +'<span class="src" style="margin-top:.6rem">'+r.src+'</span></div>').join("");
+}
+
+/* ==================================================================
+   THE PRICE LIST, IN A BOX YOU CAN ARGUE WITH
+   ================================================================== */
+const RATE_CTRLS = [
+  { k:"bsp",        label:"Your messaging supplier's cut, per WhatsApp message", min:0,  max:40, step:1,  div:100 },
+  { k:"smsPromo",   label:"Text message, advertisement route, per part",         min:6,  max:20, step:1,  div:100 },
+  { k:"smsService", label:"Text message, service route, per part",               min:8,  max:25, step:1,  div:100 }
+];
+function drawRates(){
+  $("#rateCtrls").innerHTML = RATE_CTRLS.map(c=>
+    '<div class="ctrl" style="margin:0"><label>'+c.label
+    +' <b id="r_'+c.k+'" style="font-family:var(--display);font-size:.9rem;font-weight:700;color:var(--ink);text-transform:none;letter-spacing:0">'
+    +paise(RATES[c.k])+'</b></label>'
+    +'<input type="range" data-rate="'+c.k+'" min="'+c.min+'" max="'+c.max+'" step="'+c.step+'" value="'+Math.round(RATES[c.k]*c.div)+'"></div>').join("");
+  document.querySelectorAll("[data-rate]").forEach(el=>{
+    el.addEventListener("input", e=>{
+      const k = e.target.dataset.rate;
+      const c = RATE_CTRLS.find(x=>x.k===k);
+      RATES[k] = (+e.target.value) / c.div;
+      $("#r_"+k).textContent = paise(RATES[k]);
+      draw();
+    });
+  });
+}
+
+/* ==================================================================
+   TAKE IT AWAY
    ================================================================== */
 function exportRows(){
-  const inc = $("#incFailing").checked;
-  return STATE.variants.filter(v=>inc || v.status!=="error");
+  const set = ST.copy[ST.mode];
+  return Object.keys(CHANS).map(ch=>({
+    channel: CHANS[ch].name,
+    fields: set[ch],
+    flags: flagsFor(ch, set)
+  })).filter(r => !r.flags.some(f=>f.sev==="stop"));
 }
 function download(name, text, mime){
-  const b=new Blob([text],{type:mime+";charset=utf-8"});
-  const a=document.createElement("a");
-  a.href=URL.createObjectURL(b); a.download=name;
-  document.body.appendChild(a); a.click();
-  setTimeout(()=>{URL.revokeObjectURL(a.href); a.remove();},0);
+  const b = new Blob([text],{type:mime+";charset=utf-8"});
+  const a = document.createElement("a");
+  a.href = URL.createObjectURL(b); a.download = name;
+  document.body.appendChild(a); a.click(); a.remove();
+  setTimeout(()=>URL.revokeObjectURL(a.href), 1000);
 }
-
-$("#expCsv").addEventListener("click", ()=>{
+$("#dlCsv").addEventListener("click", ()=>{
   const rows = exportRows();
-  const head = "segment,channel,angle,field,copy,characters,sms_segments,status\n";
-  const body = rows.flatMap(v=>SPECS[v.channel].fields.map(f=>{
-    const val = v.content[f.key]||"";
-    return [v.seg.label, SPECS[v.channel].label, v.angle.label, f.label, val,
-      [...val].length, f.sms?smsInfo(val).segments:"", v.status]
-      .map(c=>'"'+String(c).replace(/"/g,'""')+'"').join(",");
-  })).join("\n");
-  download("lifecycle-variants.csv", head+body, "text/csv");
-  summarise(rows);
+  const head = "channel,field,copy,characters,parts,cost_per_message,people_reached,total_cost\n";
+  const P = price(ST.copy[ST.mode]);
+  const key = { "WhatsApp":"whatsapp","Text message":"sms","Email":"email","Phone notification":"push" };
+  const body = rows.flatMap(r=>{
+    const p = P[key[r.channel]];
+    return Object.entries(r.fields).map(([f,v])=>
+      [r.channel, f, '"'+String(v).replace(/"/g,'""')+'"', [...String(v)].length,
+       key[r.channel]==="sms" ? Math.max(p.sms.segments,1) : 1,
+       (p.each||0).toFixed(4), p.reach, Math.round(p.total)].join(","));
+  }).join("\n");
+  download("lending-copy-"+ST.aud+"-"+ST.mode+".csv", head+body, "text/csv");
 });
-
-$("#expJson").addEventListener("click", ()=>{
-  const rows = exportRows();
-  const payload = {
-    campaign: { brand: STATE.brief.brand, product: STATE.brief.product,
-      generated: new Date().toISOString() },
-    messages: rows.map(v=>({
-      segment: v.seg.id, channel: v.channel, angle: v.angle.id,
-      content: v.content,
-      validation: { status: v.status,
-        sms_segments: v.channel==="sms" ? smsInfo(v.content.text||"").segments : null }
-    }))
-  };
-  download("lifecycle-payload.json", JSON.stringify(payload,null,2), "application/json");
-  summarise(rows);
+$("#dlJson").addEventListener("click", ()=>{
+  const P = price(ST.copy[ST.mode]);
+  download("lending-copy-"+ST.aud+"-"+ST.mode+".json", JSON.stringify({
+    audience: ST.aud, version: ST.mode, listSize: ST.audience,
+    brand: ST.brand, lender: ST.lender,
+    rates: RATES, reach: REACH,
+    totalCost: Math.round(P.grand),
+    copy: exportRows()
+  }, null, 2), "application/json");
 });
-
-$("#copyAll").addEventListener("click", async e=>{
-  const rows = exportRows();
-  const txt = rows.map(v=>
-    "["+v.seg.label+" · "+SPECS[v.channel].label+" · "+v.angle.label+"]\n"+
-    SPECS[v.channel].fields.map(f=>f.label+": "+(v.content[f.key]||"")).join("\n")
-  ).join("\n\n");
-  try{ await navigator.clipboard.writeText(txt); }
-  catch(err){
-    const ta=document.createElement("textarea"); ta.value=txt; document.body.appendChild(ta);
-    ta.select(); try{document.execCommand("copy");}catch(_){} ta.remove();
-  }
-  e.currentTarget.textContent="Copied"; setTimeout(()=>e.currentTarget.textContent="Copy all copy",1400);
-  summarise(rows);
+$("#copyAll").addEventListener("click", e=>{
+  const txt = exportRows().map(r=>
+    r.channel.toUpperCase()+"\n"+Object.entries(r.fields).map(([f,v])=>f+": "+v).join("\n")).join("\n\n---\n\n");
+  const ta = document.createElement("textarea");
+  ta.value = txt; document.body.appendChild(ta); ta.select();
+  try{ document.execCommand("copy"); }catch(_){}
+  ta.remove();
+  e.target.textContent = "Copied"; setTimeout(()=>e.target.textContent="Copy everything", 1600);
 });
-
-function summarise(rows){
-  const excluded = STATE.variants.length - rows.length;
-  $("#exportSummary").innerHTML = '<div class="callout '+(excluded?"callout-warn":"callout-ok")+'">'+
-    rows.length+' message'+(rows.length===1?'':'s')+' downloaded'+
-    (excluded? ' \u00b7 <strong>'+excluded+'</strong> broken one'+(excluded===1?'':'s')+
-      ' held back so nothing gets rejected at upload. Tick the box above if you want them anyway.' : ' \u00b7 every one passed.')+'</div>';
-}
 
 /* ==================================================================
    WIRING
    ================================================================== */
-function loadBrief(name){
-  const b = BRIEFS[name];
-  STATE.ds = name;
-  $("#brand").value=b.brand; $("#product").value=b.product;
-  $("#proof").value=b.proof; $("#cta").value=b.cta;
-  $("#objection").value=b.objection; $("#deadline").value=b.deadline;
-  $("#smsRate").value=b.smsRate; $("#audience").value=b.audience;
-  document.querySelectorAll("[data-ds]").forEach(x=>x.setAttribute("aria-pressed",String(x.dataset.ds===name)));
-
-  $("#segments").innerHTML = b.segments.map((s,i)=>
-    '<label><input type="checkbox" value="'+esc(s.id)+'"'+(i===0?" checked":"")+'> '+esc(s.label)+'</label>'
-  ).join("");
-  $("#channels").innerHTML = Object.entries(SPECS).map(([k,v])=>
-    '<label><input type="checkbox" value="'+esc(k)+'" checked> '+esc(v.label)+'</label>'
-  ).join("");
-  generate();
+function regenerate(){
+  ST.brand  = $("#brand").value.trim()  || "TallyCapital";
+  ST.lender = $("#lender").value.trim() || "Kotak Mahindra Bank";
+  ST.copy.sloppy = writeCopy(ST.aud, "sloppy", ST.brand, ST.lender, $("#msg").value);
+  ST.copy.clean  = writeCopy(ST.aud, "clean",  ST.brand, ST.lender, $("#msg").value);
+  draw();
 }
 
-document.querySelectorAll("[data-ds]").forEach(b=>b.addEventListener("click",()=>loadBrief(b.dataset.ds)));
-$("#gen").addEventListener("click", generate);
-["#segments","#channels"].forEach(sel=>{
-  $(sel).addEventListener("change", generate);
-});
-["#smsRate","#audience","#tz"].forEach(s=>$(s).addEventListener("change", ()=>{ updateAllCounters(); renderMetrics(); renderSequence(); }));
-$("#incFailing").addEventListener("change", ()=>summarise(exportRows()));
+function drawAudTabs(){
+  $("#audTabs").innerHTML = AUDS.map(a=>
+    '<button data-aud="'+a.id+'" class="'+(a.id===ST.aud?"on":"")+'">'+a.label+'</button>').join("");
+  document.querySelectorAll("[data-aud]").forEach(b=>
+    b.addEventListener("click", ()=>{
+      ST.aud = b.dataset.aud;
+      $("#msg").value = PRESETS[ST.aud][0];
+      drawAudTabs(); drawChips(); regenerate();
+    }));
+  $("#audNote").textContent = AUDS.find(a=>a.id===ST.aud).note;
+}
+function drawChips(){
+  $("#msgChips").innerHTML = PRESETS[ST.aud].map(p=>'<button class="chip">'+p+'</button>').join("");
+  document.querySelectorAll("#msgChips .chip").forEach(c=>
+    c.addEventListener("click", ()=>{ $("#msg").value = c.textContent; regenerate(); }));
+}
 
-loadBrief("fintech");
-})();
+document.querySelectorAll("#modeTabs [data-mode]").forEach(b=>
+  b.addEventListener("click", ()=>{
+    document.querySelectorAll("#modeTabs [data-mode]").forEach(x=>x.classList.remove("on"));
+    b.classList.add("on"); ST.mode = b.dataset.mode; draw();
+  }));
+
+$("#audience").addEventListener("input", e=>{
+  ST.audience = (+e.target.value) * 1000;
+  $("#audOut").textContent = num(ST.audience);
+  draw();
+});
+["brand","lender"].forEach(id => $("#"+id).addEventListener("input", regenerate));
+$("#go").addEventListener("click", regenerate);
+$("#msg").addEventListener("input", ()=>{});
+
+/* go */
+$("#msg").value = PRESETS[ST.aud][0];
+drawAudTabs(); drawChips(); drawRulebook(); drawRates(); regenerate();
 </script>
 </body>
 </html>
