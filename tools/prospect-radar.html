@@ -432,6 +432,11 @@ details.lint li.warn { color: var(--warn); }
   .side-foot .pill { display: none; }
 }
 @media print { .side { display: none !important; } .app { display: block; } .main { padding: 0; } .stagebar, .sendto, .tools, details.lint { display: none !important; } }
+
+.keygrid { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 12px; }
+.keybox { border: 1px solid var(--line); border-radius: 8px; padding: 12px; display: grid; gap: 8px; align-content: start; min-width: 0; }
+@media (max-width: 980px) { .keygrid { grid-template-columns: minmax(0, 1fr); } }
+.run.wrap .primary { flex: 0 0 auto; }
 </style>
 
 <div class="app">
@@ -505,7 +510,7 @@ details.lint li.warn { color: var(--warn); }
 (() => {
   "use strict";
   // ================= Configuration =================
-  const VERSION = "2.0";
+  const VERSION = "2.1";
 
   const DEFAULT_PROFILE = `Agency: Rarecraft (rarecraftmarketing.com). "Clear marketing for complex businesses." "Everything a marketing department does, minus the department."
 Best fit: complex businesses, especially regulated industries, seasonal demand and tight budgets.
@@ -878,7 +883,8 @@ Cold-email ask: a 20-minute call with a founder, where we share the first three 
 
   // ================= Settings =================
   const S = {
-    key: () => store.get("pr.key", ""),
+    // Any configured AI provider key (Gemini, Mistral or OpenRouter).
+    key: () => store.get("pr.key", "") || store.get("pr.mistralKey", "") || store.get("pr.orKey", ""),
     profile: () => store.get("pr.profile", DEFAULT_PROFILE),
     services: () => { const s = arr(store.get("pr.services", null)).map(str).filter(Boolean); return s.length ? s : DEFAULT_SERVICES; },
     agency: () => store.get("pr.agencyName", "") || (S.profile().match(/^Agency:\s*([^(.\n]+)/m) || [])[1]?.trim() || "Rarecraft",
@@ -1281,9 +1287,10 @@ Cold-email ask: a 20-minute call with a founder, where we share the first three 
   // ================= Gemini =================
   function gemErr(status, msg) {
     const m = (msg || "").toLowerCase();
-    if (status === 400 && m.includes("api key")) return { text: "Google rejected the API key. Re-copy it from aistudio.google.com/apikey into Settings." };
+    if (status === 400 && m.includes("api key")) return { code: "key", text: "Google rejected the Gemini key. Re-copy it from aistudio.google.com/apikey into Settings." };
+    if ((status === 403 || status === 429) && /free tier is not available|set up billing|billing to upgrade|project.{0,20}restricted/.test(m)) return { code: "unavailable", text: "Google has switched off the free Gemini tier for this project. Add a free Mistral or OpenRouter key in Settings, or turn on billing for Gemini (about $0.05 a report). Google says: " + (msg || "").slice(0, 160) };
     if (status === 404 || ((status === 400 || status === 403) && /(no longer available|not found for api|is not supported for generatecontent|unsupported model)/.test(m))) return { code: "model", text: "Google says: " + (msg || "model not found") };
-    if (status === 403) return { text: "This key isn't permitted to use Gemini. Create a new key in Google AI Studio. Google says: " + (msg || "permission denied").slice(0, 200) };
+    if (status === 403) return { code: "key", text: "This key isn't permitted to use Gemini. Create a new key in Google AI Studio. Google says: " + (msg || "permission denied").slice(0, 200) };
     if (status === 429) return { code: "rate", text: "Google's free-tier limit was hit. Wait 60 seconds and run again. If it repeats, today's quota is used up. Google says: " + (msg || "quota exceeded").slice(0, 200) };
     if (status >= 500) return { code: "down", text: "Google's AI servers are overloaded right now. Press Run research again: your research is kept, so only the writing step reruns. Google says: " + (msg || "server error " + status).slice(0, 200) };
     return { text: "Gemini error: " + (msg || status) };
@@ -1390,12 +1397,104 @@ Cold-email ask: a 20-minute call with a founder, where we share the first three 
     return { text: "Claude request failed. Run again." };
   }
 
+  // ================= Other free providers (OpenAI-style APIs) =================
+  // OpenRouter's free list changes often: prefer known strong families, then the largest model by parameter count.
+  const OR_PREFER = [/nemotron-3-ultra/i, /deepseek/i, /qwen.*(235b|max|plus)/i, /inkling:free/i, /nemotron-3(\.\d)?-super/i, /gpt-oss-120b/i, /llama-4|llama-3\.3-70b/i, /gemma-4-31b|gemma-3-27b/i, /glm|kimi/i];
+  const OR_SKIP = /content-safety|guard|code|coder|nano|mini|tiny|small|lightning|xs-|-vl|omni|\b[1-9](\.\d)?b\b|2\.6b/i;
+  const paramSize = (id) => { const m = id.match(/(\d+(?:\.\d+)?)b(?![a-z])/i); return m ? parseFloat(m[1]) : 0; };
+  let orModels = null;
+  async function openRouterModels(signal) {
+    if (orModels) return orModels;
+    let list = [];
+    try {
+      const r = await fetch("https://openrouter.ai/api/v1/models", { signal });
+      if (r.ok) list = arr((await r.json()).data).filter((m) => /:free$/.test(m.id) && (m.context_length || 0) >= 60000 && !OR_SKIP.test(m.id)).map((m) => m.id);
+    } catch (e) { if (signal?.aborted) throw e; }
+    const score = (id) => { const i = OR_PREFER.findIndex((re) => re.test(id)); return i < 0 ? 99 : i; };
+    orModels = [...list].sort((a, b) => score(a) - score(b) || paramSize(b) - paramSize(a)).slice(0, 6);
+    if (!orModels.length) orModels = ["deepseek/deepseek-chat-v3-0324:free", "meta-llama/llama-3.3-70b-instruct:free"];
+    return orModels;
+  }
+  function compatErr(provider, status, msg) {
+    const m = (msg || "").toLowerCase(), name = provider === "mistral" ? "Mistral" : "OpenRouter";
+    if (status === 401 || /invalid.*key|unauthori[sz]ed|no auth/.test(m)) return { code: "key", text: `${name} rejected the API key. Re-copy it into Settings.` };
+    if (status === 402 || /credit|payment|insufficient/.test(m)) return { code: "unavailable", text: `${name} says this needs credits: ${msg.slice(0, 160)}` };
+    if (status === 429) return { code: "rate", text: `${name}'s free limit was hit. ${provider === "openrouter" ? "Free models allow about 50 requests a day. " : "Wait a minute and try again. "}${name} says: ${msg.slice(0, 140)}` };
+    if (status === 404 || /model.{0,40}(not found|does not exist|unavailable|no endpoints)/.test(m)) return { code: "model", text: `${name}: ${msg.slice(0, 160)}` };
+    if (status === 400 && /context|too long|maximum.*tokens|too many tokens/.test(m)) return { code: "model", text: `${name}: the research is too long for this model.` };
+    if (status >= 500) return { code: "down", text: `${name} is overloaded right now. ${msg.slice(0, 120)}` };
+    return { text: `${name} error: ${msg || status}` };
+  }
+  async function compatCall(provider, prompt, { json = false, signal, onRetry } = {}) {
+    const isM = provider === "mistral";
+    const key = store.get(isM ? "pr.mistralKey" : "pr.orKey", "");
+    if (!key) throw { code: "key", text: "No key" };
+    const pinned = store.get(isM ? "pr.mistralModel" : "pr.orModel", "");
+    const models = [...new Set([pinned, ...(isM ? ["mistral-medium-latest", "mistral-large-latest", "mistral-small-latest"] : await openRouterModels(signal))].filter(Boolean))];
+    const url = isM ? "https://api.mistral.ai/v1/chat/completions" : "https://openrouter.ai/api/v1/chat/completions";
+    const headers = { "content-type": "application/json", authorization: "Bearer " + key };
+    if (!isM) { headers["X-Title"] = "Prospect Radar"; headers["HTTP-Referer"] = location.origin.startsWith("http") ? location.origin : "https://prospect-radar.local"; }
+    let lastErr;
+    for (const model of models) {
+      for (let attempt = 0; attempt < 2; attempt++) {
+        const body = { model, messages: [{ role: "user", content: prompt }], temperature: json ? 0.4 : 0.5, max_tokens: 9000 };
+        if (json && isM) body.response_format = { type: "json_object" };
+        const r = await fetch(url, { method: "POST", signal, headers, body: JSON.stringify(body) });
+        if (r.ok) {
+          const j = await r.json();
+          const text = str(j.choices?.[0]?.message?.content);
+          if (text) return { text, chunks: [], supports: [], queries: [], model: (isM ? "Mistral " : "") + model.replace(/:free$/, "") };
+          lastErr = { code: "down", text: "Empty answer from " + model };
+          continue;
+        }
+        let msg = ""; try { const e = await r.json(); msg = str(e.error?.message || e.message || e.detail || JSON.stringify(e).slice(0, 200)); } catch {}
+        lastErr = compatErr(provider, r.status, msg);
+        if (lastErr.code === "key" || lastErr.code === "unavailable") throw lastErr;
+        if ((lastErr.code === "down" || (lastErr.code === "rate" && isM)) && attempt === 0) { onRetry?.(`${isM ? "Mistral" : "OpenRouter"} busy, retrying`); await sleep(isM ? 3000 : 5000, signal); continue; }
+        break;
+      }
+      if (lastErr?.code === "rate" && !isM && /day/i.test(lastErr.text)) throw lastErr;
+    }
+    throw lastErr || { code: "down", text: "No model answered." };
+  }
+
+  const PROVIDERS = {
+    gemini: { label: "Google Gemini", key: () => store.get("pr.key", ""), call: (p, o) => gemini(p, o) },
+    mistral: { label: "Mistral", key: () => store.get("pr.mistralKey", ""), call: (p, o) => compatCall("mistral", p, o) },
+    openrouter: { label: "OpenRouter", key: () => store.get("pr.orKey", ""), call: (p, o) => compatCall("openrouter", p, o) }
+  };
+  function providerOrder() {
+    const first = store.get("pr.provider", "gemini");
+    return [first, ...Object.keys(PROVIDERS).filter((x) => x !== first)].filter((p) => PROVIDERS[p] && PROVIDERS[p].key());
+  }
+  // Skip providers that failed for account reasons earlier in this session.
+  const deadProviders = new Set();
+
   // One entry point for every AI call, whichever engine this view has.
   // opts: json, search, signal, onRetry, quick, onText
   async function ask(prompt, opts = {}) {
     if (engine === "live") {
-      const out = await gemini(prompt, opts);
-      return opts.json ? { ...out, data: parseJson(out.text) } : out;
+      const order = providerOrder();
+      if (!order.length) throw { text: "Add an AI key in Settings first: Gemini, Mistral or OpenRouter (all free)." };
+      const usable = order.filter((p) => !deadProviders.has(p));
+      const list = usable.length ? usable : order;
+      let lastErr;
+      for (const [i, p] of list.entries()) {
+        try {
+          const out = await PROVIDERS[p].call(prompt, opts);
+          const label = p === "gemini" ? out.model : out.model;
+          store.set("pr.lastModel", label); setEngine(engine);
+          return opts.json ? { ...out, model: label, data: parseJson(out.text) } : { ...out, model: label };
+        } catch (e) {
+          if (opts.signal?.aborted) throw e;
+          lastErr = e;
+          if (["key", "unavailable"].includes(e?.code)) deadProviders.add(p);
+          const next = list[i + 1];
+          if (next && ["key", "unavailable", "rate", "down", "model"].includes(e?.code)) { opts.onRetry?.(`${PROVIDERS[p].label} unavailable, switching to ${PROVIDERS[next].label}`); continue; }
+          throw e;
+        }
+      }
+      throw lastErr;
     }
     if (engine === "claude") {
       const o = { signal: opts.signal };
@@ -1735,11 +1834,11 @@ ${schema()}`;
 
   // Full research for one company. Returns the saved entry.
   async function researchCompany(input, ui, sig) {
-    const ground = engine === "live" && !!store.get("pr.ground", false);
+    const ground = engine === "live" && !!store.get("pr.ground", false) && !!store.get("pr.key", "");
     ui.start(stepList(ground));
     let entry;
     if (engine === "live") {
-      if (!S.key()) throw { text: "Add your Gemini API key in Settings first." };
+      if (!S.key()) throw { text: "Add an AI key in Settings first: Gemini, Mistral or OpenRouter (all free)." };
       const cacheKey = [input.site, input.cname, ground].join("|");
       let R = lastResearch && lastResearch.key === cacheKey && Date.now() - lastResearch.t < 30 * 60000 ? lastResearch : null;
       if (R) {
@@ -2210,7 +2309,7 @@ ${text}`;
   function setEngine(kind) {
     engine = kind;
     const p = $("enginePill");
-    if (kind === "live") { p.className = "pill " + (S.key() ? "live" : "off"); p.textContent = S.key() ? "Live research · " + (store.get("pr.modelResolved", "") || "Gemini") : "Add Gemini key in Settings"; }
+    if (kind === "live") { p.className = "pill " + (S.key() ? "live" : "off"); p.textContent = S.key() ? "Live research · " + (store.get("pr.lastModel", "") || PROVIDERS[providerOrder()[0]]?.label || "AI") : "Add an AI key in Settings"; }
     else if (kind === "claude") { p.className = "pill know"; p.textContent = "Knowledge mode · Claude"; }
     else if (kind === "none") { p.className = "pill off"; p.textContent = "AI unavailable in this view"; }
     else { p.className = "pill"; p.textContent = "Checking engine"; }
@@ -2278,7 +2377,7 @@ ${text}`;
       ev.preventDefault(); if (running) return;
       const site = normalizeSite($("site").value);
       if (!site) { showErr("Enter a valid website, for example acme.com."); return; }
-      if (engine === "live" && !S.key()) { showErr("Add your free Gemini API key in Settings first."); go("settings", { focus: "keys" }); return; }
+      if (engine === "live" && !S.key()) { showErr("Add a free AI key in Settings first (Gemini, Mistral or OpenRouter)."); go("settings", { focus: "keys" }); return; }
       if (isDnc(site)) { showErr("This company is on your do-not-contact list. Remove it in Pipeline first if that was a mistake."); return; }
       runResearch({ site, cname: str($("cname").value), pname: str($("pname").value), prole: str($("prole").value), pemail: str($("pemail").value).toLowerCase(), notes: str($("notes").value).slice(0, 15000) });
     });
@@ -2501,7 +2600,7 @@ Return ONLY JSON: {"intent": "", "summary": "one sentence", "sentiment": "positi
     paint() { if (currentView === "queue") RENDER.queue({ soft: true }); navBadges(); },
     async start() {
       if (this.running) return;
-      if (!aiReady()) { toast(engine === "live" ? "Add your Gemini key in Settings first" : "AI is unavailable in this view"); return; }
+      if (!aiReady()) { toast(engine === "live" ? "Add an AI key in Settings first" : "AI is unavailable in this view"); return; }
       this.running = true; this.paint();
       while (this.running) {
         const it = this.items.find((i) => i.status === "waiting");
@@ -2787,8 +2886,33 @@ Return ONLY JSON: {"agency_name": "", "profile": "", "services": [""]}`;
     const lenSel = el("select", { id: "setLen" }, Object.entries(LENGTHS).map(([k, v]) => el("option", { value: k, selected: e.length === k ? "" : null }, `${v.label}: email 1 about ${v.e1[0]}-${v.e1[1]} words`)));
     const optOut = el("input", { type: "text", id: "setOpt", value: e.optOut }), postal = el("input", { type: "text", id: "setPostal", value: e.postal, placeholder: "Street address, city, country" });
     const footerOn = el("input", { type: "checkbox", id: "setFooter", checked: e.footer ? "" : null });
-    const key = el("input", { type: "password", id: "setKey", value: S.key(), autocomplete: "off", placeholder: "AIza..." });
+    const key = el("input", { type: "password", id: "setKey", value: store.get("pr.key", ""), autocomplete: "off", placeholder: "AIza..." });
     const model = el("input", { type: "text", id: "setModel", value: store.get("pr.model", ""), placeholder: "Auto" });
+    const mk = el("input", { type: "password", id: "setMistral", value: store.get("pr.mistralKey", ""), autocomplete: "off", placeholder: "Mistral API key" });
+    const mm = el("input", { type: "text", id: "setMistralModel", value: store.get("pr.mistralModel", ""), placeholder: "Auto (mistral-medium-latest)" });
+    const ork = el("input", { type: "password", id: "setOr", value: store.get("pr.orKey", ""), autocomplete: "off", placeholder: "sk-or-..." });
+    const orm = el("input", { type: "text", id: "setOrModel", value: store.get("pr.orModel", ""), placeholder: "Auto (best free model)" });
+    const prov = el("select", { id: "setProvider" }, [["gemini", "Google Gemini"], ["mistral", "Mistral"], ["openrouter", "OpenRouter"]].map(([v, l]) => el("option", { value: v, selected: store.get("pr.provider", "gemini") === v ? "" : null }, l)));
+    const testOut = el("p", { class: "muted small" });
+    const saveKeys = () => {
+      const k = str(key.value); if (k !== store.get("pr.key", "")) { store.del("pr.modelResolved"); candCache = null; }
+      for (const [id, v] of [["pr.key", k], ["pr.mistralKey", str(mk.value)], ["pr.orKey", str(ork.value)], ["pr.mistralModel", str(mm.value)], ["pr.orModel", str(orm.value)], ["pr.jina", str(jk.value)]]) { if (v) store.set(id, v); else store.del(id); }
+      const m = str(model.value).replace(/^models\//, ""); if (m) { if (m !== store.get("pr.model", "")) { store.del("pr.modelResolved"); candCache = null; } store.set("pr.model", m); } else store.del("pr.model");
+      store.set("pr.provider", prov.value); store.set("pr.ground", ground.checked);
+      deadProviders.clear(); orModels = null; store.del("pr.lastModel"); setEngine(engine);
+    };
+    const testBtn = el("button", { class: "btn sm", type: "button", disabled: !liveOnly() }, "Test connection");
+    testBtn.addEventListener("click", async () => {
+      saveKeys(); testBtn.disabled = true; testOut.textContent = "Testing…";
+      const lines = [];
+      for (const p of Object.keys(PROVIDERS)) {
+        if (!PROVIDERS[p].key()) continue;
+        try { const out = await PROVIDERS[p].call('Reply with only this JSON: {"ok": true}', { json: p !== "openrouter" }); lines.push(`${PROVIDERS[p].label}: working (${out.model})`); }
+        catch (err) { lines.push(`${PROVIDERS[p].label}: ${err?.text || errText(err)}`); }
+      }
+      testOut.textContent = lines.length ? lines.join("  ·  ") : "Add at least one key first.";
+      testBtn.disabled = false;
+    });
     const jk = el("input", { type: "password", id: "setJina", value: store.get("pr.jina", ""), autocomplete: "off", placeholder: "jina_..." });
     const ground = el("input", { type: "checkbox", id: "setGround", checked: store.get("pr.ground", false) ? "" : null });
     const dom = el("input", { type: "text", id: "setDomain", value: store.get("pr.sendDomain", ""), placeholder: "yourdomain.com" });
@@ -2828,17 +2952,15 @@ Return ONLY JSON: {"agency_name": "", "profile": "", "services": [""]}`;
         el("div", { class: "grid2" }, field("Opt-out line", optOut, "keep the wording \"no thanks\" so replies are recognised"), field("Postal address", postal)),
         el("div", { class: "run" }, el("button", { class: "btn sm primary", type: "button", onclick: () => { store.set("pr.email", { length: lenSel.value, optOut: str(optOut.value) || 'Not interested? Reply "no thanks" and I won\'t email again.', postal: str(postal.value), footer: footerOn.checked }); toast("Saved"); } }, "Save"))),
       el("section", { class: "box", id: "set-keys" }, el("h2", { class: "h2", text: "AI and keys" }),
-        el("p", { class: "muted small" }, "Keys are stored only in this browser. Get a free Gemini key at ", extLink("https://aistudio.google.com/apikey", "aistudio.google.com/apikey"), "."),
-        el("div", { class: "grid2" }, field("Gemini API key", key), field("Gemini model", model, "blank picks the newest available")),
+        el("p", { class: "muted small", text: "Add one or more free keys. The tool uses your first choice and switches to the next automatically if it fails or hits a limit. Keys are stored only in this browser." }),
+        field("Use first", prov),
+        el("div", { class: "keygrid" },
+          el("div", { class: "keybox" }, el("b", { text: "Google Gemini" }), el("p", { class: "muted small" }, "Free at ", extLink("https://aistudio.google.com/apikey", "aistudio.google.com/apikey"), ". Some new Google projects no longer get the free tier; with billing on it costs about $0.05 a report."), field("API key", key), field("Model", model, "blank picks the newest")),
+          el("div", { class: "keybox" }, el("b", { text: "Mistral" }), el("p", { class: "muted small" }, "Free plan with generous limits; needs phone verification. Create a key at ", extLink("https://console.mistral.ai/api-keys", "console.mistral.ai/api-keys"), ". Free-plan requests may be used to train Mistral's models."), field("API key", mk), field("Model", mm, "optional")),
+          el("div", { class: "keybox" }, el("b", { text: "OpenRouter" }), el("p", { class: "muted small" }, "Free models, about 50 requests a day (1,000 after a one-time $10 top-up). Create a key at ", extLink("https://openrouter.ai/keys", "openrouter.ai/keys"), "."), field("API key", ork), field("Model", orm, "optional, e.g. a :free model id"))),
         field("Jina Reader key", jk, "optional; removes the free page-reading limit for bulk research"),
-        el("label", { class: "check" }, ground, el("span", null, "Also use Google Search grounding (needs billing on your Google project; 5,000 searches a month free)")),
-        el("div", { class: "run" }, el("button", { class: "btn sm primary", type: "button", onclick: () => {
-          const k = str(key.value); if (k !== S.key()) { store.del("pr.modelResolved"); candCache = null; }
-          if (k) store.set("pr.key", k); else store.del("pr.key");
-          const m = str(model.value).replace(/^models\//, ""); if (m) { store.set("pr.model", m); store.del("pr.modelResolved"); candCache = null; } else store.del("pr.model");
-          const j = str(jk.value); if (j) store.set("pr.jina", j); else store.del("pr.jina");
-          store.set("pr.ground", ground.checked); setEngine(engine); toast("Saved");
-        } }, "Save"))),
+        el("label", { class: "check" }, ground, el("span", null, "Also use Google Search grounding (Gemini only; needs billing on your Google project; 5,000 searches a month free)")),
+        el("div", { class: "run wrap" }, el("button", { class: "btn sm primary", type: "button", onclick: () => { saveKeys(); toast("Saved"); } }, "Save"), testBtn), testOut),
       el("section", { class: "box" }, el("h2", { class: "h2", text: "Sending domain check" }), el("p", { class: "muted small", text: "Checks the DNS records that decide whether your cold email lands in the inbox: MX, SPF, DKIM and DMARC." }),
         el("div", { class: "run wrap" }, dom, domBtn), domOut),
       el("section", { class: "box" }, el("h2", { class: "h2", text: "Your data" }),
@@ -2852,13 +2974,13 @@ Return ONLY JSON: {"agency_name": "", "profile": "", "services": [""]}`;
     if (o.focus) $("set-" + o.focus)?.scrollIntoView();
   };
   async function exportBackup() {
-    const settings = {}; for (const k of Object.keys(localStorage)) if (k.startsWith("pr.") && !["pr.key", "pr.jina"].includes(k)) settings[k] = store.get(k, null);
+    const settings = {}; for (const k of Object.keys(localStorage)) if (k.startsWith("pr.") && !["pr.key", "pr.jina", "pr.mistralKey", "pr.orKey"].includes(k)) settings[k] = store.get(k, null);
     const data = { app: "prospect-radar", version: VERSION, exportedAt: new Date().toISOString(), settings, accounts: await DB.all("accounts"), reports: await DB.all("reports"), queue: await DB.all("queue") };
     downloadFile(`prospect-radar-backup-${new Date().toISOString().slice(0, 10)}.json`, JSON.stringify(data), "application/json");
   }
   async function importBackup(d) {
     if (d?.app !== "prospect-radar") throw new Error("not a backup");
-    for (const [k, v] of Object.entries(d.settings || {})) if (!["pr.key", "pr.jina"].includes(k)) store.set(k, v);
+    for (const [k, v] of Object.entries(d.settings || {})) if (!["pr.key", "pr.jina", "pr.mistralKey", "pr.orKey"].includes(k)) store.set(k, v);
     for (const r of arr(d.reports)) await DB.put("reports", r);
     for (const a of arr(d.accounts)) await DB.put("accounts", a);
     for (const q of arr(d.queue)) await DB.put("queue", q);
